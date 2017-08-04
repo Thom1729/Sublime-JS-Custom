@@ -1,0 +1,104 @@
+%YAML 1.2
+%TAG ! tag:yaml-macros:YAMLMacros.lib.extend:
+---
+!extend
+_base: Base.sublime-syntax
+name: JS Custom (JSX)
+hidden: false
+
+variables: !merge
+  jsx_identifier: '[_$[:alpha:]][-_$[:alnum:]]*'
+
+contexts: !merge
+  expression-begin: !prepend
+    - include: jsx-tag
+
+  jsx-interpolation:
+    - match: '{'
+      scope: punctuation.section.braces.begin.js
+      push:
+        - - meta_scope: meta.jsx-interpolation.js
+          - match: '}'
+            scope: punctuation.section.braces.begin.js
+            pop: true
+        - expression
+
+  jsx-expect-tag-end:
+    - match: '>'
+      scope: punctuation.definition.tag.end.js
+      pop: true
+    - include: else-pop
+
+  jsx-tag:
+    - match: '<'
+      scope: punctuation.definition.tag.begin.js
+      set:
+      - meta_scope: meta.tag.js
+      - match: '/'
+        set:
+          - - meta_scope: invalid.illegal.unmatched-tag.js
+            - include: else-pop
+          - jsx-expect-tag-end
+          - jsx-tag-name
+
+      - match: (?=\S)
+        set:
+          - jsx-tag-attributes
+          - jsx-tag-name
+
+  jsx-tag-attributes:
+    - meta_scope: meta.tag.js
+
+    - match: '>'
+      scope: punctuation.definition.tag.end.js
+      set: jsx-body
+
+    - match: '/'
+      scope: punctuation.definition.tag.end.js
+      set: jsx-expect-tag-end
+
+    - include: jsx-interpolation
+
+    - match: '{{jsx_identifier}}'
+      scope: entity.other.attribute-name.js
+
+    - match: '='
+      scope: punctuation.separator.key-value.js
+
+    - match: (?=['"])
+      push: literal-string
+
+  jsx-tag-name:
+    - match: '{{jsx_identifier}}'
+      scope: entity.name.tag.js
+      set:
+        - match: '[:.]'
+          scope: punctuation.accessor.js
+          set: jsx-tag-name
+        - include: else-pop
+    - include: else-pop
+
+  jsx-body:
+    - match: '<'
+      scope: punctuation.definition.tag.begin.js
+      set:
+        - meta_scope: meta.tag.js
+
+        - match: '/'
+          scope: punctuation.definition.tag.begin.js
+          set:
+            - jsx-expect-tag-end
+            - jsx-tag-name
+
+        - match: (?=\S)
+          set:
+            - jsx-body
+            - jsx-tag-attributes
+            - jsx-tag-name
+
+    - match: ''
+      push:
+        - meta_include_prototype: false
+        - include: jsx-interpolation
+        - match: (?=<)
+          pop: true
