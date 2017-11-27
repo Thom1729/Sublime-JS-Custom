@@ -1,0 +1,5 @@
+%YAML 1.2
+%TAG ! tag:yaml-macros:JSCustom.macros:
+---
+name: !get name
+hidden: false

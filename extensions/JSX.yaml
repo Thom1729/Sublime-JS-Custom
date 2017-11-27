@@ -1,11 +1,6 @@
 %YAML 1.2
-%TAG ! tag:yaml-macros:YAMLMacros.lib.extend:
+%TAG ! tag:yaml-macros:JSCustom.macros:
 ---
-!extend
-_base: Base.sublime-syntax
-name: JS Custom (JSX)
-hidden: false
-
 variables: !merge
   jsx_identifier: '[_$[:alpha:]][-_$[:alnum:]]*'
 

@@ -1,5 +1,5 @@
 {
-    "default": {
-        "foo": 42
+    "Default": {
+        "comma_operator_scope": "keyword.operator.comma.js"
     }
 }

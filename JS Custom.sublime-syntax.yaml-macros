@@ -1,0 +1,8 @@
+%YAML 1.2
+%TAG ! tag:yaml-macros:JSCustom.macros:
+---
+!apply_all
+- extensions/JavaScript.yaml
+- extensions/Name.yaml
+- extensions/CommaOperator.yaml
+- extensions/JSX.yaml
