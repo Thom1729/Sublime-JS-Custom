@@ -1,6 +1,7 @@
 %YAML 1.2
 %TAG ! tag:yaml-macros:JSCustom.macros:
 ---
+!merge
 variables: !merge
   jsx_identifier: '[_$[:alpha:]][-_$[:alnum:]]*'
 

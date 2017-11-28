@@ -1,5 +1,6 @@
 %YAML 1.2
 %TAG ! tag:yaml-macros:JSCustom.macros:
 ---
-name: !get name
+!merge
+name: !option name
 hidden: false

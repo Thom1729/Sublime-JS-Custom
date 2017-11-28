@@ -1,21 +1,17 @@
 from YAMLMacros.lib.extend import *
-
-def get(key):
-    global _context
-    return _context[key]
-
 from YAMLMacros.src.build import _build_yaml_macros
 
-def _include(name):
-    global _context
+from YAMLMacros.lib.context import setting, _get_context_stack
+
+def option(key):
+    return setting(key)
+
+def if_(value, ifTrue, ifFalse=None):
+    if value:
+        return ifTrue
+    else:
+        return ifFalse
+
+def include(name):
     with open(name, 'r') as file:
-        return _build_yaml_macros(
-            file.read(), _context
-        )
-
-def apply_all(base, *extensions):
-    ret = _include(base)
-    for extension in extensions:
-        ret = Merge(_include(extension)).apply(ret)
-
-    return ret
+        return _build_yaml_macros(file.read())

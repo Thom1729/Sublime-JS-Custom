@@ -1,4 +1,4 @@
 {
-    "target": "build_custom_syntaxes",
+    "target": "build_js_custom_syntaxes",
     "selector": "source.yaml",
 }

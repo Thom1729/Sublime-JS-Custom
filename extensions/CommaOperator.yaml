@@ -1,8 +1,9 @@
 %YAML 1.2
 %TAG ! tag:yaml-macros:JSCustom.macros:
 ---
+!merge
 contexts: !merge
   binary-operators: !prepend
     - match: ','
-      scope: !get comma_operator_scope
+      scope: 'keyword.operator.comma.js'
       push: expression-begin

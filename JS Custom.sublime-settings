@@ -1,5 +1,12 @@
 {
-    "Default": {
-        "comma_operator_scope": "keyword.operator.comma.js"
+    "configurations": {
+        "Default": {
+            "comma_operator": false,
+            "jsx": false
+        },
+        "React": {
+            "comma_operator": true,
+            "jsx": true
+        },
     }
 }
