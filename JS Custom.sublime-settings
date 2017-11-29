@@ -1,11 +1,11 @@
 {
+    "defaults": {
+        "comma_operator": false,
+        "jsx": false
+    },
     "configurations": {
-        "Default": {
-            "comma_operator": false,
-            "jsx": false
-        },
+        "Default": {},
         "React": {
-            "comma_operator": true,
             "jsx": true
         },
     }
