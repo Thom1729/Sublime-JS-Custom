@@ -4,5 +4,5 @@
 !apply
   - !include extensions/JavaScript.yaml
   - !include extensions/Name.yaml
-  - !if [ !option comma_operator, !include extensions/CommaOperator.yaml ]
-  - !if [ !option jsx, !include extensions/JSX.yaml ]
+  - !if [ !argument comma_operator, !include extensions/CommaOperator.yaml ]
+  - !if [ !argument jsx, !include extensions/JSX.yaml ]

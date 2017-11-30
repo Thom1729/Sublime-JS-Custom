@@ -2,5 +2,5 @@
 %TAG ! tag:yaml-macros:JSCustom.macros:
 ---
 !merge
-name: !option name
+name: !argument name
 hidden: false
