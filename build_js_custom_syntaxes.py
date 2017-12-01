@@ -81,7 +81,7 @@ class BuildJsCustomSyntaxesCommand(sublime_plugin.WindowCommand):
     def run(self, versions=None):
         ensure_sanity()
 
-        from YAMLMacros.src.build import build_yaml_macros
+        from YAMLMacros.src.build import process_macros, get_serializer
 
         os.chdir(ROOT)
 
@@ -99,11 +99,12 @@ class BuildJsCustomSyntaxesCommand(sublime_plugin.WindowCommand):
             options['name'] = options.get('name', name)            
 
             print('Building %s.' % name)
-            result = build_yaml_macros(text, context=options)
+            result = process_macros(text, context=options)
 
             target_path = path.join(SYNTAXES_PATH, name + '.sublime-syntax')
+            serializer = get_serializer()
             with open(target_path, 'w') as output_file:
-                result(output_file)
+                serializer.dump(result, stream=output_file)
 
         for name in versions:
             build(name)
