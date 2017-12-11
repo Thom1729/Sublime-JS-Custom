@@ -73,7 +73,7 @@ def rebuild_syntaxes():
     ]
 
     if changed:
-        sublime.run_command('build_js_custom_syntaxes', { 'versions': changed })
+        sublime.active_window().run_command('build_js_custom_syntaxes', { 'versions': changed })
 
     old_configurations = new_configurations
 
@@ -81,30 +81,22 @@ class BuildJsCustomSyntaxesCommand(sublime_plugin.WindowCommand):
     def run(self, versions=None):
         ensure_sanity()
 
-        from YAMLMacros.api import process_macros, get_yaml_instance
+        configurations = get_configurations().items()
+        if versions:
+            configurations = [
+                (name, configuration)
+                for name, configuration in configurations
+                if name in versions
+            ]
 
-        os.chdir(ROOT)
+        for name, configuration in configurations:
+            name = 'JS Custom (%s)' % name
 
-        configurations = get_configurations()
-        if not versions:
-            versions = [ name for name, _ in configurations.items() ]
+            configuration['name'] = configuration.get('name', name)
 
-        with open(SOURCE_PATH, 'r') as file:
-            text = file.read()
-
-        def build(version):
-            name = 'JS Custom (%s)' % version
-
-            options = configurations[version]
-            options['name'] = options.get('name', name)            
-
-            print('Building %s.' % name)
-            result = process_macros(text, arguments=options)
-
-            target_path = path.join(SYNTAXES_PATH, name + '.sublime-syntax')
-            serializer = get_yaml_instance()
-            with open(target_path, 'w') as output_file:
-                serializer.dump(result, stream=output_file)
-
-        for name in versions:
-            build(name)
+            self.window.run_command('build_yaml_macros', {
+                'source_path': SOURCE_PATH,
+                'destination_path': path.join(SYNTAXES_PATH, name + '.sublime-syntax'),
+                'working_dir': ROOT,
+                'arguments': configuration,
+            })
