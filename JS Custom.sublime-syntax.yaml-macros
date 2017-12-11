@@ -3,6 +3,8 @@
 ---
 !apply
   - !include extensions/JavaScript.yaml
+  - !strip_jquery []
   - !include extensions/Name.yaml
   - !if [ !argument comma_operator, !include extensions/CommaOperator.yaml ]
   - !if [ !argument jsx, !include extensions/JSX.yaml ]
+  - !highlight_dollar_identifiers

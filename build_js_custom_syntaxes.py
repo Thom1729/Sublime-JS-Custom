@@ -27,7 +27,7 @@ def plugin_loaded():
 
 def is_yaml_macros_installed():
     try:
-        from YAMLMacros.src.build import build_yaml_macros
+        from YAMLMacros.api import process_macros
         return True
     except ImportError:
         return False
@@ -81,7 +81,7 @@ class BuildJsCustomSyntaxesCommand(sublime_plugin.WindowCommand):
     def run(self, versions=None):
         ensure_sanity()
 
-        from YAMLMacros.src.build import process_macros, get_serializer
+        from YAMLMacros.api import process_macros, get_yaml_instance
 
         os.chdir(ROOT)
 
@@ -99,10 +99,10 @@ class BuildJsCustomSyntaxesCommand(sublime_plugin.WindowCommand):
             options['name'] = options.get('name', name)            
 
             print('Building %s.' % name)
-            result = process_macros(text, context=options)
+            result = process_macros(text, arguments=options)
 
             target_path = path.join(SYNTAXES_PATH, name + '.sublime-syntax')
-            serializer = get_serializer()
+            serializer = get_yaml_instance()
             with open(target_path, 'w') as output_file:
                 serializer.dump(result, stream=output_file)
 
