@@ -79,6 +79,8 @@ def rebuild_syntaxes():
 
 class BuildJsCustomSyntaxesCommand(sublime_plugin.WindowCommand):
     def run(self, versions=None):
+        build_id = 'JSCustom-%d' % (time.time() * 1000)
+
         ensure_sanity()
 
         configurations = get_configurations().items()
@@ -99,4 +101,5 @@ class BuildJsCustomSyntaxesCommand(sublime_plugin.WindowCommand):
                 'destination_path': path.join(SYNTAXES_PATH, name + '.sublime-syntax'),
                 'working_dir': ROOT,
                 'arguments': configuration,
+                'build_id': build_id,
             })
