@@ -8,8 +8,9 @@ contexts: !merge
 
   literal-string-template-custom: !foreach
     collection: !argument custom_template_tags
+    as: [tag, include]
     value:
-      match: !format '({key})(`)'
+      match: !format '({tag})(`)'
       captures:
         1: variable.function.tagged-template.js
         2: punctuation.definition.string.template.begin.js
@@ -19,7 +20,7 @@ contexts: !merge
           - include: immediately-pop
         - - match: ''
             set:
-              - include: !argument value
+              - include: !argument include
             with_prototype:
               - match: "`"
                 scope: punctuation.definition.string.template.end.js
