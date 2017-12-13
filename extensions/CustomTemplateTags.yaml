@@ -1,0 +1,39 @@
+%YAML 1.2
+%TAG ! tag:yaml-macros:JSCustom.macros:
+---
+!merge
+contexts: !merge
+  literal-string-template: !prepend
+    - include: literal-string-template-custom
+
+  literal-string-template-custom: !foreach
+    collection: !argument custom_template_tags
+    value:
+      match: !format '({key})(`)'
+      captures:
+        1: variable.function.tagged-template.js
+        2: punctuation.definition.string.template.begin.js
+      set:
+        - - meta_include_prototype: false
+          - meta_scope: string.template.js
+          - include: immediately-pop
+        - - match: ''
+            set:
+              - include: !argument value
+            with_prototype:
+              - match: "`"
+                scope: punctuation.definition.string.template.end.js
+                pop: true
+              - match: '\$\{'
+                captures:
+                  0: punctuation.definition.template-expression.begin.js
+                push:
+                  - clear_scopes: 1
+                  - meta_scope: meta.template.expression.js
+                  - meta_content_scope: source.js.embedded.expression
+                  - match: '\}'
+                    scope: punctuation.definition.template-expression.end.js
+                    pop: true
+                  - match: (?=\S)
+                    push: expression
+              - include: string-content

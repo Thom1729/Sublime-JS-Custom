@@ -3,6 +3,7 @@ import sublime_plugin
 
 import os
 from os import path
+import time
 
 from package_control import events
 
