@@ -1,0 +1,232 @@
+%YAML 1.2
+%TAG ! tag:yaml-macros:JSCustom.macros:
+---
+!merge
+contexts: !merge
+  comments: !prepend
+    - include: flow-type-pragma
+
+  statements: !prepend
+    - include: flow-type-alias-declaration
+
+  variable-binding-top:
+    - include: function-assignment
+    - match: (?={{identifier}}|\[|\{)
+      set:
+        - initializer
+        - flow-type-variable-declaration
+        - variable-binding-pattern
+    - match: \n
+      set:
+        - match: '{{line_continuation_lookahead}}'
+          set: variable-binding-top
+        - include: else-pop
+    - include: else-pop
+
+  parenthesized-expression:
+    - match: \(
+      scope: punctuation.section.group.js
+      set:
+        - meta_scope: meta.group.js
+        - match: \)
+          scope: punctuation.section.group.js
+          pop: true
+        - match: (?=:)
+          push: flow-type-variable-declaration
+        - match: (?=\S)
+          push: expression
+    - match: \)
+      scope: invalid.illegal.stray-bracket-end.js
+      pop: true
+
+  flow-type-pragma:
+    - match: '(//)\s*(?=@)'
+      scope: comment.line.double-slash.pragma.js
+      captures:
+        1: punctuation.definition.comment.js
+      push:
+        - meta_include_prototype: false
+        - clear_scopes: 1
+        - match: '(@)(flow)'
+          captures:
+            1: punctuation.definition.pragma.js
+            2: support.function.pragma.js
+          pop: true
+        - include: else-pop
+
+  flow-type-variable-declaration:
+    - match: ':'
+      scope: punctuation.definition.type-declaration.js
+      set:
+        - match: (?=\S)
+          set: flow-type-declaration
+    - match: else-pop
+
+  flow-type-declaration:
+    - meta_scope: meta.flow-type.js
+    - include: flow-type
+    - include: else-pop
+
+  flow-type:
+    - include: flow-type-literal
+    - include: flow-type-special
+    - include: flow-type-primitive
+    - include: flow-type-typeof
+    - include: flow-type-class
+    - include: flow-type-function
+    - include: flow-type-tuple
+    - include: flow-type-object
+    - include: flow-type-operators
+    - match: (?=\)|\]|\|?\}|,|;|=)
+      pop: true
+
+  flow-type-literal:
+    - match: \btrue\b
+      scope: constant.language.boolean.true.js
+    - match: \bfalse\b
+      scope: constant.language.boolean.false.js
+    - match: (?=\d)
+      push:
+        - - match: \w+
+            scope: invalid.illegal.js
+          - include: immediately-pop
+        - literal-number
+    - match: (?=['"])
+      push: literal-string
+
+  flow-type-special: !foreach
+    collection: [ any, mixed ]
+    value:
+      match: !argument value
+      scope: !format 'support.type.{value}.js'
+
+  flow-type-primitive: !foreach
+    collection: [ boolean, number, string, 'null', void ]
+    value:
+      match: !argument value
+      scope: !format 'support.type.primitive.{value}.js'
+
+  flow-type-class:
+    - match: '{{identifier}}'
+      scope: variable.other.class.js
+      push: flow-type-generic-arguments
+
+  flow-type-function:
+    - match: \(
+      scope: punctuation.section.grouping.begin.js
+      push:
+        - flow-type-function-args
+
+  flow-type-function-args:
+    - meta_scope: meta.group.js
+    - match: \)
+      scope: punctuation.section.grouping.end.js
+      pop: true
+    - include: comma-separator
+    - include: flow-type
+
+
+  flow-type-tuple:
+    - match: \[
+      scope: punctuation.section.brackets.begin.js
+      push:
+        - meta_scope: meta.sequence.js
+        - match: \]
+          scope: punctuation.section.brackets.end.js
+          pop: true
+        - include: comma-separator
+        - include: flow-type
+
+  flow-type-typeof:
+    - match: \btypeof\b
+      scope: keyword.operator.js
+      push: expression
+
+  flow-type-object:
+    - match: \{
+      scope: punctuation.section.block.begin.js
+      push:
+        - meta_scope: meta.mapping.js
+        - include: flow-type-object-contents
+
+    - match: \{\|
+      scope: punctuation.section.block.begin.js
+      push:
+        - meta_scope: meta.type.object.strict.js
+        - include: flow-type-object-contents
+
+  flow-type-object-contents:
+    - match: \|?\}
+      scope: punctuation.section.block.end.js
+      pop: true
+    - include: comma-separator
+    - match: '{{identifier}}'
+      scope: meta.object-literal.key.js
+      push: flow-type-object-value
+    - match: \[
+      scope: punctuation.section.brackets.begin.js
+      push:
+        - flow-type-object-value
+        - flow-type-object-indexer-type
+        - flow-type-object-indexer-label
+
+  flow-type-object-indexer-type:
+    - match: \]
+      scope: punctuation.section.brackets.end.js
+      pop: true
+    - include: flow-type
+
+  flow-type-object-indexer-label:
+    - match: '({{identifier}})\s*(:)'
+      captures:
+        1: meta.object-literal.key.js
+        2: punctuation.separator.key-value.js
+      pop: true
+    - include: else-pop
+
+  flow-type-object-value:
+    - match: (\?)?(:)
+      scope: punctuation.separator.key-value.js
+      captures:
+        1: storage.modifier.optional.js
+        2: punctuation.separator.key-value.js
+      set: flow-type
+    - include: else-pop
+
+  flow-type-operators:
+    - match: \|(?!\})
+      scope: keyword.operator.type.union.js
+    - match: \&
+      scope: keyword.operator.type.intersection.js
+    - match: '=>'
+      scope: storage.type.function.arrow.js
+    - match: \[\]
+      scope: storage.modifier.array.js
+    - match: \?
+      scope: storage.modifier.maybe.js
+
+  flow-type-generic-arguments:
+    - match: '<'
+      scope: punctuation.definition.generic.begin.js
+      set:
+        - meta_scope: meta.generic.js
+        - match: '>'
+          scope: punctuation.definition.generic.end.js
+          pop: true
+        - include: comma-separator
+        - include: flow-type
+    - include: else-pop
+
+  flow-type-alias-declaration:
+    - match: \btype\b
+      scope: storage.type.js
+      push:
+        - !meta meta.declaration.type.js
+        - flow-type-alias-initializer
+        - !expect_identifier entity.name.type.js
+
+  flow-type-alias-initializer:
+    - match: '='
+      scope: keyword.operator.assignment.js
+      set: flow-type-declaration
+    - include: else-pop

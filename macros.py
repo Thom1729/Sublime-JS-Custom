@@ -1,5 +1,6 @@
 from YAMLMacros.lib.extend import *
 from YAMLMacros.lib.arguments import *
+from YAMLMacros.lib.syntax import *
 
 from YAMLMacros.lib.extend import Operation
 
@@ -54,3 +55,13 @@ def strip_jquery(*args):
 
 def highlight_dollar_identifiers(*args):
     return HighlightDollarIdentifiers(None)
+
+def expect_identifier(scope):
+    return [
+        rule(
+            match=r'{{identifier}}',
+            scope=scope,
+            pop=True
+        ),
+        rule(include='else-pop'),
+    ]

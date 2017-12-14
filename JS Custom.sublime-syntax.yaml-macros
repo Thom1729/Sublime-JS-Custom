@@ -9,3 +9,4 @@
   - !if [ !argument jsx, !include extensions/JSX.yaml ]
   - !highlight_dollar_identifiers
   - !if [ !argument custom_template_tags, !include extensions/CustomTemplateTags.yaml ]
+  - !if [ !argument flow_types, !include extensions/FlowTypes.yaml ]
