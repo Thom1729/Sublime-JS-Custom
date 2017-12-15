@@ -1,5 +1,5 @@
 %YAML 1.2
-%TAG ! tag:yaml-macros:JSCustom.macros:
+%TAG ! tag:yaml-macros:JSCustom.build.macros:
 ---
 !merge
 name: !argument name
