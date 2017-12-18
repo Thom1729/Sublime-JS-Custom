@@ -80,9 +80,12 @@ def rebuild_syntaxes():
 
 class BuildJsCustomSyntaxesCommand(sublime_plugin.WindowCommand):
     def run(self, versions=None):
-        build_id = 'JSCustom-%d' % (time.time() * 1000)
+        os.chdir(ROOT)
 
         ensure_sanity()
+
+        with open(SOURCE_PATH, 'r') as source_file:
+            source_text = source_file.read()
 
         configurations = get_configurations().items()
         if versions:
@@ -92,15 +95,23 @@ class BuildJsCustomSyntaxesCommand(sublime_plugin.WindowCommand):
                 if name in versions
             ]
 
+        from YAMLMacros.api import build
+        from YAMLMacros.src.output_panel import OutputPanel
+        from YAMLMacros.src.error_highlighter import ErrorHighlighter
+
+        panel = OutputPanel(self.window, 'YAMLMacros')
+        error_highlighter = ErrorHighlighter(self.window, 'YAMLMacros')
+
         for name, configuration in configurations:
             name = 'JS Custom (%s)' % name
 
-            configuration['name'] = configuration.get('name', name)
-
-            self.window.run_command('build_yaml_macros', {
-                'source_path': SOURCE_PATH,
-                'destination_path': path.join(SYNTAXES_PATH, name + '.sublime-syntax'),
-                'working_dir': ROOT,
-                'arguments': configuration,
-                'build_id': build_id,
-            })
+            build(
+                source_text=source_text,
+                destination_path=path.join(SYNTAXES_PATH, name + '.sublime-syntax'),
+                arguments=merge({
+                    'name': name,
+                    'file_path': SOURCE_PATH,
+                }, configuration),
+                error_stream=panel,
+                error_highlighter=error_highlighter
+            )
