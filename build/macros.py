@@ -2,6 +2,8 @@ from YAMLMacros.lib.extend import *
 from YAMLMacros.lib.arguments import *
 from YAMLMacros.lib.syntax import *
 
+from YAMLMacros.lib.include import include_resource
+
 from YAMLMacros.lib.extend import Operation
 
 from YAMLMacros.api import apply as _apply
@@ -9,13 +11,11 @@ from YAMLMacros.api import apply as _apply
 import re
 
 def extension(node, eval, arguments):
-    def ret(name):
-        if arguments.get(name, None):
-            return include_resource('Packages/JSCustom/extensions/%s.yaml' % name)
-        else:
-            return None
-
-    return _apply(ret, eval(node, deep=False))
+    name = argument(node, eval, arguments)
+    if arguments.get(name, None):
+        return include_resource('Packages/JSCustom/extensions/%s.yaml' % name)
+    else:
+        return None
 
 extension.raw = True
 
