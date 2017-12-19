@@ -4,7 +4,20 @@ from YAMLMacros.lib.syntax import *
 
 from YAMLMacros.lib.extend import Operation
 
+from YAMLMacros.api import apply as _apply
+
 import re
+
+def extension(node, eval, arguments):
+    def ret(name):
+        if arguments.get(name, None):
+            return include_resource('Packages/JSCustom/extensions/%s.yaml' % name)
+        else:
+            return None
+
+    return _apply(ret, eval(node, deep=False))
+
+extension.raw = True
 
 def find_rule(condition, node, parent=None):
     if isinstance(node, list):

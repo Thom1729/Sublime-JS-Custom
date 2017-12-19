@@ -2,11 +2,7 @@
 %TAG ! tag:yaml-macros:JSCustom.build.macros:
 ---
 !apply
-  - !include extensions/JavaScript.yaml
-  - !strip_jquery []
-  - !include extensions/Name.yaml
-  - !if [ !argument comma_operator, !include extensions/CommaOperator.yaml ]
-  - !if [ !argument jsx, !include extensions/JSX.yaml ]
-  - !highlight_dollar_identifiers
-  - !if [ !argument custom_template_tags, !include extensions/CustomTemplateTags.yaml ]
-  - !if [ !argument flow_types, !include extensions/FlowTypes.yaml ]
+  - !include_resource Packages/JSCustom/extensions/JavaScript.yaml
+  - !foreach
+    collection: [ name, comma_operator, jsx, custom_template_tags, flow_types ]
+    value: !extension [ !argument value ]
