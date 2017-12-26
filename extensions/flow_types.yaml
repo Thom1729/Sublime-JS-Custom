@@ -95,13 +95,13 @@ contexts: !merge
       push: literal-string
 
   flow-type-special: !foreach
-    collection: [ any, mixed ]
+    in: [ any, mixed ]
     value:
       match: !argument value
       scope: !format 'support.type.{value}.js'
 
   flow-type-primitive: !foreach
-    collection: [ boolean, number, string, 'null', void ]
+    in: [ boolean, number, string, 'null', void ]
     value:
       match: !argument value
       scope: !format 'support.type.primitive.{value}.js'

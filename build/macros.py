@@ -8,66 +8,69 @@ from YAMLMacros.lib.extend import Operation
 
 from YAMLMacros.api import apply as _apply
 
-import re
+# import re
+import sublime
+from os import path
 
-def extension(node, eval, arguments):
-    name = argument(node, eval, arguments)
-    if arguments.get(name, None):
-        return include_resource('Packages/JSCustom/extensions/%s.yaml' % name)
-    else:
-        return None
+def get_extensions(node, eval, arguments):
+    return [
+        include_resource(file_path)
+        for file_path in sublime.find_resources('*.yaml')
+        if path.dirname(file_path).endswith('/JSCustom/extensions')
+        and arguments.get(path.splitext(path.basename(file_path))[0], None)
+    ]
 
-extension.raw = True
+get_extensions.raw = True
 
-def find_rule(condition, node, parent=None):
-    if isinstance(node, list):
-        for item in node: yield from find_rule(condition, item, node)
-    elif isinstance(node, dict):
-        if condition(node):
-            yield (parent, node)
-        else:
-            for key, item in node.items():
-                yield from find_rule(condition, item, node)
+# def find_rule(condition, node, parent=None):
+#     if isinstance(node, list):
+#         for item in node: yield from find_rule(condition, item, node)
+#     elif isinstance(node, dict):
+#         if condition(node):
+#             yield (parent, node)
+#         else:
+#             for key, item in node.items():
+#                 yield from find_rule(condition, item, node)
 
-class StripJquery(Operation):
-    def apply(self, base):
-        rules = list(find_rule(
-            lambda node: 'dollar' in node.get('scope', ''),
-            base
-        ))
+# class StripJquery(Operation):
+#     def apply(self, base):
+#         rules = list(find_rule(
+#             lambda node: 'dollar' in node.get('scope', ''),
+#             base
+#         ))
 
-        for parent, node in rules:
-            parent.remove(node)
+#         for parent, node in rules:
+#             parent.remove(node)
 
-        return base
+#         return base
 
-class HighlightDollarIdentifiers(Operation):
-    def apply(self, base):
-        rules = list(find_rule(
-            lambda node: node.get('match', '') == '{{identifier}}',
-            base
-        ))
+# class HighlightDollarIdentifiers(Operation):
+#     def apply(self, base):
+#         rules = list(find_rule(
+#             lambda node: node.get('match', '') == '{{identifier}}',
+#             base
+#         ))
 
-        # print(rules)
+#         # print(rules)
 
-        for parent, node in rules:
-            node['match'] = r'({{dollar_only_identifier}})|({{dollar_identifier}})|({{identifier}})'
-            scope = node['scope']
-            del node['scope']
-            node['captures'] = {
-                1: re.sub(r'(\.readwrite)?\.js', '.dollar.only.js', scope, 1) + ' punctuation.dollar.js',
-                2: re.sub(r'(\.readwrite)?\.js', '.dollar.js', scope, 1),
-                3: 'punctuation.dollar.js',
-                4: scope,
-            }
+#         for parent, node in rules:
+#             node['match'] = r'({{dollar_only_identifier}})|({{dollar_identifier}})|({{identifier}})'
+#             scope = node['scope']
+#             del node['scope']
+#             node['captures'] = {
+#                 1: re.sub(r'(\.readwrite)?\.js', '.dollar.only.js', scope, 1) + ' punctuation.dollar.js',
+#                 2: re.sub(r'(\.readwrite)?\.js', '.dollar.js', scope, 1),
+#                 3: 'punctuation.dollar.js',
+#                 4: scope,
+#             }
 
-        return base
+#         return base
 
-def strip_jquery(*args):
-    return StripJquery(None)
+# def strip_jquery(*args):
+#     return StripJquery(None)
 
-def highlight_dollar_identifiers(*args):
-    return HighlightDollarIdentifiers(None)
+# def highlight_dollar_identifiers(*args):
+#     return HighlightDollarIdentifiers(None)
 
 def expect_identifier(scope):
     return [

@@ -14,8 +14,11 @@ def plugin_loaded():
     global SOURCE_PATH
     SOURCE_PATH = path.join(ROOT, 'JS Custom.sublime-syntax.yaml-macros')
 
+    global USER_PATH
+    USER_PATH = path.join(sublime.packages_path(), 'User', 'JS Custom')
+
     global SYNTAXES_PATH
-    SYNTAXES_PATH = path.join(sublime.packages_path(), 'User', 'JS Custom')
+    SYNTAXES_PATH = path.join(USER_PATH, 'Syntaxes')
 
     global SETTINGS
     SETTINGS = sublime.load_settings('JS Custom.sublime-settings')

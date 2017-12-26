@@ -3,6 +3,4 @@
 ---
 !apply
   - !include_resource Packages/JSCustom/extensions/JavaScript.yaml
-  - !foreach
-    collection: [ name, comma_operator, jsx, custom_template_tags, flow_types ]
-    value: !extension [ !argument value ]
+  - !get_extensions

@@ -7,7 +7,7 @@ contexts: !merge
     - include: literal-string-template-custom
 
   literal-string-template-custom: !foreach
-    collection: !argument custom_template_tags
+    in: !argument custom_template_tags
     as: [tag, include]
     value:
       match: !format '({tag})(`)'
