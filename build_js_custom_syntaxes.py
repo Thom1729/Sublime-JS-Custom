@@ -29,6 +29,8 @@ def plugin_loaded():
     SETTINGS.clear_on_change('JSCustom')
     SETTINGS.add_on_change('JSCustom', rebuild_syntaxes)
 
+    ensure_sanity()
+
 def is_yaml_macros_installed():
     try:
         from YAMLMacros.api import process_macros
@@ -51,7 +53,7 @@ def ensure_sanity():
 
     if not path.exists(SYNTAXES_PATH):
         os.makedirs(SYNTAXES_PATH)
-        sublime.run_command('build_js_custom_syntaxes')
+        # sublime.run_command('build_js_custom_syntaxes')
 
 def merge(*dicts):
     ret = {}
@@ -85,7 +87,7 @@ class BuildJsCustomSyntaxesCommand(sublime_plugin.WindowCommand):
     def run(self, versions=None):
         os.chdir(ROOT)
 
-        ensure_sanity()
+        # ensure_sanity()
 
         with open(SOURCE_PATH, 'r') as source_file:
             source_text = source_file.read()
