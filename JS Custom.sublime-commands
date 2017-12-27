@@ -1,0 +1,6 @@
+[
+    {
+        "caption": "JS Custom: Rebuild Syntaxes",
+        "command": "build_js_custom_syntaxes"
+    }
+]
