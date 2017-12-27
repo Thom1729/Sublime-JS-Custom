@@ -12,7 +12,7 @@ def plugin_loaded():
     ROOT = path.abspath(path.dirname(__file__))
 
     global SOURCE_PATH
-    SOURCE_PATH = path.join(ROOT, 'JS Custom.sublime-syntax.yaml-macros')
+    SOURCE_PATH = path.join(ROOT, 'src', 'JS Custom.sublime-syntax.yaml-macros')
 
     global USER_PATH
     USER_PATH = path.join(sublime.packages_path(), 'User', 'JS Custom')

@@ -1,0 +1,6 @@
+%YAML 1.2
+%TAG ! tag:yaml-macros:JSCustom.src.macros:
+---
+!apply
+  - !include_resource Packages/JSCustom/src/JavaScript.yaml
+  - !get_extensions
