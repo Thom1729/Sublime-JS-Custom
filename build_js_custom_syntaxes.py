@@ -3,22 +3,14 @@ import sublime_plugin
 
 import os
 from os import path
-import time
 
 from package_control import events
 
+SOURCE_PATH = 'Packages/JSCustom/src/JS Custom.sublime-syntax.yaml-macros'
+
 def plugin_loaded():
-    global ROOT
-    ROOT = path.abspath(path.dirname(__file__))
-
-    global SOURCE_PATH
-    SOURCE_PATH = path.join(ROOT, 'src', 'JS Custom.sublime-syntax.yaml-macros')
-
-    global USER_PATH
-    USER_PATH = path.join(sublime.packages_path(), 'User', 'JS Custom')
-
     global SYNTAXES_PATH
-    SYNTAXES_PATH = path.join(USER_PATH, 'Syntaxes')
+    SYNTAXES_PATH = path.join(sublime.packages_path(), 'User', 'JS Custom', 'Syntaxes')
 
     global SETTINGS
     SETTINGS = sublime.load_settings('JS Custom.sublime-settings')
@@ -26,10 +18,10 @@ def plugin_loaded():
     global old_configurations
     old_configurations = get_configurations()
 
+    ensure_sanity()
+
     SETTINGS.clear_on_change('JSCustom')
     SETTINGS.add_on_change('JSCustom', rebuild_syntaxes)
-
-    ensure_sanity()
 
 def is_yaml_macros_installed():
     try:
@@ -40,20 +32,28 @@ def is_yaml_macros_installed():
 
 def ensure_sanity():
     if not is_yaml_macros_installed():
-        ret = sublime.yes_no_cancel_dialog(
-            'JS Custom requires the YAML Macros package. Install YAML Macros via Package Control?',
-            'Install YAML Macros'
-        )
+        from package_control.package_manager import PackageManager
+        package_manager = PackageManager()
+        print("JS Custom: Installing YAML Macros...")
+        package_manager.install_package('YAMLMacros', False)
 
-        if ret:
-            sublime.active_window().run_command(
-                'advanced_install_package',
-                { 'packages': 'YAMLMacros' },
-            )
+    import sys
+    if not any('ruamel-yaml' in p for p in sys.path):
+        # Patch dependency path on first run
+        sys.path.append(path.join(
+            sublime.packages_path(),
+            'ruamel-yaml',
+            'st3',
+        ))
 
     if not path.exists(SYNTAXES_PATH):
+        print("JS Custom: Building syntaxes...")
         os.makedirs(SYNTAXES_PATH)
-        # sublime.run_command('build_js_custom_syntaxes')
+
+        def build():
+            sublime.active_window().run_command('build_js_custom_syntaxes')
+
+        sublime.set_timeout_async(build, 500)
 
 def merge(*dicts):
     ret = {}
@@ -85,12 +85,7 @@ def rebuild_syntaxes():
 
 class BuildJsCustomSyntaxesCommand(sublime_plugin.WindowCommand):
     def run(self, versions=None):
-        os.chdir(ROOT)
-
-        # ensure_sanity()
-
-        with open(SOURCE_PATH, 'r') as source_file:
-            source_text = source_file.read()
+        source_text = sublime.load_resource('Packages/JSCustom/src/JS Custom.sublime-syntax.yaml-macros')
 
         configurations = get_configurations().items()
         if versions:
