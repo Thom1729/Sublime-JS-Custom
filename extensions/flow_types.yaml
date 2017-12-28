@@ -1,5 +1,5 @@
 %YAML 1.2
-%TAG ! tag:yaml-macros:YAMLMacros.lib.extend,YAMLMacros.lib.arguments:
+%TAG ! tag:yaml-macros:YAMLMacros.lib.syntax,YAMLMacros.lib.extend,YAMLMacros.lib.arguments:
 ---
 !merge
 contexts: !merge
@@ -223,7 +223,11 @@ contexts: !merge
       push:
         - !meta meta.declaration.type.js
         - flow-type-alias-initializer
-        - !expect_identifier entity.name.type.js
+        # - !expect_identifier entity.name.type.js
+        - - match: '{{identifier}}'
+            scope: entity.name.type.js
+            pop: True
+        - - include: else-pop
 
   flow-type-alias-initializer:
     - match: '='
