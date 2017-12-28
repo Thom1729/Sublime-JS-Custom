@@ -25,7 +25,14 @@ def plugin_loaded():
 
 def is_yaml_macros_installed():
     try:
-        from YAMLMacros.api import process_macros
+        import YAMLMacros.api
+        return True
+    except ImportError:
+        return False
+
+def is_ruamel_yaml_available():
+    try:
+        import ruamel.yaml
         return True
     except ImportError:
         return False
@@ -37,14 +44,9 @@ def ensure_sanity():
         print("JS Custom: Installing YAML Macros...")
         package_manager.install_package('YAMLMacros', False)
 
-    import sys
-    if not any('ruamel-yaml' in p for p in sys.path):
-        # Patch dependency path on first run
-        sys.path.append(path.join(
-            sublime.packages_path(),
-            'ruamel-yaml',
-            'st3',
-        ))
+    if not is_ruamel_yaml_available():
+        from package_control import sys_path
+        sys_path.add_dependency('ruamel-yaml')
 
     if not path.exists(SYNTAXES_PATH):
         print("JS Custom: Building syntaxes...")
