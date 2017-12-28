@@ -29,11 +29,11 @@ The following options are available at the top level of your user settings:
 
 ### `configurations`
 
-An object containing one or more named configurations. The keys should be the names you would like your custom configurations to have. The values are objects specifying syntax options. See the following section, "Syntax Options", for details.
+An object containing one or more named configurations. The keys should be the names you would like your custom configurations to have. The values are objects specifying [syntax options](#syntax-options).
 
 ### `defaults`
 
-An object specifying default syntax options that will apply to all of your syntaxes. Your named configurations will override these defaults.
+An object specifying default [syntax options](#syntax-options) that will apply to all of your syntaxes. Your named configurations will override these defaults.
 
 ## Syntax Options
 
@@ -41,11 +41,11 @@ These options, specified in your `defaults` or in a named custom configuration, 
 
 ### `name`: string
 
-The name of the syntax as it will appear in the syntax selector. (If this is omitted, the syntax will be named "JS Custom (name)", where "name" is the TODO.)
+The name of the syntax as it will appear in the syntax selector. (If this is omitted, the syntax will be named "JS Custom - <samp>name</samp>", where <samp>name</samp> is the key in the `configurations` object.)
 
 ### `comma_operator`: boolean
 
-Scope the comma operator `keyword.operator.comma`. Other uses of the comma, such as to separate array items or function arguments, will still be scoped `punctuation.separator.comma`.
+Scope the [comma operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Comma_Operator) `keyword.operator.comma`. Other uses of the comma, such as to separate array items or function arguments, will still be scoped `punctuation.separator.comma`.
 
 ### `jsx`: boolean
 
