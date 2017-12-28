@@ -105,7 +105,7 @@ class BuildJsCustomSyntaxesCommand(sublime_plugin.WindowCommand):
         error_highlighter = ErrorHighlighter(self.window, 'YAMLMacros')
 
         for name, configuration in configurations:
-            name = 'JS Custom (%s)' % name
+            name = 'JS Custom - %s' % name
 
             build(
                 source_text=source_text,
