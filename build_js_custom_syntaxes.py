@@ -21,7 +21,7 @@ def plugin_loaded():
     ensure_sanity()
 
     SETTINGS.clear_on_change('JSCustom')
-    SETTINGS.add_on_change('JSCustom', rebuild_syntaxes)
+    SETTINGS.add_on_change('JSCustom', auto_build)
 
 def is_yaml_macros_installed():
     try:
@@ -70,7 +70,9 @@ def get_configurations():
         for name, config in SETTINGS.get('configurations').items()
     }
 
-def rebuild_syntaxes():
+def auto_build():
+    if not SETTINGS.get('auto_build', False): return
+
     global old_configurations
     new_configurations = get_configurations()
 
@@ -93,8 +95,6 @@ class BuildJsCustomSyntaxesCommand(sublime_plugin.WindowCommand):
 
         panel = OutputPanel(self.window, 'YAMLMacros')
         error_highlighter = ErrorHighlighter(self.window, 'YAMLMacros')
-
-        print(versions)
 
         source_text = sublime.load_resource('Packages/JSCustom/src/JS Custom.sublime-syntax.yaml-macros')
 
