@@ -27,13 +27,17 @@ If you modify your user settings outside Sublime Text, this package may not noti
 
 The following options are available at the top level of your user settings:
 
-### `configurations`
+### `configurations`: object
 
 An object containing one or more named configurations. The keys should be the names you would like your custom configurations to have. The values are objects specifying [syntax options](#syntax-options).
 
-### `defaults`
+### `defaults`: object
 
 An object specifying default [syntax options](#syntax-options) that will apply to all of your syntaxes. Your named configurations will override these defaults.
+
+### `auto_build`: boolean
+
+If true, JS Custom will automatically rebuild your syntaxes when you modify your user settings. Only syntaxes whose configurations have changed will be rebuilt. If `auto_build` is disabled, you will have to run the rebuild command manually.
 
 ## Syntax Options
 
