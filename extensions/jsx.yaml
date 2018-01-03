@@ -11,11 +11,11 @@ contexts: !merge
 
   jsx-interpolation:
     - match: '{'
-      scope: punctuation.section.braces.begin.js
+      scope: punctuation.definition.interpolation.begin.js
       push:
         - - meta_scope: meta.jsx-interpolation.js
           - match: '}'
-            scope: punctuation.section.braces.begin.js
+            scope: punctuation.definition.interpolation.begin.js
             pop: true
         - expression
 
@@ -62,7 +62,34 @@ contexts: !merge
       scope: punctuation.separator.key-value.js
 
     - match: (?=['"])
-      push: literal-string
+      push: jsx-attribute-string
+
+  jsx-attribute-string:
+    - match: "'"
+      scope: punctuation.definition.string.begin.js
+      set:
+        - meta_include_prototype: false
+        - meta_scope: string.quoted.single.js
+        - match: \'
+          scope: punctuation.definition.string.end.js
+          pop: true
+        - include: jsx-html-escapes
+    - match: '"'
+      scope: punctuation.definition.string.begin.js
+      set:
+        - meta_include_prototype: false
+        - meta_scope: string.quoted.double.js
+        - match: \"
+          scope: punctuation.definition.string.end.js
+          pop: true
+        - include: jsx-html-escapes
+
+  jsx-html-escapes:
+    - match: '(&)#?[[:alnum:]]+(;)'
+      scope: constant.character.escape.js
+      captures:
+        1: punctuation.definition.entity.js
+        2: punctuation.definition.entity.js
 
   jsx-tag-name:
     - match: '{{jsx_identifier}}'
@@ -75,6 +102,8 @@ contexts: !merge
     - include: else-pop
 
   jsx-body:
+    - meta_include_prototype: false
+
     - match: '<'
       scope: punctuation.definition.tag.begin.js
       set:
@@ -92,9 +121,5 @@ contexts: !merge
             - jsx-tag-attributes
             - jsx-tag-name
 
-    - match: ''
-      push:
-        - meta_include_prototype: false
-        - include: jsx-interpolation
-        - match: (?=<)
-          pop: true
+    - include: jsx-html-escapes
+    - include: jsx-interpolation
