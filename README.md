@@ -1,4 +1,4 @@
-WARNING: This is a prerelease package under development. It may not work and the documentation is more optimistic than descriptive. The official release will be posted in the [Sublime Text forum](https://forum.sublimetext.com).
+WARNING: This is a prerelease package under development. The official release will be posted in the [Sublime Text forum](https://forum.sublimetext.com).
 
 # JS Custom
 
@@ -14,6 +14,8 @@ Customizable JavaScript syntax highlighting for Sublime Text.
 ## Installation
 
 JS Custom can be installed via [Package Control](https://packagecontrol.io/installation). Restart Sublime Text after installation.
+
+Alternatively, you can install JS Custom manually by cloning it into your Packages directory as "JSCustom".
 
 ## Usage
 
