@@ -1,4 +1,4 @@
-WARNING: This is a prerelease package under development. It may not work and the documentation is more optimistic than descriptive. The official release will be posted in the [Sublime Text forum](https://forum.sublimetext.com).
+WARNING: JS Custom is in beta. The stable public release will be announced in the [Sublime Text forum](https://forum.sublimetext.com).
 
 # JS Custom
 
@@ -15,6 +15,8 @@ Customizable JavaScript syntax highlighting for Sublime Text.
 
 JS Custom can be installed via [Package Control](https://packagecontrol.io/installation). Restart Sublime Text after installation.
 
+Alternatively, you can install JS Custom manually by cloning it into your Packages directory as "JSCustom".
+
 ## Usage
 
 JS Custom ships with two example configurations: "JS Custom - Default" and "JS Custom - React". These should automatically be built and available for use upon installation.
@@ -27,13 +29,17 @@ If you modify your user settings outside Sublime Text, this package may not noti
 
 The following options are available at the top level of your user settings:
 
-### `configurations`
+### `configurations`: object
 
 An object containing one or more named configurations. The keys should be the names you would like your custom configurations to have. The values are objects specifying [syntax options](#syntax-options).
 
-### `defaults`
+### `defaults`: object
 
 An object specifying default [syntax options](#syntax-options) that will apply to all of your syntaxes. Your named configurations will override these defaults.
+
+### `auto_build`: boolean
+
+If true, JS Custom will automatically rebuild your syntaxes when you modify your user settings. Only syntaxes whose configurations have changed will be rebuilt. If `auto_build` is disabled, you will have to run the rebuild command manually.
 
 ## Syntax Options
 
@@ -42,6 +48,10 @@ These options, specified in your `defaults` or in a named custom configuration, 
 ### `name`: string
 
 The name of the syntax as it will appear in the syntax selector. (If this is omitted, the syntax will be named "JS Custom - <var>name</var>", where <var>name</var> is the key in the `configurations` object.)
+
+### `file_extensions`: array
+
+An array of file extensions. Files with the given extensions will be use this syntax.
 
 ### `comma_operator`: boolean
 

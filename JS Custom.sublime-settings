@@ -8,5 +8,7 @@
         "React": {
             "jsx": true
         },
-    }
+    },
+
+    "auto_build": true,
 }
