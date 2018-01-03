@@ -60,7 +60,7 @@ contexts: !merge
       set:
         - match: (?=\S)
           set: flow-type-declaration
-    - match: else-pop
+    - include: else-pop
 
   flow-type-declaration:
     - meta_scope: meta.flow-type.js
@@ -115,15 +115,12 @@ contexts: !merge
     - match: \(
       scope: punctuation.section.grouping.begin.js
       push:
-        - flow-type-function-args
-
-  flow-type-function-args:
-    - meta_scope: meta.group.js
-    - match: \)
-      scope: punctuation.section.grouping.end.js
-      pop: true
-    - include: comma-separator
-    - include: flow-type
+        - meta_scope: meta.group.js
+        - match: \)
+          scope: punctuation.section.grouping.end.js
+          pop: true
+        - include: comma-separator
+        - include: flow-type
 
 
   flow-type-tuple:
@@ -146,19 +143,22 @@ contexts: !merge
     - match: \{
       scope: punctuation.section.block.begin.js
       push:
-        - meta_scope: meta.mapping.js
+        - meta_scope: meta.type.object.js
+        - match: \}
+          scope: punctuation.section.block.end.js
+          pop: true
         - include: flow-type-object-contents
 
     - match: \{\|
       scope: punctuation.section.block.begin.js
       push:
         - meta_scope: meta.type.object.strict.js
+        - match: \|\}
+          scope: punctuation.section.block.end.js
+          pop: true
         - include: flow-type-object-contents
 
   flow-type-object-contents:
-    - match: \|?\}
-      scope: punctuation.section.block.end.js
-      pop: true
     - include: comma-separator
     - match: '{{identifier}}'
       scope: meta.object-literal.key.js
