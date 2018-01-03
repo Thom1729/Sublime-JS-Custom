@@ -17,13 +17,17 @@ contexts: !merge
       set:
         - - meta_include_prototype: false
           - meta_scope: string.template.js
+          - match: "`"
+            scope: punctuation.definition.string.template.end.js
+            pop: true
+          - include: immediately-pop
+        - - clear_scopes: 1
           - include: immediately-pop
         - - match: ''
             set:
               - include: !argument include
             with_prototype:
-              - match: "`"
-                scope: punctuation.definition.string.template.end.js
+              - match: (?=`)
                 pop: true
               - match: '\$\{'
                 captures:
