@@ -47,6 +47,10 @@ These options, specified in your `defaults` or in a named custom configuration, 
 
 The name of the syntax as it will appear in the syntax selector. (If this is omitted, the syntax will be named "JS Custom - <var>name</var>", where <var>name</var> is the key in the `configurations` object.)
 
+### `file_extensions`: array
+
+An array of file extensions. Files with the given extensions will be use this syntax.
+
 ### `comma_operator`: boolean
 
 Scope the [comma operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Comma_Operator) `keyword.operator.comma`. Other uses of the comma, such as to separate array items or function arguments, will still be scoped `punctuation.separator.comma`.
