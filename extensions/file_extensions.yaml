@@ -1,0 +1,5 @@
+%YAML 1.2
+%TAG ! tag:yaml-macros:YAMLMacros.lib.extend,YAMLMacros.lib.arguments:
+---
+!merge
+file_extensions: !argument file_extensions
