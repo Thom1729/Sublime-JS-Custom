@@ -1,4 +1,4 @@
-WARNING: This is a prerelease package under development. The official release will be posted in the [Sublime Text forum](https://forum.sublimetext.com).
+WARNING: JS Custom is in beta. The stable public release will be announced in the [Sublime Text forum](https://forum.sublimetext.com).
 
 # JS Custom
 
