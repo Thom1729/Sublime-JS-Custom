@@ -126,3 +126,32 @@ class BuildJsCustomSyntaxesCommand(sublime_plugin.WindowCommand):
                 error_stream=panel,
                 error_highlighter=error_highlighter
             )
+
+class JSXCommentListener(sublime_plugin.ViewEventListener):
+    @classmethod
+    def is_applicable(cls, settings):
+        location, filename = os.path.split(settings.get('syntax'))
+        if location != 'Packages/User/JS Custom/Syntaxes': return False
+
+        name, ext = os.path.splitext(filename)
+        if ext != '.sublime-syntax': return False
+
+        return old_configurations[name].get('jsx', False)
+
+    def on_text_command(self, command_name, args):
+        if command_name != 'toggle_comment': return None
+
+        return ('toggle_comment_jsx', args)
+
+class ToggleCommentJsx(sublime_plugin.TextCommand):
+    def run(self, edit, block=False):
+        view = self.view
+        for region in view.sel():
+            line = view.line(region)
+            text = view.substr(line)
+
+            l = line.begin() + len(text) - len(text.lstrip())
+            r = line.end() - len(text) + len(text.rstrip())
+
+            view.insert(edit, r, '</>*/}')
+            view.insert(edit, l, '{/*<>')
