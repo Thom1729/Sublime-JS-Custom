@@ -1,14 +1,19 @@
 {
     "defaults": {
         "comma_operator": false,
-        "jsx": false
+        "jsx": false,
+        "flow_types": false,
+        "custom_tagged_literals": false
     },
+
     "configurations": {
         "Default": {},
         "React": {
-            "jsx": true
-        },
+            "jsx": true,
+            "flow_types": true,
+            "file_extensions": [ "js", "jsx" ]
+        }
     },
 
-    "auto_build": true,
+    "auto_build": true
 }

@@ -1,19 +1,10 @@
-WARNING: JS Custom is in beta. The stable public release will be announced in the [Sublime Text forum](https://forum.sublimetext.com).
-
 # JS Custom
 
-Customizable JavaScript syntax highlighting for Sublime Text.
-
-## Features
-
-- Support for JSX, Flow types, and more.
-- User-configurable: turn features on and off at will.
-- Create multiple customized syntaxes for different projects.
-- Based directly on Sublime's built-in JavaScript highlighting.
+Customizable JavaScript syntax highlighting for Sublime Text supporting JSX, Flow, and more. You can use JS Custom as a drop-in replacement for [babel-sublime](https://github.com/babel/babel-sublime) or create your own customized syntax with exactly the features you need. Because JS Custom is based on the core JavaScript syntax, it will work with most tools written for the original — and as the original is updated and improved, JS Custom will inherit those improvements.
 
 ## Installation
 
-JS Custom can be installed via [Package Control](https://packagecontrol.io/installation). Restart Sublime Text after installation.
+JS Custom can be installed via [Package Control](https://packagecontrol.io/installation).
 
 Alternatively, you can install JS Custom manually by cloning it into your Packages directory as "JSCustom".
 
@@ -85,8 +76,16 @@ Example:
 }
 ```
 
-Then, if you use "JS Custom (My Config)" to highlight the following code, the contents of the template literal will be highlighted as CSS.
+Then, if you use "JS Custom - My Config" to highlight the following code, the contents of the template literal will be highlighted as CSS.
 
 ```js
 const myStyle = style`div { color: red }`;
 ```
+
+## Contributing
+
+To request a feature or report a bug, create a new issue. All suggestions are welcome.
+
+When reporting a bug, please include a code snippet that demonstrates the problem. If the bug exists in Sublime's core JavaScript syntax, it should be reported [here](https://github.com/sublimehq/Packages/issues) — but if you're not sure, then go ahead and post it here.
+
+When requesting a new feature, please include a link to any relevant documentation. Because of the unique design of JS Custom, we can accommodate a variety of nonstandard features.

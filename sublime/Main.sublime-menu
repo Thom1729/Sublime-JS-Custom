@@ -19,7 +19,7 @@
                                 "caption": "Settings",
                                 "command": "edit_settings",
                                 "args": {
-                                    "base_file": "${packages}/JSCustom/JS Custom.sublime-settings",
+                                    "base_file": "${packages}/JSCustom/sublime/JS Custom.sublime-settings",
                                     "default": "{\n\t$0\n}\n"
                                 }
                             },
