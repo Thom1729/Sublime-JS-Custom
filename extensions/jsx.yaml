@@ -103,6 +103,7 @@ contexts: !merge
 
   jsx-body:
     - meta_include_prototype: false
+    - meta_scope: meta.jsx.js
 
     - match: '<'
       scope: punctuation.definition.tag.begin.js
