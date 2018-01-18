@@ -1,7 +1,8 @@
 {
     "*": {
         "*": [
-            "ruamel-yaml"
+            "ruamel-yaml",
+            "yaml_macros_engine"
         ]
     }
 }

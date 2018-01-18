@@ -23,13 +23,6 @@ def plugin_loaded():
     SETTINGS.clear_on_change('JSCustom')
     SETTINGS.add_on_change('JSCustom', auto_build)
 
-def is_yaml_macros_installed():
-    try:
-        import YAMLMacros.api
-        return True
-    except ImportError:
-        return False
-
 def is_ruamel_yaml_available():
     try:
         import ruamel.yaml
@@ -37,16 +30,21 @@ def is_ruamel_yaml_available():
     except ImportError:
         return False
 
-def ensure_sanity():
-    if not is_yaml_macros_installed():
-        from package_control.package_manager import PackageManager
-        package_manager = PackageManager()
-        print("JS Custom: Installing YAML Macros...")
-        package_manager.install_package('YAMLMacros', False)
+def is_yamlmacros_available():
+    try:
+        import yamlmacros
+        return True
+    except ImportError:
+        return False
 
+def ensure_sanity():
     if not is_ruamel_yaml_available():
         from package_control import sys_path
         sys_path.add_dependency('ruamel-yaml')
+
+    if not is_yamlmacros_available():
+        from package_control import sys_path
+        sys_path.add_dependency('yaml_macros_engine')
 
     if not path.exists(SYNTAXES_PATH):
         print("JS Custom: Building syntaxes...")
@@ -89,9 +87,9 @@ def auto_build():
 
 class BuildJsCustomSyntaxesCommand(sublime_plugin.WindowCommand):
     def run(self, versions=None):
-        from YAMLMacros.api import build
-        from YAMLMacros.src.output_panel import OutputPanel
-        from YAMLMacros.src.error_highlighter import ErrorHighlighter
+        from yamlmacros import build
+        from yamlmacros.src.output_panel import OutputPanel
+        from yamlmacros.src.error_highlighter import ErrorHighlighter
 
         panel = OutputPanel(self.window, 'YAMLMacros')
         error_highlighter = ErrorHighlighter(self.window, 'YAMLMacros')
