@@ -1,5 +1,5 @@
 %YAML 1.2
-%TAG ! tag:yaml-macros:YAMLMacros.lib.extend:
+%TAG ! tag:yaml-macros:yamlmacros.lib.extend:
 ---
 !merge
 variables: !merge
