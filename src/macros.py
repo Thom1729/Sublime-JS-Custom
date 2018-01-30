@@ -1,7 +1,7 @@
-from YAMLMacros.lib.extend import apply
-from YAMLMacros.lib.syntax import rule as _rule
+from yamlmacros.lib.extend import apply
+from yamlmacros.lib.syntax import rule as _rule
 
-from YAMLMacros.lib.include import include_resource
+from yamlmacros.lib.include import include_resource
 
 import sublime
 from os import path
