@@ -14,8 +14,9 @@ variables:
   dollar_identifier: '(\$)[_$[:alnum:]]+'
   func_lookahead: '\s*\b(async\s+)?function\b'
   arrow_func_lookahead: '\s*(\basync\s*)?([_$[:alpha:]][_$[:alnum:]]*|\(([^()]|\([^()]*\))*\))\s*=>'
-  accessor_expression: ({{identifier}}\s*\.\s*)+({{identifier}})
   either_func_lookahead: (?:{{func_lookahead}}|{{arrow_func_lookahead}})
+  binding_pattern_lookahead: (?:{{identifier}}|\[|\{)
+  accessor_expression: ({{identifier}}\s*\.\s*)+({{identifier}})
 
   property_name: >-
     (?x)(?:
@@ -188,7 +189,9 @@ contexts:
     - include: immediately-pop
 
   export-extended:
-    - include: variable-declaration
+    - match: \b(const|let|var)\b
+      scope: storage.type.js
+      set: expression-statement
 
     - match: (?=\bclass\b)
       set: class
@@ -251,6 +254,10 @@ contexts:
     - include: else-pop
 
   statements:
+    - match: '\)|\}|\]'
+      scope: invalid.illegal.stray-bracket-end.js
+      pop: true
+
     - match: \;
       scope: punctuation.terminator.statement.js
 
@@ -335,8 +342,8 @@ contexts:
   variable-binding-object-key:
     - match: '{{identifier}}(?=\s*:)'
       pop: true
-    - match: (?=\S)
-      set: literal-variable
+    - include: variable-binding-name
+    - include: else-pop
 
   variable-binding-spread:
     - match: '\.\.\.'
@@ -345,7 +352,7 @@ contexts:
 
   variable-binding-list:
     - include: comma-separator
-    - match: (?={{identifier}}|\{|\[)
+    - match: (?={{binding_pattern_lookahead}})
       push:
         - initializer
         - variable-binding-pattern
@@ -353,7 +360,7 @@ contexts:
 
   variable-binding-top:
     - include: function-assignment
-    - match: (?={{identifier}}|\[|\{)
+    - match: (?={{binding_pattern_lookahead}})
       set:
         - initializer
         - variable-binding-pattern
@@ -602,10 +609,6 @@ contexts:
     - include: expression-end
 
   expression-begin:
-    - match: \)
-      scope: invalid.illegal.stray-bracket-end.js
-      pop: true
-
     - include: expression-break
 
     - include: literal-prototype
@@ -1436,9 +1439,6 @@ contexts:
           pop: true
         - match: (?=\S)
           push: expression
-    - match: \)
-      scope: invalid.illegal.stray-bracket-end.js
-      pop: true
 
   function-call:
     - match: \(
