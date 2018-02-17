@@ -1,0 +1,56 @@
+%YAML 1.2
+%TAG ! tag:yaml-macros:yamlmacros.lib.extend:
+---
+!merge
+contexts: !merge
+  statements: !prepend
+    - include: decorator
+
+  class-body:
+    - match: '\{'
+      scope: punctuation.section.block.js
+      set:
+        - meta_scope: meta.block.js
+
+        - include: decorator
+
+        - match: '\}'
+          scope: punctuation.section.block.js
+          pop: true
+
+        - match: \;
+          scope: punctuation.terminator.statement.js
+
+        - match: \bconstructor\b
+          scope: entity.name.function.constructor.js
+          push:
+            - function-declaration-expect-body
+            - function-declaration-meta
+            - function-declaration-expect-parameters
+
+        - match: \bstatic\b
+          scope: storage.modifier.js
+          push: class-field
+
+        - match: (?={{class_element_name}})
+          push: class-field
+
+    - include: else-pop
+
+  decorator:
+    - match: '@'
+      scope: punctuation.definition.annotation.js
+      push: decorator-expression
+
+  decorator-expression:
+    - meta_scope: meta.annotation.js
+    - match: (?={{identifier}}\s*\.)
+      push:
+        - expect-dot-accessor
+        - literal-variable
+    - match: '{{identifier}}'
+      scope: variable.annotation.js
+      set:
+        - include: function-call
+        - include: else-pop
+    - include: else-pop
