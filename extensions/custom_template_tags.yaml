@@ -10,7 +10,7 @@ contexts: !merge
     in: !argument custom_template_tags
     as: [tag, include]
     value:
-      match: !format '({tag})(`)'
+      match: !format '({tag})\s*(`)'
       captures:
         1: variable.function.tagged-template.js
         2: punctuation.definition.string.template.begin.js
