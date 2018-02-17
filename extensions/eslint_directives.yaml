@@ -1,0 +1,33 @@
+%YAML 1.2
+%TAG ! tag:yaml-macros:yamlmacros.lib.extend:
+---
+!merge
+variables: !merge
+  eslint_directive: (?:global|eslint[\w-]*)
+
+contexts: !merge
+  comments: !prepend
+    - match: (/\*)(?=\s*{{eslint_directive}})
+      scope: punctuation.definition.comment.js
+      push:
+        - - meta_include_prototype: false
+          - meta_scope: comment.block.js
+          - match: \*/
+            scope: punctuation.definition.comment.js
+            pop: true
+        - eslint-directive
+    - match: (//)(?=\s*{{eslint_directive}})
+      scope: punctuation.definition.comment.js
+      push:
+        - - meta_include_prototype: false
+          - meta_scope: comment.line.double-slash.js
+          - match: \n
+            pop: true
+        - eslint-directive
+
+  eslint-directive:
+    - clear_scopes: 1
+    - match: '{{eslint_directive}}'
+      scope: support.function.pragma.eslint.js
+      pop: true
+    - include: else-pop
