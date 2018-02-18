@@ -48,6 +48,14 @@ An array of file extensions. Files with the given extensions will be use this sy
 
 Scope the [comma operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Comma_Operator) `keyword.operator.comma`. Other uses of the comma, such as to separate array items or function arguments, will still be scoped `punctuation.separator.comma`.
 
+### `es_decorators`: boolean
+
+Highlight the experimental [decorator syntax](https://github.com/tc39/proposal-decorators). (When the decoradors proposal advances, support will presumably be added in the core JavaScript syntax. At that time, this extension will be removed.)
+
+### `string_object_keys`: boolean
+
+Highlight unquoted object keys as strings, matching [babel-sublime](https://github.com/babel/babel-sublime)'s behavior.
+
 ### `jsx`: boolean
 
 Highlight [JSX](https://reactjs.org/docs/introducing-jsx.html).
@@ -55,6 +63,14 @@ Highlight [JSX](https://reactjs.org/docs/introducing-jsx.html).
 ### `flow_types`: boolean
 
 Highlight [Flow type annotations](https://flow.org/en/docs/types/).
+
+### `eslint_directives`: boolean
+
+Highlight [eslint configuration directives](https://eslint.org/docs/user-guide/configuring) in comments.
+
+### `styled_components`: boolean
+
+Highlight template string literals for [Styled Components](https://www.styled-components.com/).
 
 ### `custom_tagged_literals`: object
 
