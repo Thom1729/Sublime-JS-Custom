@@ -50,7 +50,7 @@ Scope the [comma operator](https://developer.mozilla.org/en-US/docs/Web/JavaScri
 
 ### `es_decorators`: boolean
 
-Highlight the experimental [decorator syntax](https://github.com/tc39/proposal-decorators). (When the decoradors proposal advances, support will presumably be added in the core JavaScript syntax. At that time, this extension will be removed.)
+Highlight the experimental [decorator syntax](https://github.com/tc39/proposal-decorators). (When the decorators proposal advances, support will presumably be added in the core JavaScript syntax. At that time, this extension will be removed.)
 
 ### `string_object_keys`: boolean
 
