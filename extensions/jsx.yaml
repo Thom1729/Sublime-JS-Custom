@@ -31,9 +31,10 @@ contexts: !merge
       set:
       - meta_scope: meta.tag.js
       - match: '/'
+        scope: punctuation.definition.tag.begin.js
         set:
           - - meta_scope: invalid.illegal.unmatched-tag.js
-            - include: else-pop
+            - include: immediately-pop
           - jsx-expect-tag-end
           - jsx-tag-name
 
@@ -60,14 +61,12 @@ contexts: !merge
 
     - match: '='
       scope: punctuation.separator.key-value.js
+      push: jsx-attribute-value
 
-    - match: (?=['"])
-      push: jsx-attribute-string
+  jsx-attribute-value:
+    - include: jsx-tag
+    - include: jsx-interpolation
 
-    - match: (?=<)
-      push: jsx-tag
-
-  jsx-attribute-string:
     - match: "'"
       scope: punctuation.definition.string.begin.js
       set:
@@ -86,6 +85,8 @@ contexts: !merge
           scope: punctuation.definition.string.end.js
           pop: true
         - include: jsx-html-escapes
+
+    - include: else-pop
 
   jsx-html-escapes:
     - match: '(&)#?[[:alnum:]]+(;)'
