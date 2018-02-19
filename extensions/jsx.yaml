@@ -65,6 +65,9 @@ contexts: !merge
     - match: (?=['"])
       push: jsx-attribute-string
 
+    - match: (?=<)
+      push: jsx-tag
+
   jsx-attribute-string:
     - match: "'"
       scope: punctuation.definition.string.begin.js
