@@ -61,14 +61,12 @@ contexts: !merge
 
     - match: '='
       scope: punctuation.separator.key-value.js
+      push: jsx-attribute-value
 
-    - match: (?=['"])
-      push: jsx-attribute-string
+  jsx-attribute-value:
+    - include: jsx-tag
+    - include: jsx-interpolation
 
-    - match: (?=<)
-      push: jsx-tag
-
-  jsx-attribute-string:
     - match: "'"
       scope: punctuation.definition.string.begin.js
       set:
@@ -87,6 +85,8 @@ contexts: !merge
           scope: punctuation.definition.string.end.js
           pop: true
         - include: jsx-html-escapes
+
+    - include: else-pop
 
   jsx-html-escapes:
     - match: '(&)#?[[:alnum:]]+(;)'
