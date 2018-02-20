@@ -1,10 +1,18 @@
 from yamlmacros.lib.extend import apply
 from yamlmacros.lib.syntax import rule as _rule
 
-from yamlmacros.lib.include import include_resource
+from yamlmacros import process_macros
 
 import sublime
 from os import path
+
+def include_resource(resource):
+    file_contents = sublime.load_resource(resource)
+    return process_macros(
+        file_contents,
+        arguments={ "file_path": resource },
+    )
+
 
 def get_extensions(node, eval, arguments):
     return [
