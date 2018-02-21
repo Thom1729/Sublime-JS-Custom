@@ -107,24 +107,26 @@ contexts: !merge
 
   jsx-body:
     - meta_include_prototype: false
-    - meta_scope: meta.jsx.js
+    - meta_content_scope: meta.jsx.js
 
-    - match: '<'
-      scope: punctuation.definition.tag.begin.js
+    - match: (?=<)
       set:
-        - meta_scope: meta.tag.js
-
-        - match: '/'
+        - match: '<'
           scope: punctuation.definition.tag.begin.js
           set:
-            - jsx-expect-tag-end
-            - jsx-tag-name
+            - meta_scope: meta.tag.js
 
-        - match: (?=\S)
-          set:
-            - jsx-body
-            - jsx-tag-attributes
-            - jsx-tag-name
+            - match: '/'
+              scope: punctuation.definition.tag.begin.js
+              set:
+                - jsx-expect-tag-end
+                - jsx-tag-name
+
+            - match: (?=\S)
+              set:
+                - jsx-body
+                - jsx-tag-attributes
+                - jsx-tag-name
 
     - include: jsx-html-escapes
     - include: jsx-interpolation
