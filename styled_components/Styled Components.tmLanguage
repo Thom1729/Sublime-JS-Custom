@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>hidden</key>
-	<string>true</string>
+	<true/>
 	<key>comment</key>
 	<string></string>
 	<key>foldingStartMarker</key>
