@@ -13,7 +13,8 @@ contexts: !merge
     - match: '{'
       scope: punctuation.definition.interpolation.begin.js
       push:
-        - - meta_scope: meta.jsx-interpolation.js
+        - - meta_scope: meta.interpolation.js
+          - meta_content_scope: source.js.embedded.jsx
           - match: '}'
             scope: punctuation.definition.interpolation.begin.js
             pop: true
@@ -25,23 +26,31 @@ contexts: !merge
       pop: true
     - include: else-pop
 
+  jsx-meta:
+    - meta_scope: meta.jsx
+    - include: immediately-pop
+
   jsx-tag:
     - match: '<'
       scope: punctuation.definition.tag.begin.js
       set:
-      - meta_scope: meta.tag.js
-      - match: '/'
-        scope: punctuation.definition.tag.begin.js
-        set:
-          - - meta_scope: invalid.illegal.unmatched-tag.js
-            - include: immediately-pop
-          - jsx-expect-tag-end
-          - jsx-tag-name
+        - jsx-meta
+        - jsx-tag-attributes-top
 
-      - match: (?=\S)
-        set:
-          - jsx-tag-attributes
-          - jsx-tag-name
+  jsx-tag-attributes-top:
+    - meta_scope: meta.tag.js
+    - match: '/'
+      scope: punctuation.definition.tag.begin.js
+      set:
+        - - meta_scope: invalid.illegal.unmatched-tag.js
+          - include: immediately-pop
+        - jsx-expect-tag-end
+        - jsx-tag-name
+
+    - match: (?=\S)
+      set:
+        - jsx-tag-attributes
+        - jsx-tag-name
 
   jsx-tag-attributes:
     - meta_scope: meta.tag.js
@@ -107,26 +116,23 @@ contexts: !merge
 
   jsx-body:
     - meta_include_prototype: false
-    - meta_content_scope: meta.jsx.js
 
-    - match: (?=<)
+    - match: '<'
+      scope: punctuation.definition.tag.begin.js
       set:
-        - match: '<'
+        - meta_scope: meta.tag.js
+
+        - match: '/'
           scope: punctuation.definition.tag.begin.js
           set:
-            - meta_scope: meta.tag.js
+            - jsx-expect-tag-end
+            - jsx-tag-name
 
-            - match: '/'
-              scope: punctuation.definition.tag.begin.js
-              set:
-                - jsx-expect-tag-end
-                - jsx-tag-name
-
-            - match: (?=\S)
-              set:
-                - jsx-body
-                - jsx-tag-attributes
-                - jsx-tag-name
+        - match: (?=\S)
+          set:
+            - jsx-body
+            - jsx-tag-attributes
+            - jsx-tag-name
 
     - include: jsx-html-escapes
     - include: jsx-interpolation
