@@ -21,8 +21,9 @@ contexts: !merge
         - expression
 
   jsx-expect-tag-end:
+    - meta_content_scope: meta.tag.js
     - match: '>'
-      scope: punctuation.definition.tag.end.js
+      scope: meta.tag.js punctuation.definition.tag.end.js
       pop: true
     - include: else-pop
 
@@ -32,7 +33,7 @@ contexts: !merge
 
   jsx-tag:
     - match: '<'
-      scope: punctuation.definition.tag.begin.js
+      scope: meta.tag.js punctuation.definition.tag.begin.js
       set:
         - jsx-meta
         - jsx-tag-attributes-top
@@ -53,7 +54,7 @@ contexts: !merge
         - jsx-tag-name
 
   jsx-tag-attributes:
-    - meta_scope: meta.tag.js
+    - meta_content_scope: meta.tag.js
 
     - match: '>'
       scope: punctuation.definition.tag.end.js
@@ -105,6 +106,14 @@ contexts: !merge
         2: punctuation.definition.entity.js
 
   jsx-tag-name:
+    - match: ''
+      set:
+        - - clear_scopes: 1
+          - meta_scope: meta.tag.name.js
+          - include: immediately-pop
+        - jsx-tag-name-component
+
+  jsx-tag-name-component:
     - match: '{{jsx_identifier}}'
       scope: entity.name.tag.js
       set:

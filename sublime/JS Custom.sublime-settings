@@ -16,5 +16,6 @@
         }
     },
 
-    "auto_build": true
+    "auto_build": true,
+    "jsx_close_tag": true
 }
