@@ -32,6 +32,10 @@ An object specifying default [syntax options](#syntax-options) that will apply t
 
 If true, JS Custom will automatically rebuild your syntaxes when you modify your user settings. Only syntaxes whose configurations have changed will be rebuilt. If `auto_build` is disabled, you will have to run the rebuild command manually.
 
+### `jsx_close_tag`: boolean
+
+If true, when you run the `close_tag` command in a JavaScript file, this package's `jsx_close_tag` command will be invoked instead.
+
 ## Syntax Options
 
 These options, specified in your `defaults` or in a named custom configuration, determine what features your custom syntaxes will have. Omitted options will be treated as `null`.
