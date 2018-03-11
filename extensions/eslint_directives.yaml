@@ -26,7 +26,6 @@ contexts: !merge
         - eslint-directive
 
   eslint-directive:
-    - clear_scopes: 1
     - match: '{{eslint_directive}}'
       scope: support.function.pragma.eslint.js
       pop: true
