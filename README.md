@@ -6,15 +6,15 @@ Customizable JavaScript syntax highlighting for Sublime Text supporting JSX, Flo
 
 JS Custom can be installed via [Package Control](https://packagecontrol.io/installation).
 
-Alternatively, you can install JS Custom manually by cloning it into your Packages directory as "JSCustom".
+Alternatively, you can install JS Custom manually by cloning it into your Packages directory as “JSCustom”.
 
 ## Usage
 
-JS Custom ships with two example configurations: "JS Custom - Default" and "JS Custom - React". These should automatically be built and available for use upon installation.
+JS Custom ships with two example configurations: “JS Custom - Default” and “JS Custom - React”. These should automatically be built and available for use upon installation.
 
 To customize your syntaxes, choose Preferences &rarr; Package Settings &rarr; JS Custom &rarr; Settings from the menubar. The package default settings will be shown on the left; your user settings will be on the right. When you change your user settings, your custom syntaxes will automatically be recompiled. (This may take a few seconds, especially if you have a lot of configurations.)
 
-If you modify your user settings outside Sublime Text, this package may not notice your modifications. You can force it to rebuild all of your custom syntaxes by choosing Preferences &rarr; Package Settings &rarr; JS Custom &rarr; Rebuild Syntaxes from the menubar, or by choosing "JS Custom: Rebuild Syntaxes" from the command palette.
+If you modify your user settings outside Sublime Text, this package may not notice your modifications. You can force it to rebuild all of your custom syntaxes by choosing Preferences &rarr; Package Settings &rarr; JS Custom &rarr; Rebuild Syntaxes from the menubar, or by choosing “JS Custom: Rebuild Syntaxes” from the command palette.
 
 ## Configuration
 
@@ -38,7 +38,7 @@ These options, specified in your `defaults` or in a named custom configuration, 
 
 ### `name`: string
 
-The name of the syntax as it will appear in the syntax selector. (If this is omitted, the syntax will be named "JS Custom - <var>name</var>", where <var>name</var> is the key in the `configurations` object.)
+The name of the syntax as it will appear in the syntax selector. (If this is omitted, the syntax will be named “JS Custom - <var>name</var>”, where <var>name</var> is the key in the `configurations` object.)
 
 ### `file_extensions`: array
 
@@ -76,23 +76,23 @@ Highlight template string literals for [Styled Components](https://www.styled-co
 
 Highlight user-defined [tagged template literals](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals).
 
-Each key in the given object should be a JavaScript identifier representing a template literal tag. The associated value should be a string specifying a context to include: for instance, `"scope:source.css"`
+Each key in the given object should be a JavaScript identifier representing a template literal tag. The associated value should be a string specifying a context to include: for instance, `“scope:source.css”`
 
 Example:
 
 ```json
 {
-    "configurations": {
-        "My Config": {
-            "custom_tagged_literals": {
-                "style": "scope:source.css"
+    “configurations”: {
+        “My Config”: {
+            “custom_tagged_literals”: {
+                “style”: “scope:source.css”
             }
         }
     }
 }
 ```
 
-Then, if you use "JS Custom - My Config" to highlight the following code, the contents of the template literal will be highlighted as CSS.
+Then, if you use “JS Custom - My Config” to highlight the following code, the contents of the template literal will be highlighted as CSS.
 
 ```js
 const myStyle = style`div { color: red }`;
