@@ -82,10 +82,10 @@ Example:
 
 ```json
 {
-    “configurations”: {
-        “My Config”: {
-            “custom_tagged_literals”: {
-                “style”: “scope:source.css”
+    "configurations": {
+        "My Config": {
+            "custom_tagged_literals": {
+                "style": "scope:source.css"
             }
         }
     }
