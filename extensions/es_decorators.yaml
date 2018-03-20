@@ -6,36 +6,9 @@ contexts: !merge
   statements: !prepend
     - include: decorator
 
-  class-body:
-    - match: '\{'
-      scope: punctuation.section.block.js
-      set:
-        - meta_scope: meta.block.js
-
-        - include: decorator
-
-        - match: '\}'
-          scope: punctuation.section.block.js
-          pop: true
-
-        - match: \;
-          scope: punctuation.terminator.statement.js
-
-        - match: \bconstructor\b
-          scope: entity.name.function.constructor.js
-          push:
-            - function-declaration-expect-body
-            - function-declaration-meta
-            - function-declaration-expect-parameters
-
-        - match: \bstatic\b
-          scope: storage.modifier.js
-          push: class-field
-
-        - match: (?={{class_element_name}})
-          push: class-field
-
-    - include: else-pop
+  class-body-contents: !prepend
+    - meta_scope: meta.block.js
+    - include: decorator
 
   decorator:
     - match: '@'

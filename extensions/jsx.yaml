@@ -3,7 +3,9 @@
 ---
 !merge
 variables: !merge
-  jsx_identifier: '[_$[:alpha:]][-_$[:alnum:]]*'
+  jsx_identifier_part: (?:{{identifier_part}}|-)
+  jsx_identifier_break: (?!{{jsx_identifier_part}})
+  jsx_identifier: '{{identifier_start}}{{jsx_identifier_part}}*{{jsx_identifier_break}}'
 
 contexts: !merge
   expression-begin: !prepend
