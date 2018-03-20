@@ -6,11 +6,17 @@ from os import path
 
 from package_control import events
 
-SOURCE_PATH = 'Packages/JSCustom/src/JS Custom.sublime-syntax.yaml-macros'
+from .src.output import OutputPanel
+from .src.util import merge
+
+SOURCE_PATH = 'Packages/JSCustom/src/syntax/JS Custom.sublime-syntax.yaml-macros'
 
 def plugin_loaded():
     global SYNTAXES_PATH
     SYNTAXES_PATH = path.join(sublime.packages_path(), 'User', 'JS Custom', 'Syntaxes')
+    
+    global TEST_SYNTAXES_PATH
+    TEST_SYNTAXES_PATH = path.join(sublime.packages_path(), 'User', 'JS Custom', 'Tests')
 
     global SETTINGS
     SETTINGS = sublime.load_settings('JS Custom.sublime-settings')
@@ -55,12 +61,6 @@ def ensure_sanity():
 
         sublime.set_timeout_async(build, 500)
 
-def merge(*dicts):
-    ret = {}
-    for d in dicts:
-        ret.update(d)
-    return ret
-
 def get_configurations():
     defaults = SETTINGS.get('defaults')
     return {
@@ -92,6 +92,26 @@ def clean_output_directory(directory_path, keep=set()):
             os.remove(path.join(directory_path, filename))
             # TODO: Print something!
 
+def build_configurations(configurations, destination_path, output):
+    from yamlmacros import build
+    from yamlmacros.src.error_highlighter import ErrorHighlighter
+
+    error_highlighter = ErrorHighlighter(output.window, 'YAMLMacros')
+
+    source_text = sublime.load_resource(SOURCE_PATH)
+
+    for name, configuration in configurations.items():
+        build(
+            source_text=source_text,
+            destination_path=path.join(destination_path, name + '.sublime-syntax'),
+            arguments=merge({
+                'name': 'JS Custom - %s' % name,
+                'file_path': SOURCE_PATH,
+            }, configuration),
+            error_stream=output,
+            error_highlighter=error_highlighter
+        )
+
 class BuildJsCustomSyntaxesCommand(sublime_plugin.WindowCommand):
     def run(self, versions=None):
         configurations = get_configurations()
@@ -104,26 +124,68 @@ class BuildJsCustomSyntaxesCommand(sublime_plugin.WindowCommand):
                 for name in versions
             }
 
-        self.build_configurations(configurations, SYNTAXES_PATH)
+        build_configurations(configurations, SYNTAXES_PATH, output)
 
-    def build_configurations(self, configurations, destination_path):
-        from yamlmacros import build
-        from yamlmacros.src.output_panel import OutputPanel
-        from yamlmacros.src.error_highlighter import ErrorHighlighter
+def run_syntax_tests(tests, output):
+    import sublime_api
 
-        panel = OutputPanel(self.window, 'YAMLMacros')
-        error_highlighter = ErrorHighlighter(self.window, 'YAMLMacros')
+    total_assertions = 0
+    failed_assertions = 0
 
-        source_text = sublime.load_resource(SOURCE_PATH)
+    for t in tests:
+        assertions, test_output_lines = sublime_api.run_syntax_test(t)
+        total_assertions += assertions
+        if len(test_output_lines) > 0:
+            failed_assertions += len(test_output_lines)
+            for line in test_output_lines:
+                output.print(line)
 
-        for name, configuration in configurations.items():
-            build(
-                source_text=source_text,
-                destination_path=path.join(destination_path, name + '.sublime-syntax'),
-                arguments=merge({
-                    'name': 'JS Custom - %s' % name,
-                    'file_path': SOURCE_PATH,
-                }, configuration),
-                error_stream=panel,
-                error_highlighter=error_highlighter
-            )
+    if failed_assertions > 0:
+        message = 'FAILED: {} of {} assertions in {} files failed'
+        params = (failed_assertions, total_assertions, len(tests))
+    else:
+        message = 'Success: {} assertions in {} files passed'
+        params = (total_assertions, len(tests))
+
+    output.print(message.format(*params))
+    output.print('[Finished]')
+
+class RunJsCustomSyntaxTestsCommand(sublime_plugin.WindowCommand):
+    def run(self):
+        output = OutputPanel(self.window, 'YAMLMacros', scroll_to_end=True)
+
+        cases = sublime.decode_value(sublime.load_resource('Packages/JSCustom/tests/tests.json'));
+
+        configurations = { name: case['configuration'] for name, case in cases.items() }
+
+        if not path.exists(TEST_SYNTAXES_PATH):
+            os.makedirs(TEST_SYNTAXES_PATH)
+
+        clean_output_directory(TEST_SYNTAXES_PATH)
+
+        build_configurations(configurations, TEST_SYNTAXES_PATH, output)
+
+        syntax_tests = [
+            path
+            for path in sublime.find_resources('syntax_test*')
+            if path.startswith('Packages/JSCustom/tests')
+        ]
+
+        for name, case in cases.items():
+            syntax_path = 'Packages/User/JS Custom/Tests/%s.sublime-syntax' % name
+
+            tests = []
+            for test_path in syntax_tests:
+                filename = path.basename(test_path)
+                contents = sublime.load_resource(test_path)
+
+                test_output_path = path.join(TEST_SYNTAXES_PATH, filename)
+
+                with open(test_output_path, 'w') as file:
+                    file.write('// SYNTAX TEST "%s"\n' % syntax_path)
+                    file.write(contents)
+
+                test_resource_path = path.join('Packages/User/JS Custom/Tests', filename)
+                tests.append(test_resource_path)
+            
+            run_syntax_tests(tests, output)

@@ -1,6 +1,9 @@
 {
     "base": {
-        "configuration": {},
+        "configuration": {
+            "hidden": true,
+            "comma_operator": true
+        },
         "tests": [ "base" ]
     }
 }

@@ -4,6 +4,10 @@
         "command": "build_js_custom_syntaxes"
     },
     {
+        "caption": "JS Custom: Run Syntax Tests",
+        "command": "run_js_custom_syntax_tests"
+    },
+    {
         "caption": "Preferences: JS Custom",
         "command": "edit_settings",
         "args": {
