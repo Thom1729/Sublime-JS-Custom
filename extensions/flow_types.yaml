@@ -17,10 +17,10 @@ contexts: !merge
     - include: flow-type-alias-declaration
 
   flow-type-declare:
-    - match: \bdeclare\b(?=\s*(?:type|class|opaque|export)\b)
+    - match: declare{{identifier_break}}(?=\s*(?:type|class|opaque|export){{identifier_break}})
       scope: storage.type.js
       set:
-        - match: \bopaque\b
+        - match: opaque{{identifier_break}}
           scope: storage.modifier.js
           pop: true
         - include: else-pop
@@ -104,7 +104,7 @@ contexts: !merge
     - include: else-pop
 
   class-extends:
-    - match: \bextends\b
+    - match: extends{{identifier_break}}
       scope: storage.modifier.extends.js
       set:
         - - include: flow-type-generic-arguments
@@ -223,15 +223,15 @@ contexts: !merge
       push: flow-type
 
   flow-type-literal:
-    - match: \btrue\b
+    - match: true{{identifier_break}}
       scope: constant.language.boolean.true.js
       pop: true
-    - match: \bfalse\b
+    - match: false{{identifier_break}}
       scope: constant.language.boolean.false.js
       pop: true
     - match: (?=\d)
       set:
-        - - match: \w+
+        - - match: '{{identifier_part}}+'
             scope: invalid.illegal.js
           - include: immediately-pop
         - literal-number
@@ -241,14 +241,14 @@ contexts: !merge
   flow-type-special: !foreach
     in: [ any, mixed ]
     value:
-      match: !argument value
+      match: !format '{value}{{{{identifier_break}}}}'
       scope: !format 'support.type.{value}.js'
       pop: true
 
   flow-type-primitive: !foreach
     in: [ boolean, number, string, 'null', void ]
     value:
-      match: !argument value
+      match: !format '{value}{{{{identifier_break}}}}'
       scope: !format 'support.type.primitive.{value}.js'
       pop: true
 
@@ -278,7 +278,7 @@ contexts: !merge
         - include: flow-type-list
 
   flow-type-typeof:
-    - match: \btypeof\b
+    - match: typeof{{identifier_break}}
       scope: keyword.operator.js
       set: expression
 
@@ -388,11 +388,11 @@ contexts: !merge
     - include: else-pop
 
   flow-type-alias-declaration:
-    - match: (?=\btype\b)
+    - match: (?=type{{identifier_break}})
       push: flow-type-alias
 
   flow-type-alias:
-    - match: \btype\b
+    - match: type{{identifier_break}}
       scope: storage.type.js
       set:
         - !meta meta.declaration.type.js

@@ -4,7 +4,7 @@
 !merge
 contexts: !merge
   expression-begin: !prepend
-    - match: (?=(?:styled|injectGlobal|keyframes)\b)
+    - match: (?=(?:styled|injectGlobal|keyframes){{identifier_break}})
       set:
         - styled-component-end
         - styled-component-begin
