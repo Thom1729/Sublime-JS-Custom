@@ -3,21 +3,27 @@ import sublime_plugin
 
 import os
 from os import path
+from itertools import groupby
 
 from package_control import events
 
 from .src.output import OutputPanel
 from .src.util import merge
 
+def resource_path(*parts):
+    return path.join('Packages', *parts)
+
+def system_path(*parts):
+    return path.join(sublime.packages_path(), *parts)
+
 SOURCE_PATH = 'Packages/JSCustom/src/syntax/JS Custom.sublime-syntax.yaml-macros'
+
+TEST_PATH = 'User/JS Custom/Tests'
 
 def plugin_loaded():
     global SYNTAXES_PATH
-    SYNTAXES_PATH = path.join(sublime.packages_path(), 'User', 'JS Custom', 'Syntaxes')
+    SYNTAXES_PATH = system_path('User', 'JS Custom', 'Syntaxes')
     
-    global TEST_SYNTAXES_PATH
-    TEST_SYNTAXES_PATH = path.join(sublime.packages_path(), 'User', 'JS Custom', 'Tests')
-
     global SETTINGS
     SETTINGS = sublime.load_settings('JS Custom.sublime-settings')
 
@@ -114,6 +120,8 @@ def build_configurations(configurations, destination_path, output):
 
 class BuildJsCustomSyntaxesCommand(sublime_plugin.WindowCommand):
     def run(self, versions=None):
+        output = OutputPanel(self.window, 'YAMLMacros', scroll_to_end=True)
+        
         configurations = get_configurations()
 
         clean_output_directory(SYNTAXES_PATH, keep=set(configurations))
@@ -156,36 +164,44 @@ class RunJsCustomSyntaxTestsCommand(sublime_plugin.WindowCommand):
 
         cases = sublime.decode_value(sublime.load_resource('Packages/JSCustom/tests/tests.json'));
 
-        configurations = { name: case['configuration'] for name, case in cases.items() }
-
-        if not path.exists(TEST_SYNTAXES_PATH):
-            os.makedirs(TEST_SYNTAXES_PATH)
-
-        clean_output_directory(TEST_SYNTAXES_PATH)
-
-        build_configurations(configurations, TEST_SYNTAXES_PATH, output)
+        import shutil
+        shutil.rmtree(system_path(TEST_PATH))
+        os.makedirs(system_path(TEST_PATH))
 
         syntax_tests = [
-            path
-            for path in sublime.find_resources('syntax_test*')
-            if path.startswith('Packages/JSCustom/tests')
+            {
+                'filename': path.basename(file_path),
+                'contents': sublime.load_resource(file_path),
+                'suite': path.basename(path.dirname(file_path)),
+            }
+            for file_path in sublime.find_resources('syntax_test*')
+            if file_path.startswith('Packages/JSCustom/tests')
         ]
 
+        syntax_tests.sort(key=lambda test: ( test['suite'], test['filename'] ))
+
+        suites = {
+            k: list(v)
+            for k,v in groupby(syntax_tests, key=lambda test:test['suite'])
+        }
+
         for name, case in cases.items():
-            syntax_path = 'Packages/User/JS Custom/Tests/%s.sublime-syntax' % name
+            p = system_path(TEST_PATH, name)
+            
+            os.makedirs(p)
+
+            build_configurations({ name: case['configuration'] }, p, output)
+
+            syntax_path = resource_path(TEST_PATH, name, name+'.sublime-syntax')
 
             tests = []
-            for test_path in syntax_tests:
-                filename = path.basename(test_path)
-                contents = sublime.load_resource(test_path)
 
-                test_output_path = path.join(TEST_SYNTAXES_PATH, filename)
+            for suite_name in case['tests']:
+                for test in suites[suite_name]:
+                    with open(system_path(TEST_PATH, name, test['filename']), 'w') as file:
+                        file.write('// SYNTAX TEST "%s"\n' % syntax_path)
+                        file.write(test['contents'])
 
-                with open(test_output_path, 'w') as file:
-                    file.write('// SYNTAX TEST "%s"\n' % syntax_path)
-                    file.write(contents)
-
-                test_resource_path = path.join('Packages/User/JS Custom/Tests', filename)
-                tests.append(test_resource_path)
+                    tests.append(resource_path(TEST_PATH, name, test['filename']))
             
             run_syntax_tests(tests, output)

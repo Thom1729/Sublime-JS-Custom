@@ -2,8 +2,14 @@
     "base": {
         "configuration": {
             "hidden": true,
-            "comma_operator": true
         },
         "tests": [ "base" ]
+    },
+    "jsx": {
+        "configuration": {
+            "hidden": true,
+            "jsx": true
+        },
+        "tests": [ "base", "jsx" ]
     }
 }
