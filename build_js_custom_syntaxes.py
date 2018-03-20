@@ -85,8 +85,28 @@ def auto_build():
 
     old_configurations = new_configurations
 
+def clean_output_directory(directory_path, keep=set()):
+    for filename in os.listdir(directory_path):
+        name, ext = path.splitext(filename)
+        if ext == '.sublime-syntax' and name not in keep:
+            os.remove(path.join(directory_path, filename))
+            # TODO: Print something!
+
 class BuildJsCustomSyntaxesCommand(sublime_plugin.WindowCommand):
     def run(self, versions=None):
+        configurations = get_configurations()
+
+        clean_output_directory(SYNTAXES_PATH, keep=set(configurations))
+
+        if versions:
+            configurations = {
+                name: configurations[name]
+                for name in versions
+            }
+
+        self.build_configurations(configurations, SYNTAXES_PATH)
+
+    def build_configurations(self, configurations, destination_path):
         from yamlmacros import build
         from yamlmacros.src.output_panel import OutputPanel
         from yamlmacros.src.error_highlighter import ErrorHighlighter
@@ -94,33 +114,16 @@ class BuildJsCustomSyntaxesCommand(sublime_plugin.WindowCommand):
         panel = OutputPanel(self.window, 'YAMLMacros')
         error_highlighter = ErrorHighlighter(self.window, 'YAMLMacros')
 
-        source_text = sublime.load_resource('Packages/JSCustom/src/JS Custom.sublime-syntax.yaml-macros')
+        source_text = sublime.load_resource(SOURCE_PATH)
 
-        configurations = get_configurations()
-        config_names = set(configurations)
-
-        old_syntaxes = [
-            file for file in os.listdir(SYNTAXES_PATH)
-            if path.splitext(file)[0] not in config_names
-            and path.splitext(file)[1] == '.sublime-syntax'
-        ]
-
-        for file in old_syntaxes:
-            file_path = path.join(SYNTAXES_PATH, file)
-            os.remove(file_path)
-            panel.print("Removed %s (%s)." % (file, file_path))
-
-        if versions:
-            config_names = config_names & set(versions)
-
-        for name in config_names:
+        for name, configuration in configurations.items():
             build(
                 source_text=source_text,
-                destination_path=path.join(SYNTAXES_PATH, name + '.sublime-syntax'),
+                destination_path=path.join(destination_path, name + '.sublime-syntax'),
                 arguments=merge({
                     'name': 'JS Custom - %s' % name,
                     'file_path': SOURCE_PATH,
-                }, configurations[name]),
+                }, configuration),
                 error_stream=panel,
                 error_highlighter=error_highlighter
             )

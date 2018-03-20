@@ -1,0 +1,6 @@
+{
+    "base": {
+        "configuration": {},
+        "tests": [ "base" ]
+    }
+}
