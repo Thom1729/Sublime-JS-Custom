@@ -102,6 +102,12 @@ Then, if you use “JS Custom - My Config” to highlight the following code, th
 const myStyle = style`div { color: red }`;
 ```
 
+## Frequently Asked Questions
+
+### My syntaxes don't appear in the syntax selection menu. Where are they?
+
+They are in the syntax selection menu under "User". It would be nice to have them listed under "JS Custom", but when generating that menu Sublime only looks at the physical location of the syntax definition files, and JS Custom compiles them to `User/JS Custom/Syntaxes`.
+
 ## Contributing
 
 To request a feature or report a bug, create a new issue. All suggestions are welcome.
