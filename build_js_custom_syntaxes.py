@@ -51,7 +51,6 @@ def ensure_sanity():
 
     if not path.exists(SYNTAXES_PATH):
         print("JS Custom: Building syntaxes...")
-        os.makedirs(SYNTAXES_PATH)
 
         def build():
             sublime.active_window().run_command('build_js_custom_syntaxes')
@@ -95,7 +94,10 @@ class BuildJsCustomSyntaxesCommand(sublime_plugin.WindowCommand):
         
         configurations = get_configurations()
 
-        clean_output_directory(SYNTAXES_PATH, keep=set(configurations))
+        if path.exists(SYNTAXES_PATH):
+            clean_output_directory(SYNTAXES_PATH, keep=set(configurations))
+        else:
+            os.makedirs(SYNTAXES_PATH)
 
         if versions:
             configurations = {

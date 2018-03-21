@@ -31,7 +31,7 @@ def run_syntax_tests(tests, output):
         params = (total_assertions, len(tests))
 
     output.print(message.format(*params))
-    output.print('[Finished]')
+    output.print()
 
 class RunJsCustomSyntaxTestsCommand(sublime_plugin.WindowCommand):
     def run(self):

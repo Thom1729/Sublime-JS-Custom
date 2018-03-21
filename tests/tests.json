@@ -11,5 +11,12 @@
             "jsx": true
         },
         "tests": [ "base", "jsx" ]
+    },
+    "flow": {
+        "configuration": {
+            // "hidden": true,
+            "flow_types": true
+        },
+        "tests": [ "base", "flow" ]
     }
 }

@@ -10,20 +10,12 @@ contexts: !merge
     - include: else-pop
 
   comments: !prepend
+    # - include: flow-type-comment-block
     - include: flow-type-pragma
 
   statements: !prepend
     - include: flow-type-declare
     - include: flow-type-alias-declaration
-
-  flow-type-declare:
-    - match: declare{{identifier_break}}(?=\s*(?:type|class|opaque|export){{identifier_break}})
-      scope: storage.type.js
-      set:
-        - match: opaque{{identifier_break}}
-          scope: storage.modifier.js
-          pop: true
-        - include: else-pop
 
   variable-binding-pattern:
     - match: ''
@@ -34,16 +26,14 @@ contexts: !merge
           - include: variable-binding-object-destructuring
           - include: else-pop
 
-  function-parameter-binding-list:
-    - match: ','
-      scope: punctuation.separator.parameter.function.js
-    - include: function-parameter-binding-spread
-    - match: (?={{binding_pattern_lookahead}})
-      push:
-        - initializer
-        - flow-type-annotation-optional
-        - function-parameter-binding-pattern
-    - include: else-pop
+  function-parameter-binding-pattern:
+    - match: ''
+      set:
+        - - include: flow-type-annotation-optional
+        - - include: function-parameter-binding-name
+          - include: function-parameter-binding-array-destructuring
+          - include: function-parameter-binding-object-destructuring
+          - include: else-pop
 
   function-declaration:
     - match: ''
@@ -161,6 +151,24 @@ contexts: !merge
 
     - include: else-pop
 
+  flow-type-declare:
+    - match: declare{{identifier_break}}(?=\s*(?:type|class|opaque|export){{identifier_break}})
+      scope: storage.type.js
+      set:
+        - match: opaque{{identifier_break}}
+          scope: storage.modifier.js
+          pop: true
+        - include: else-pop
+
+  # flow-type-comment-block:
+  #   - match: '/\*::'
+  #     scope: comment.block.js punctuation.definition.comment.begin.js
+  #     push:
+  #       - match: \*/
+  #         scope: comment.block.js punctuation.definition.comment.end.js
+  #         pop: true
+  #       - include: statements
+
   flow-type-pragma:
     - match: '(//)\s*(?=@)'
       scope: comment.line.double-slash.pragma.js
@@ -206,9 +214,11 @@ contexts: !merge
     - include: else-pop
 
   flow-type-begin:
+    - include: flow-type-existential
     - include: flow-type-literal
     - include: flow-type-special
     - include: flow-type-primitive
+    - include: flow-type-utility
     - include: flow-type-typeof
     - include: flow-type-class
     - include: flow-type-function
@@ -221,6 +231,11 @@ contexts: !merge
     - include: comma-separator
     - match: (?=\S)
       push: flow-type
+
+  flow-type-existential:
+    - match: \*
+      scope: constant.language.type.existential.js
+      pop: true
 
   flow-type-literal:
     - match: true{{identifier_break}}
@@ -250,6 +265,18 @@ contexts: !merge
     value:
       match: !format '{value}{{{{identifier_break}}}}'
       scope: !format 'support.type.primitive.{value}.js'
+      pop: true
+
+  flow-type-utility:
+    - match: |-
+        (?x) (?:
+          Class|Function|
+          \$(?:
+            Keys|Values|ReadOnly|Exact|Diff|Rest|PropertyType|ElementType|
+            ObjMap|TupleMap|Call|Supertype|Subtype
+          )
+        ){{identifier_break}}
+      scope: support.type.utility.js
       pop: true
 
   flow-type-class:
@@ -286,7 +313,7 @@ contexts: !merge
     - match: \{\|
       scope: punctuation.section.block.begin.js
       set:
-        - meta_scope: meta.type.object.strict.js
+        - meta_scope: meta.type.object.exact.js
         - match: \|\}
           scope: punctuation.section.block.end.js
           pop: true
@@ -331,7 +358,6 @@ contexts: !merge
 
   flow-type-object-value:
     - match: (\?)?(:)
-      scope: punctuation.separator.key-value.js
       captures:
         1: storage.modifier.optional.js
         2: punctuation.separator.key-value.js
@@ -370,7 +396,7 @@ contexts: !merge
     - match: '<'
       scope: punctuation.definition.generic.begin.js
       set:
-        - meta_scope: meta.generic.declarationjs
+        - meta_scope: meta.generic.declaration.js
         - match: '>'
           scope: punctuation.definition.generic.end.js
           pop: true
