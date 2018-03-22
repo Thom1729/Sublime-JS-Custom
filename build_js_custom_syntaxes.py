@@ -6,69 +6,45 @@ from os import path
 
 from package_control import events
 
-from .src.output import OutputPanel
-from .src.util import merge
-from .src.paths import resource_path, system_path
+from .src.paths import clean_syntaxes, clear_user_data, compiled_syntaxes_system_path
 from .src.build import build_configurations
+from .src.output import OutputPanel
+from .src.configurations import ConfigurationManager
 
 def plugin_loaded():
-    global SYNTAXES_PATH
-    SYNTAXES_PATH = system_path('User', 'JS Custom', 'Syntaxes')
-    
-    global SETTINGS
-    SETTINGS = sublime.load_settings('JS Custom.sublime-settings')
-
-    global old_configurations
-    old_configurations = get_configurations()
+    global configuration_manager
+    configuration_manager = ConfigurationManager('JS Custom')
+    configuration_manager.add_on_change(auto_build)
 
     ensure_sanity()
 
-    SETTINGS.clear_on_change('JSCustom')
-    SETTINGS.add_on_change('JSCustom', auto_build)
+    if events.install('JS Custom'):
+        print('JS Custom: New installation. Building all syntaxes.')
+        sublime.active_window().run_command('build_js_custom_syntaxes')
+    elif events.post_upgrade('JS Custom'):
+        print('JS Custom: Installation upgraded. Rebuilding all syntaxes.')
+        sublime.active_window().run_command('build_js_custom_syntaxes')
 
-def is_ruamel_yaml_available():
-    try:
-        import ruamel.yaml
-        return True
-    except ImportError:
-        return False
-
-def is_yamlmacros_available():
-    try:
-        import yamlmacros
-        return True
-    except ImportError:
-        return False
+def plugin_unloaded():
+    if events.remove('JS Custom'):
+        print('JS Custom: Uninstalling. Removing all syntaxes.')
+        clear_user_data()
 
 def ensure_sanity():
-    if not is_ruamel_yaml_available():
-        from package_control import sys_path
+    from package_control import sys_path
+
+    try:
+        import ruamel.yaml
+    except ImportError:
         sys_path.add_dependency('ruamel-yaml')
 
-    if not is_yamlmacros_available():
-        from package_control import sys_path
+    try:
+        import yamlmacros
+    except ImportError:
         sys_path.add_dependency('yaml_macros_engine')
 
-    if not path.exists(SYNTAXES_PATH):
-        print("JS Custom: Building syntaxes...")
-
-        def build():
-            sublime.active_window().run_command('build_js_custom_syntaxes')
-
-        sublime.set_timeout_async(build, 500)
-
-def get_configurations():
-    defaults = SETTINGS.get('defaults')
-    return {
-        name: merge(defaults, config)
-        for name, config in SETTINGS.get('configurations').items()
-    }
-
-def auto_build():
-    if not SETTINGS.get('auto_build', False): return
-
-    global old_configurations
-    new_configurations = get_configurations()
+def auto_build(new_configurations, old_configurations):
+    if not configuration_manager.get_setting('auto_build', False): return
 
     changed = [
         name
@@ -77,27 +53,18 @@ def auto_build():
     ]
 
     if changed:
+        print('JS Custom: Configuration changed. Rebuilding some syntaxes.')
         sublime.active_window().run_command('build_js_custom_syntaxes', { 'versions': changed })
-
-    old_configurations = new_configurations
-
-def clean_output_directory(directory_path, keep=set()):
-    for filename in os.listdir(directory_path):
-        name, ext = path.splitext(filename)
-        if ext == '.sublime-syntax' and name not in keep:
-            os.remove(path.join(directory_path, filename))
-            # TODO: Print something!
 
 class BuildJsCustomSyntaxesCommand(sublime_plugin.WindowCommand):
     def run(self, versions=None):
         output = OutputPanel(self.window, 'YAMLMacros', scroll_to_end=True)
         
-        configurations = get_configurations()
+        configurations = configuration_manager.get_configurations()
 
-        if path.exists(SYNTAXES_PATH):
-            clean_output_directory(SYNTAXES_PATH, keep=set(configurations))
-        else:
-            os.makedirs(SYNTAXES_PATH)
+        output_path = compiled_syntaxes_system_path()
+
+        clean_syntaxes(keep=set(configurations))
 
         if versions:
             configurations = {
@@ -105,4 +72,4 @@ class BuildJsCustomSyntaxesCommand(sublime_plugin.WindowCommand):
                 for name in versions
             }
 
-        build_configurations(configurations, SYNTAXES_PATH, output)
+        build_configurations(configurations, output_path, output)
