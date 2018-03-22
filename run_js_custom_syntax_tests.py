@@ -6,8 +6,8 @@ from os import path
 from itertools import groupby
 
 from .src.output import OutputPanel
-from .src.paths import resource_path, system_path, TEST_PATH
-from .src.build import build_configurations
+from .src.build import build_configuration
+from .src.paths import resource_path, system_path, clean_tests, TEST_PATH
 
 def run_syntax_tests(tests, output):
     import sublime_api
@@ -35,13 +35,11 @@ def run_syntax_tests(tests, output):
 
 class RunJsCustomSyntaxTestsCommand(sublime_plugin.WindowCommand):
     def run(self):
+        clean_tests()
+
         output = OutputPanel(self.window, 'YAMLMacros', scroll_to_end=True)
 
         cases = sublime.decode_value(sublime.load_resource('Packages/JSCustom/tests/tests.json'));
-
-        import shutil
-        shutil.rmtree(system_path(TEST_PATH))
-        os.makedirs(system_path(TEST_PATH))
 
         syntax_tests = [
             {
@@ -65,7 +63,7 @@ class RunJsCustomSyntaxTestsCommand(sublime_plugin.WindowCommand):
             
             os.makedirs(p)
 
-            build_configurations({ name: case['configuration'] }, p, output)
+            build_configuration(name, case['configuration'], p, output)
 
             syntax_path = resource_path(TEST_PATH, name, name+'.sublime-syntax')
 
