@@ -1,12 +1,14 @@
 {
     "base": {
         "configuration": {
+            "file_extensions": [],
             "hidden": true,
         },
         "tests": [ "base" ]
     },
     "jsx": {
         "configuration": {
+            "file_extensions": [],
             "hidden": true,
             "jsx": true
         },
@@ -14,6 +16,7 @@
     },
     "flow": {
         "configuration": {
+            "file_extensions": [],
             // "hidden": true,
             "flow_types": true
         },

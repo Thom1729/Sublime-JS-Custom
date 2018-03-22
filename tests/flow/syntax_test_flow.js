@@ -81,9 +81,9 @@
     const x: Array <number>;
 //         ^^^^^^^^^^^^^^^^ meta.flow-type
 //           ^^^^^ variable.other.class
-//                 ^ punctuation.definition.generic.begin
+//                 ^ punctuation.section.generic.begin
 //                  ^^^^^^ support.type.primitive.number
-//                        ^ punctuation.definition.generic.end
+//                        ^ punctuation.section.generic.end
 
     const x: number | string;
 //         ^^^^^^^^^^^^^^^^^ meta.flow-type
@@ -101,6 +101,12 @@
 //         ^^^^^^^^^^^ meta.flow-type
 //           ^^^^^^ keyword.operator
 //                  ^^ constant.numeric.decimal
+
+    const x: number %checks;
+//         ^^^^^^^^^^^^^^^^ meta.flow-type
+//           ^^^^^^ support.type.primitive.number
+//                  ^^^^^^^ storage.modifier.checks
+
 
 /* Object types */
 
@@ -208,6 +214,11 @@
 //            ^^^^^^ support.type.primitive.number
 //                  ^ punctuation.terminator.statement
 
+    const x: typeof 42, y: number;
+//         ^^^^^^^^^^^ meta.flow-type
+//                    ^ punctuation.separator.comma - meta.flow-type
+//                       ^^^^^^^^ meta.flow-type
+
 /* Functions */
 
     function f() : number {}
@@ -220,11 +231,11 @@
 //  ^^^^^^^^^^^^^^^^^^^^ meta.function.declaration
 //           ^ entity.name.function
 //            ^^^^^^  meta.generic.declaration
-//            ^ punctuation.definition.generic.begin
+//            ^ punctuation.section.generic.begin
 //             ^ variable.parameter.type
 //              ^ punctuation.separator.comma
 //                ^ variable.parameter.type
-//                 ^ punctuation.definition.generic.end
+//                 ^ punctuation.section.generic.end
 //                     ^^^^^^^^ meta.flow-type
 //                              ^^ meta.block
 
@@ -291,11 +302,11 @@ class MyClass {
 //  ^^^^^ storage.type.class
 //        ^^^^^^^ entity.name.class
 //                ^^^^^^  meta.generic.declaration
-//                ^ punctuation.definition.generic.begin
+//                ^ punctuation.section.generic.begin
 //                 ^ variable.parameter.type
 //                  ^ punctuation.separator.comma
 //                    ^ variable.parameter.type
-//                     ^ punctuation.definition.generic.end
+//                     ^ punctuation.section.generic.end
 
 /* Type aliases */
 
@@ -311,11 +322,11 @@ class MyClass {
 //  ^^^^ storage.type
 //       ^^^^^^ entity.name.type
 //             ^^^^^^  meta.generic.declaration
-//             ^ punctuation.definition.generic.begin
+//             ^ punctuation.section.generic.begin
 //              ^ variable.parameter.type
 //               ^ punctuation.separator.comma
 //                 ^ variable.parameter.type
-//                  ^ punctuation.definition.generic.end
+//                  ^ punctuation.section.generic.end
 //                    ^ keyword.operator.assignment
 //                      ^^^^^^ support.type.primitive.number
 
@@ -330,8 +341,6 @@ class MyClass {
 //        ^^^^^^ support.type.primitive.number
 //              ^ punctuation.section.group
 
-// %checks
-// Function type
 // Opaque aliases
 // Interface types
 // Arrow functions
