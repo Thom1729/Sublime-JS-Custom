@@ -247,7 +247,7 @@ contexts: !merge
 
   flow-type-annotation:
     - match: ':'
-      scope: punctuation.definition.type-declaration.js
+      scope: punctuation.separator.type.js
       set:
         - flow-type-meta
         - flow-type

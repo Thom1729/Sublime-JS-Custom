@@ -35,28 +35,28 @@
 //  ^^^^^ storage.type
 //        ^ meta.binding.name variable.other.readwrite
 //         ^^^^^ meta.flow-type
-//         ^ punctuation.definition.type-declaration
+//         ^ punctuation.separator.type
 //          ^^^^ constant.language.boolean.true
 
     const x:42;
 //  ^^^^^ storage.type
 //        ^ meta.binding.name variable.other.readwrite
 //         ^^^ meta.flow-type
-//         ^ punctuation.definition.type-declaration
+//         ^ punctuation.separator.type
 //          ^^ constant.numeric.decimal
 
     const x:"foo";
 //  ^^^^^ storage.type
 //        ^ meta.binding.name variable.other.readwrite
 //         ^^^^^^ meta.flow-type
-//         ^ punctuation.definition.type-declaration
+//         ^ punctuation.separator.type
 //          ^^^^^ string.quoted.double
 
     const x:'bar';
 //  ^^^^^ storage.type
 //        ^ meta.binding.name variable.other.readwrite
 //         ^^^^^^ meta.flow-type
-//         ^ punctuation.definition.type-declaration
+//         ^ punctuation.separator.type
 //          ^^^^^ string.quoted.single
 
 /* Utility types */
@@ -194,7 +194,7 @@
 //  ^^^ storage.type
 //      ^ meta.binding.name variable.other.readwrite
 //        ^^^^^^^^ meta.flow-type
-//        ^ punctuation.definition.type-declaration
+//        ^ punctuation.separator.type
 //          ^^^^^^ support.type.primitive.number
 //                ^ punctuation.terminator.statement
 
@@ -202,7 +202,7 @@
 //  ^^^ storage.type
 //      ^ meta.binding.name variable.other.readwrite
 //        ^^^^^^^^ meta.flow-type
-//        ^ punctuation.definition.type-declaration
+//        ^ punctuation.separator.type
 //          ^^^^^^ support.type.primitive.number
 //                ^ punctuation.terminator.statement
 
@@ -210,7 +210,7 @@
 //  ^^^^^ storage.type
 //        ^ meta.binding.name variable.other.readwrite
 //          ^^^^^^^^ meta.flow-type
-//          ^ punctuation.definition.type-declaration
+//          ^ punctuation.separator.type
 //            ^^^^^^ support.type.primitive.number
 //                  ^ punctuation.terminator.statement
 
@@ -243,14 +243,14 @@ function f(
     a : number,
 //  ^ meta.binding.name variable.parameter.function
 //    ^^^^^^^^ meta.flow-type
-//    ^ punctuation.definition.type-declaration
+//    ^ punctuation.separator.type
 //      ^^^^^^ support.type.primitive.number
 
     b ?: number,
 //  ^ meta.binding.name variable.parameter.function
 //    ^ storage.modifier.optional
 //     ^^^^^^^^ meta.flow-type
-//     ^ punctuation.definition.type-declaration
+//     ^ punctuation.separator.type
 //       ^^^^^^ support.type.primitive.number
 
     ...c : Array<number>
@@ -263,21 +263,21 @@ class MyClass {
     foo() : number {}
 //  ^^^^^^^^^^^^^^ meta.function.declaration
 //        ^^^^^^^^ meta.flow-type
-//        ^ punctuation.definition.type-declaration
+//        ^ punctuation.separator.type
 //          ^^^^^^ support.type.primitive.number
 
     foo(
         a : number,
     //  ^ meta.binding.name variable.parameter.function
     //    ^^^^^^^^ meta.flow-type
-    //    ^ punctuation.definition.type-declaration
+    //    ^ punctuation.separator.type
     //      ^^^^^^ support.type.primitive.number
 
         b ?: number,
     //  ^ meta.binding.name variable.parameter.function
     //    ^ storage.modifier.optional
     //     ^^^^^^^^ meta.flow-type
-    //     ^ punctuation.definition.type-declaration
+    //     ^ punctuation.separator.type
     //       ^^^^^^ support.type.primitive.number
 
         ...c : Array<number>
@@ -286,12 +286,12 @@ class MyClass {
 
     bar: number;
 //     ^^^^^^^^ meta.flow-type
-//     ^ punctuation.definition.type-declaration
+//     ^ punctuation.separator.type
 //       ^^^^^^ support.type.primitive.number
 
     bar: number = 42;
 //     ^^^^^^^^ meta.flow-type
-//     ^ punctuation.definition.type-declaration
+//     ^ punctuation.separator.type
 //       ^^^^^^ support.type.primitive.number
 //              ^ keyword.operator.assignment
 //                ^^ constant.numeric.decimal
@@ -337,7 +337,7 @@ class MyClass {
 //  ^ punctuation.section.group
 //   ^^ constant.numeric.decimal
 //      ^^^^^^^^ meta.flow-type
-//      ^ punctuation.definition.type-declaration
+//      ^ punctuation.separator.type
 //        ^^^^^^ support.type.primitive.number
 //              ^ punctuation.section.group
 
