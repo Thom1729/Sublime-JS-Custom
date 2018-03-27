@@ -26,9 +26,9 @@ contexts: !merge
   comments: !prepend
     - include: flow-type-pragma
 
-  statements: !prepend
+  statement: !prepend
     - include: flow-type-declare
-    - include: flow-type-alias-declaration
+    - include: flow-type-alias
 
   variable-binding-pattern:
     - match: ''
@@ -176,7 +176,7 @@ contexts: !merge
   flow-type-declare:
     - match: declare{{identifier_break}}(?=\s*(?:type|class|function|var|let|const|opaque|export|module){{identifier_break}})
       scope: storage.type.js
-      push:
+      set:
         - match: opaque{{identifier_break}}
           scope: storage.modifier.js
           pop: true
@@ -482,10 +482,6 @@ contexts: !merge
               - include: else-pop
             - flow-type-annotation
     - include: else-pop
-
-  flow-type-alias-declaration:
-    - match: (?=type{{identifier_break}})
-      push: flow-type-alias
 
   flow-type-alias:
     - match: type{{identifier_break}}
