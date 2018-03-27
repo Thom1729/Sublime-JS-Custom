@@ -38,5 +38,6 @@ def tests_system_path():
     return system_path(TEST_PATH)
 
 def clean_tests():
-    shutil.rmtree(tests_system_path())
+    if path.exists(tests_system_path()):
+        shutil.rmtree(tests_system_path())
     os.makedirs(tests_system_path())
