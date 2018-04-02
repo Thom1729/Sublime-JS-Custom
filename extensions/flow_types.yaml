@@ -119,58 +119,9 @@ contexts: !merge
     - match: extends{{identifier_break}}
       scope: storage.modifier.extends.js
       set:
-        - - include: flow-type-generic-arguments
-        - - match: (?={{accessor_expression}}\s*\{)
-            push:
-              - expect-dot-accessor
-              - literal-variable
-          - match: '{{identifier}}(?=\s*\{)'
-            scope: entity.other.inherited-class.js
-            pop: true
-          - match: (?=\S)
-            set: left-expression
-    - include: else-pop
-
-  left-expression:
-    - match: ''
-      set:
-        - left-expression-end
-        - left-expression-begin
-
-  left-expression-end:
-    - include: expression-break
-
-    - include: property-access
-    - include: function-call
-
-    - include: fallthrough
-
-    - include: else-pop
-
-  left-expression-begin:
-    - include: expression-break
-
-    - include: literal-prototype
-
-    - include: regexp-complete
-    - include: literal-string
-    - include: literal-string-template
-    - include: constructor
-    - include: prefix-operators
-
-    - include: class
-    - include: constants
-    - include: function-assignment
-    - include: either-function-declaration
-    - include: object-literal
-
-    - include: parenthesized-expression
-    - include: array-literal
-
-    - include: literal-number
-    - include: literal-call
-    - include: literal-variable
-
+        - flow-type-generic-arguments
+        - inherited-class-expression-end
+        - inherited-class-expression-begin
     - include: else-pop
 
   flow-type-declare:

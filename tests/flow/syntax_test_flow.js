@@ -308,6 +308,11 @@ class MyClass {
 //                    ^ variable.parameter.type
 //                     ^ punctuation.section.generic.end
 
+    class MyClass extends Parent<X, Y> {}
+//                ^^^^^^^ storage.modifier.extends
+//                        ^^^^^^ entity.other.inherited-class
+//                              ^^^^^^ meta.generic
+
 /* Type aliases */
 
     type MyType = number;

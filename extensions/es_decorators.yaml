@@ -13,17 +13,29 @@ contexts: !merge
   decorator:
     - match: '@'
       scope: punctuation.definition.annotation.js
-      push: decorator-expression
-
-  decorator-expression:
-    - meta_scope: meta.annotation.js
-    - match: (?={{identifier}}\s*\.)
       push:
-        - expect-dot-accessor
-        - literal-variable
-    - match: '{{identifier}}'
+        - decorator-meta
+        - decorator-expression-end
+        - decorator-expression-begin
+
+  decorator-meta:
+    - meta_scope: meta.annotation.js
+    - include: immediately-pop
+
+  decorator-name:
+    - match: '{{identifier}}{{left_expression_end_lookahead}}'
       scope: variable.annotation.js
-      set:
-        - include: function-call
-        - include: else-pop
-    - include: else-pop
+      pop: true
+
+  decorator-expression-end:
+    - match: \.
+      scope: punctuation.accessor.js
+      push:
+        - include: decorator-name
+        - include: object-property
+
+    - include: left-expression-end
+
+  decorator-expression-begin:
+    - include: decorator-name
+    - include: expression-begin

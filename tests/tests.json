@@ -10,14 +10,15 @@
         "configuration": {
             "file_extensions": [],
             "hidden": true,
-            "jsx": true
+            "jsx": true,
+            "es_decorators": true
         },
-        "tests": [ "base", "jsx" ]
+        "tests": [ "base", "jsx", "decorators" ]
     },
     "flow": {
         "configuration": {
             "file_extensions": [],
-            // "hidden": true,
+            "hidden": true,
             "flow_types": true
         },
         "tests": [ "base", "flow" ]

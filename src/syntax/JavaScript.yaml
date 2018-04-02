@@ -20,7 +20,7 @@ variables:
   arrow_func_lookahead: '\s*(async\s*)?({{identifier}}|\(([^()]|\([^()]*\))*\))\s*=>'
   either_func_lookahead: (?:{{func_lookahead}}|{{arrow_func_lookahead}})
   binding_pattern_lookahead: (?:{{identifier}}|\[|\{)
-  accessor_expression: ({{identifier}}\s*\.\s*)+({{identifier}})
+  left_expression_end_lookahead: '(?!\s*[.\[\(])'
 
   property_name: >-
     (?x)(?:
@@ -507,16 +507,14 @@ contexts:
     - match: switch{{identifier_break}}
       scope: keyword.control.switch.js
       set:
-        - - meta_scope: meta.switch.js
-          - include: immediately-pop
+        - switch-meta
         - switch-block
         - parenthesized-expression
 
     - match: do{{identifier_break}}
       scope: keyword.control.loop.js
       set:
-        - - meta_scope: meta.do-while.js
-          - include: immediately-pop
+        - do-while-meta
         - do-while-condition
         - block-scope
 
@@ -531,58 +529,83 @@ contexts:
     - match: while{{identifier_break}}
       scope: keyword.control.loop.js
       set:
-        - - meta_scope: meta.while.js
-          - include: immediately-pop
+        - while-meta
         - block-scope
         - parenthesized-expression
 
     - match: with{{identifier_break}}
       scope: keyword.control.with.js
       set:
-        - - meta_scope: meta.with.js
-          - include: immediately-pop
+        - with-meta
         - block-scope
         - parenthesized-expression
 
     - match: (?:else\s+if|if){{identifier_break}}
       scope: keyword.control.conditional.js
       set:
-        - - meta_scope: meta.conditional.js
-          - include: immediately-pop
+        - conditional-meta
         - block-scope
         - parenthesized-expression
 
     - match: else{{identifier_break}}
       scope: keyword.control.conditional.js
       set:
-        - - meta_scope: meta.conditional.js
-          - include: immediately-pop
+        - conditional-meta
         - block-scope
 
     - match: try{{identifier_break}}
       scope: keyword.control.trycatch.js
       set:
-        - - meta_scope: meta.try.js
-          - include: immediately-pop
+        - try-meta
         - block-scope
 
     - match: finally{{identifier_break}}
       scope: keyword.control.trycatch.js
       set:
-        - - meta_scope: meta.finally.js
-          - include: immediately-pop
+        - finally-meta
         - block-scope
 
     - match: catch{{identifier_break}}
       scope: keyword.control.trycatch.js
       set:
-        - - meta_scope: meta.catch.js
-          - include: immediately-pop
+        - catch-meta
         - block-scope
         - parenthesized-expression
 
+  switch-meta:
+    - meta_scope: meta.switch.js
+    - include: immediately-pop
+
+  do-while-meta:
+    - meta_scope: meta.do-while.js
+    - include: immediately-pop
+
   for-meta:
     - meta_scope: meta.for.js
+    - include: immediately-pop
+
+  while-meta:
+    - meta_scope: meta.while.js
+    - include: immediately-pop
+
+  with-meta:
+    - meta_scope: meta.with.js
+    - include: immediately-pop
+
+  conditional-meta:
+    - meta_scope: meta.conditional.js
+    - include: immediately-pop
+
+  try-meta:
+    - meta_scope: meta.try.js
+    - include: immediately-pop
+
+  finally-meta:
+    - meta_scope: meta.finally.js
+    - include: immediately-pop
+
+  catch-meta:
+    - meta_scope: meta.catch.js
     - include: immediately-pop
 
   for-await:
@@ -687,22 +710,25 @@ contexts:
     - match: (?=\S)
       push: expression-no-comma
 
-  expression-end:
+  left-expression-end:
     - include: expression-break
 
-    - include: postfix-operators
-    - include: binary-operators
-    - include: ternary-operator
-
     - include: property-access
+    - include: literal-string-template
 
     - match: (?=\()
       push: function-call-arguments
-    - include: literal-string-template
 
     - include: fallthrough
 
     - include: else-pop
+
+  expression-end:
+    - include: postfix-operators
+    - include: binary-operators
+    - include: ternary-operator
+
+    - include: left-expression-end
 
   expression-end-no-comma:
     - match: (?=,)
@@ -1058,16 +1084,27 @@ contexts:
     - match: extends{{identifier_break}}
       scope: storage.modifier.extends.js
       set:
-        - match: (?={{accessor_expression}}\s*\{)
-          push:
-            - expect-dot-accessor
-            - literal-variable
-        - match: '{{identifier}}(?=\s*\{)'
-          scope: entity.other.inherited-class.js
-          pop: true
-        - match: (?=\S)
-          set: expression
+        - inherited-class-expression-end
+        - inherited-class-expression-begin
     - include: else-pop
+
+  inherited-class-name:
+    - match: '{{identifier}}{{left_expression_end_lookahead}}'
+      scope: entity.other.inherited-class.js
+      pop: true
+
+  inherited-class-expression-end:
+    - match: \.
+      scope: punctuation.accessor.js
+      push:
+        - include: inherited-class-name
+        - include: object-property
+
+    - include: left-expression-end
+
+  inherited-class-expression-begin:
+    - include: inherited-class-name
+    - include: expression-begin
 
   class-name:
     - match: '{{identifier}}'
@@ -1575,21 +1612,7 @@ contexts:
 
     - match: \.
       scope: punctuation.accessor.js
-      push:
-        - match: |-
-            (?x)(?=
-              {{identifier}}
-              \s* = \s*
-              {{either_func_lookahead}}
-            )
-          set:
-            - function-initializer
-            - function-declaration-final-identifier
-        - match: '(?={{identifier}}\s*\()'
-          set:
-            - include: method-call
-            - include: else-pop
-        - include: object-property
+      push: object-property
 
   literal-number:
     - match: '[+-]?0[0-9]+{{identifier_break}}'
@@ -1836,6 +1859,19 @@ contexts:
       pop: true
 
   object-property:
+    - match: |-
+        (?x)(?=
+          {{identifier}}
+          \s* = \s*
+          {{either_func_lookahead}}
+        )
+      set:
+        - function-initializer
+        - function-declaration-final-identifier
+    - match: '(?={{identifier}}\s*\()'
+      set:
+        - include: method-call
+        - include: else-pop
     - match: __proto__{{identifier_break}}
       scope: variable.language.proto.js
       pop: true
