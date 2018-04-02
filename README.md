@@ -44,6 +44,10 @@ These options, specified in your `defaults` or in a named custom configuration, 
 
 The name of the syntax as it will appear in the syntax selector. (If this is omitted, the syntax will be named “JS Custom - <var>name</var>”, where <var>name</var> is the key in the `configurations` object.)
 
+### `hidden`: boolean
+
+If this is `true`, the compiled syntax will not appear in the syntax menu or the command palette (but can still be referenced or included by other syntaxes).
+
 ### `file_extensions`: array
 
 An array of file extensions. Files with the given extensions will be use this syntax.
