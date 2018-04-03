@@ -11,9 +11,11 @@
             "file_extensions": [],
             "hidden": true,
             "jsx": true,
-            "es_decorators": true
+            "es_decorators": true,
+            "es_pipeline": true,
+            "es_slice": true,
         },
-        "tests": [ "base", "jsx", "decorators" ]
+        "tests": [ "base", "jsx", "decorators", "pipeline", "slice" ]
     },
     "flow": {
         "configuration": {

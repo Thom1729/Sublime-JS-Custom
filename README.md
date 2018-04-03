@@ -60,6 +60,14 @@ Scope the [comma operator](https://developer.mozilla.org/en-US/docs/Web/JavaScri
 
 Highlight the experimental [decorator syntax](https://github.com/tc39/proposal-decorators). (When the decorators proposal advances, support will presumably be added in the core JavaScript syntax. At that time, this extension will be removed.)
 
+### `es_pipeline`: boolean
+
+Highlight the experimental [pipeline operator](https://github.com/tc39/proposal-pipeline-operator).
+
+### `es_slice`: boolean
+
+Highlight the experimental [slice notation](https://github.com/gsathya/proposal-slice-notation).
+
 ### `string_object_keys`: boolean
 
 Highlight unquoted object keys as strings, matching [babel-sublime](https://github.com/babel/babel-sublime)'s behavior.
