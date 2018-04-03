@@ -40,55 +40,55 @@ If true, when you run the `close_tag` command in a JavaScript file, this package
 
 These options, specified in your `defaults` or in a named custom configuration, determine what features your custom syntaxes will have. Omitted options will be treated as `null`.
 
-### `name`: string
+### ECMAScript Proposals
 
-The name of the syntax as it will appear in the syntax selector. (If this is omitted, the syntax will be named “JS Custom - <var>name</var>”, where <var>name</var> is the key in the `configurations` object.)
+These options enable support for various [proposed language features](https://github.com/tc39/proposals). These proposals may change unexpectedly. If they stabilize, they will eventually be incorporated into the core JavaScript syntax and these extensions will be removed.
 
-### `hidden`: boolean
+#### `es_decorators`: boolean
 
-If this is `true`, the compiled syntax will not appear in the syntax menu or the command palette (but can still be referenced or included by other syntaxes).
+Support the proposed [decorator syntax](https://github.com/tc39/proposal-decorators).
 
-### `file_extensions`: array
+#### `es_pipeline`: boolean
 
-An array of file extensions. Files with the given extensions will be use this syntax.
+Support the proposed [pipeline operator](https://github.com/tc39/proposal-pipeline-operator).
 
-### `comma_operator`: boolean
+#### `es_slice`: boolean
 
-Scope the [comma operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Comma_Operator) `keyword.operator.comma`. Other uses of the comma, such as to separate array items or function arguments, will still be scoped `punctuation.separator.comma`.
+Support the proposed [slice notation](https://github.com/gsathya/proposal-slice-notation).
 
-### `es_decorators`: boolean
+### Third-party features
 
-Highlight the experimental [decorator syntax](https://github.com/tc39/proposal-decorators). (When the decorators proposal advances, support will presumably be added in the core JavaScript syntax. At that time, this extension will be removed.)
+These extensions go beyond the base JavaScript syntax to support third-party features.
 
-### `es_pipeline`: boolean
-
-Highlight the experimental [pipeline operator](https://github.com/tc39/proposal-pipeline-operator).
-
-### `es_slice`: boolean
-
-Highlight the experimental [slice notation](https://github.com/gsathya/proposal-slice-notation).
-
-### `string_object_keys`: boolean
-
-Highlight unquoted object keys as strings, matching [babel-sublime](https://github.com/babel/babel-sublime)'s behavior.
-
-### `jsx`: boolean
+#### `jsx`: boolean
 
 Highlight [JSX](https://reactjs.org/docs/introducing-jsx.html).
 
-### `flow_types`: boolean
+#### `flow_types`: boolean
 
 Highlight [Flow type annotations](https://flow.org/en/docs/types/).
 
-### `eslint_directives`: boolean
+#### `eslint_directives`: boolean
 
 Highlight [eslint configuration directives](https://eslint.org/docs/user-guide/configuring) in comments.
 
-### `styled_components`: boolean
+#### `styled_components`: boolean
 
 Highlight template string literals for [Styled Components](https://www.styled-components.com/).
 
-### `custom_tagged_literals`: object
+### Personalization
+
+These extensions allow you to personalize your highlighting in various ways.
+
+#### `comma_operator`: boolean
+
+Scope the [comma operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Comma_Operator) `keyword.operator.comma`. Other uses of the comma, such as to separate array items or function arguments, will still be scoped `punctuation.separator.comma`.
+
+#### `string_object_keys`: boolean
+
+Highlight unquoted object keys as strings, matching [babel-sublime](https://github.com/babel/babel-sublime)'s behavior.
+
+#### `custom_tagged_literals`: object
 
 Highlight user-defined [tagged template literals](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals).
 
@@ -113,6 +113,22 @@ Then, if you use “JS Custom - My Config” to highlight the following code, th
 ```js
 const myStyle = style`div { color: red }`;
 ```
+
+### Metadata
+
+These options don't affect the syntax highlighting itself, but rather the way that Sublime uses the syntax.
+
+#### `name`: string
+
+The name of the syntax as it will appear in the syntax selector. (If this is omitted, the syntax will be named “JS Custom - <var>name</var>”, where <var>name</var> is the key in the `configurations` object.)
+
+#### `file_extensions`: array
+
+An array of file extensions. Files with the given extensions will be use this syntax.
+
+#### `hidden`: boolean
+
+If this is `true`, the compiled syntax will not appear in the syntax menu or the command palette. It can still be referenced or included by other syntaxes.
 
 ## Frequently Asked Questions
 
