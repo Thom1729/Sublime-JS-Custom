@@ -5,11 +5,11 @@
 contexts: !merge
   property-access: !prepend
     - match: '\['
-      scope: punctuation.section.brackets.js
+      scope: punctuation.section.brackets.begin.js
       push:
         - meta_scope: meta.brackets.js
         - match: '\]'
-          scope: punctuation.section.brackets.js
+          scope: punctuation.section.brackets.end.js
           pop: true
         - match: ':'
           scope: punctuation.separator.slice.js

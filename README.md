@@ -44,10 +44,6 @@ These options, specified in your `defaults` or in a named custom configuration, 
 
 These options enable support for various [proposed language features](https://github.com/tc39/proposals). These proposals may change unexpectedly. If they stabilize, they will eventually be incorporated into the core JavaScript syntax and these extensions will be removed.
 
-#### `es_decorators`: boolean
-
-Support the proposed [decorator syntax](https://github.com/tc39/proposal-decorators).
-
 #### `es_pipeline`: boolean
 
 Support the proposed [pipeline operator](https://github.com/tc39/proposal-pipeline-operator).
