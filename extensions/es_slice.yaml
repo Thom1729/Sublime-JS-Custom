@@ -1,0 +1,17 @@
+%YAML 1.2
+%TAG ! tag:yaml-macros:yamlmacros.lib.extend:
+---
+!merge
+contexts: !merge
+  property-access: !prepend
+    - match: '\['
+      scope: punctuation.section.brackets.js
+      push:
+        - meta_scope: meta.brackets.js
+        - match: '\]'
+          scope: punctuation.section.brackets.js
+          pop: true
+        - match: ':'
+          scope: punctuation.separator.slice.js
+        - match: (?=\S)
+          push: expression

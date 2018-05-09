@@ -2,6 +2,20 @@
 %TAG ! tag:yaml-macros:yamlmacros.lib.syntax,yamlmacros.lib.extend,yamlmacros.lib.arguments:
 ---
 !merge
+variables: !merge
+  class_element_name: |-
+    (?x)\+?(?:
+      {{property_name}}
+      | \#{{identifier}}
+    )
+
+  method_lookahead: |-
+    (?x)(?=
+      (?: get|set|async ){{identifier_break}}
+      | \*
+      | {{property_name}} \s* (?:\(|<)
+    )
+
 contexts: !merge
   class-name:
     - match: '{{identifier}}'
@@ -12,18 +26,9 @@ contexts: !merge
   comments: !prepend
     - include: flow-type-pragma
 
-  statements: !prepend
+  statement: !prepend
     - include: flow-type-declare
-    - include: flow-type-alias-declaration
-
-  flow-type-declare:
-    - match: declare{{identifier_break}}(?=\s*(?:type|class|opaque|export){{identifier_break}})
-      scope: storage.type.js
-      set:
-        - match: opaque{{identifier_break}}
-          scope: storage.modifier.js
-          pop: true
-        - include: else-pop
+    - include: flow-type-alias
 
   variable-binding-pattern:
     - match: ''
@@ -34,16 +39,14 @@ contexts: !merge
           - include: variable-binding-object-destructuring
           - include: else-pop
 
-  function-parameter-binding-list:
-    - match: ','
-      scope: punctuation.separator.parameter.function.js
-    - include: function-parameter-binding-spread
-    - match: (?={{binding_pattern_lookahead}})
-      push:
-        - initializer
-        - flow-type-annotation-optional
-        - function-parameter-binding-pattern
-    - include: else-pop
+  function-parameter-binding-pattern:
+    - match: ''
+      set:
+        - - include: flow-type-annotation-optional
+        - - include: function-parameter-binding-name
+          - include: function-parameter-binding-array-destructuring
+          - include: function-parameter-binding-object-destructuring
+          - include: else-pop
 
   function-declaration:
     - match: ''
@@ -65,11 +68,17 @@ contexts: !merge
         - function-declaration-meta
         - flow-type-annotation
         - function-declaration-expect-parameters
+        - flow-type-generic-parameters
         - method-name
         - method-declaration-expect-prefix
 
   export-extended: !prepend
     - include: flow-type-alias
+    - match: (?:const|let|var){{identifier_break}}
+      scope: storage.type.js
+      set:
+        - variable-binding-list-top
+        - variable-binding-top
 
   parenthesized-expression:
     - match: \(
@@ -85,6 +94,9 @@ contexts: !merge
           push: expression
 
   class-field:
+    - match: \+
+      scope: storage.modifier.variance.js
+
     - match: '{{method_lookahead}}'
       set: method-declaration
 
@@ -107,59 +119,67 @@ contexts: !merge
     - match: extends{{identifier_break}}
       scope: storage.modifier.extends.js
       set:
-        - - include: flow-type-generic-arguments
-        - - match: (?={{accessor_expression}}\s*\{)
-            push:
-              - expect-dot-accessor
-              - literal-variable
-          - match: '{{identifier}}(?=\s*\{)'
-            scope: entity.other.inherited-class.js
-            pop: true
-          - match: (?=\S)
-            set: left-expression
+        - flow-type-generic-arguments
+        - inherited-class-expression-end
+        - inherited-class-expression-begin
     - include: else-pop
 
-  left-expression:
-    - match: ''
+  flow-type-declare:
+    - match: declare{{identifier_break}}(?=\s*(?:type|class|function|var|let|const|opaque|export|module){{identifier_break}})
+      scope: storage.type.js
       set:
-        - left-expression-end
-        - left-expression-begin
+        - match: opaque{{identifier_break}}
+          scope: storage.modifier.js
+          pop: true
+        - match: module{{identifier_break}}
+          scope: storage.type.js
+          set:
+            - flow-type-module-meta
+            - flow-type-module-body
+            - flow-type-module-name
+        - match: export{{identifier_break}}
+          scope: storage.type.js
+          set: flow-type-declare-export
+        - include: else-pop
 
-  left-expression-end:
-    - include: expression-break
+  flow-type-module-meta:
+    - meta_scope: meta.module.js
+    - include: immediately-pop
 
-    - include: property-access
-    - include: function-call
-
-    - include: fallthrough
-
-    - include: else-pop
-
-  left-expression-begin:
-    - include: expression-break
-
-    - include: literal-prototype
-
-    - include: regexp-complete
+  flow-type-module-name:
     - include: literal-string
-    - include: literal-string-template
-    - include: constructor
-    - include: prefix-operators
-
-    - include: class
-    - include: constants
-    - include: function-assignment
-    - include: either-function-declaration
-    - include: object-literal
-
-    - include: parenthesized-expression
-    - include: array-literal
-
-    - include: literal-number
-    - include: literal-call
-    - include: literal-variable
-
+    - match: '{{identifier}}'
+      scope: entity.name.module.js
+      pop: true
     - include: else-pop
+
+  flow-type-module-body:
+    - match: \{
+      scope: punctuation.section.block.begin.js
+      set: flow-type-module-contents
+    - include: else-pop
+
+  flow-type-module-contents:
+    - match: \}
+      scope: punctuation.section.block.end.js
+      pop: true
+    - include: main
+
+  flow-type-declare-export:
+    - match: default{{identifier_break}}
+      scope: keyword.control.import-export.js
+      set: flow-type
+    - match: (?=\S)
+      pop: true
+
+  # flow-type-comment-block:
+  #   - match: '/\*::'
+  #     scope: comment.block.js punctuation.definition.comment.begin.js
+  #     push:
+  #       - match: \*/
+  #         scope: comment.block.js punctuation.definition.comment.end.js
+  #         pop: true
+  #       - include: statements
 
   flow-type-pragma:
     - match: '(//)\s*(?=@)'
@@ -178,7 +198,7 @@ contexts: !merge
 
   flow-type-annotation:
     - match: ':'
-      scope: punctuation.definition.type-declaration.js
+      scope: punctuation.separator.type.js
       set:
         - flow-type-meta
         - flow-type
@@ -206,9 +226,11 @@ contexts: !merge
     - include: else-pop
 
   flow-type-begin:
+    - include: flow-type-existential
     - include: flow-type-literal
     - include: flow-type-special
     - include: flow-type-primitive
+    - include: flow-type-utility
     - include: flow-type-typeof
     - include: flow-type-class
     - include: flow-type-function
@@ -221,6 +243,11 @@ contexts: !merge
     - include: comma-separator
     - match: (?=\S)
       push: flow-type
+
+  flow-type-existential:
+    - match: \*
+      scope: constant.language.type.existential.js
+      pop: true
 
   flow-type-literal:
     - match: true{{identifier_break}}
@@ -252,6 +279,18 @@ contexts: !merge
       scope: !format 'support.type.primitive.{value}.js'
       pop: true
 
+  flow-type-utility:
+    - match: |-
+        (?x) (?:
+          Class|Function|
+          \$(?:
+            Keys|Values|ReadOnly|Exact|Diff|Rest|PropertyType|ElementType|
+            ObjMap|TupleMap|Call|Supertype|Subtype
+          )
+        ){{identifier_break}}
+      scope: support.type.utility.js
+      pop: true
+
   flow-type-class:
     - match: '{{identifier}}'
       scope: variable.other.class.js
@@ -280,13 +319,13 @@ contexts: !merge
   flow-type-typeof:
     - match: typeof{{identifier_break}}
       scope: keyword.operator.js
-      set: expression
+      set: expression-no-comma
 
   flow-type-object:
     - match: \{\|
       scope: punctuation.section.block.begin.js
       set:
-        - meta_scope: meta.type.object.strict.js
+        - meta_scope: meta.type.object.exact.js
         - match: \|\}
           scope: punctuation.section.block.end.js
           pop: true
@@ -303,6 +342,10 @@ contexts: !merge
 
   flow-type-object-contents:
     - include: comma-separator
+    - match: ';'
+      scope: punctuation.separator.semicolon.js
+    - match: '{{method_lookahead}}'
+      push: method-declaration
     - match: \+
       scope: storage.modifier.variance.js
     - match: '{{identifier}}'
@@ -331,7 +374,6 @@ contexts: !merge
 
   flow-type-object-value:
     - match: (\?)?(:)
-      scope: punctuation.separator.key-value.js
       captures:
         1: storage.modifier.optional.js
         2: punctuation.separator.key-value.js
@@ -348,31 +390,36 @@ contexts: !merge
     - match: '=>'
       scope: storage.type.function.arrow.js
       push: flow-type-begin
-    - match: \[\]
-      scope: storage.modifier.array.js
-      push: flow-type-begin
     - match: \?
       scope: storage.modifier.maybe.js
       push: flow-type-begin
+    - match: \.
+      scope: punctuation.separator.accessor.js
+      push: flow-type-begin
+
+    - match: \[\]
+      scope: storage.modifier.array.js
+    - match: '%checks{{identifier_break}}'
+      scope: storage.modifier.checks.js
 
   flow-type-generic-arguments:
     - match: '<'
-      scope: punctuation.definition.generic.begin.js
+      scope: punctuation.section.generic.begin.js
       set:
         - meta_scope: meta.generic.js
         - match: '>'
-          scope: punctuation.definition.generic.end.js
+          scope: punctuation.section.generic.end.js
           pop: true
         - include: flow-type-list
     - include: else-pop
 
   flow-type-generic-parameters:
     - match: '<'
-      scope: punctuation.definition.generic.begin.js
+      scope: punctuation.section.generic.begin.js
       set:
-        - meta_scope: meta.generic.declarationjs
+        - meta_scope: meta.generic.declaration.js
         - match: '>'
-          scope: punctuation.definition.generic.end.js
+          scope: punctuation.section.generic.end.js
           pop: true
         - include: comma-separator
         - match: \+
@@ -386,10 +433,6 @@ contexts: !merge
               - include: else-pop
             - flow-type-annotation
     - include: else-pop
-
-  flow-type-alias-declaration:
-    - match: (?=type{{identifier_break}})
-      push: flow-type-alias
 
   flow-type-alias:
     - match: type{{identifier_break}}
