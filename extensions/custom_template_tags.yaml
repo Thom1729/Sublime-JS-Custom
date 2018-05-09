@@ -3,7 +3,7 @@
 ---
 !merge
 contexts: !merge
-  literal-string-template: !prepend
+  tagged-template: !prepend
     - include: literal-string-template-custom
 
   literal-string-template-custom: !foreach
