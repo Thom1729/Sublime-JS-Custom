@@ -15,10 +15,10 @@ class ConfigurationManager():
         return self.settings.get(key, defaultValue)
 
     def get_configurations(self):
-        defaults = self.settings.get('defaults')
+        defaults = self.settings.get('defaults', {})
         return {
             name: merge(defaults, config)
-            for name, config in self.settings.get('configurations').items()
+            for name, config in self.settings.get('configurations', {}).items()
         }
 
     def _handle_settings_change(self):

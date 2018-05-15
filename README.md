@@ -84,7 +84,7 @@ Scope the [comma operator](https://developer.mozilla.org/en-US/docs/Web/JavaScri
 
 Highlight unquoted object keys as strings, matching [babel-sublime](https://github.com/babel/babel-sublime)'s behavior.
 
-#### `custom_tagged_literals`: object
+#### `custom_template_tags`: object
 
 Highlight user-defined [tagged template literals](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals).
 
@@ -96,7 +96,7 @@ Example:
 {
     "configurations": {
         "My Config": {
-            "custom_tagged_literals": {
+            "custom_template_tags": {
                 "style": "scope:source.css"
             }
         }
