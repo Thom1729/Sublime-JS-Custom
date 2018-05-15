@@ -24,14 +24,12 @@ contexts: !merge
         - - clear_scopes: 1
           - include: immediately-pop
         - - match: ''
-            set:
-              - include: !argument include
+            set: !argument include
             with_prototype:
               - match: (?=`)
                 pop: true
               - match: '\$\{'
-                captures:
-                  0: punctuation.definition.template-expression.begin.js
+                scope: punctuation.definition.template-expression.begin.js
                 push:
                   - clear_scopes: 1
                   - meta_scope: meta.template.expression.js
