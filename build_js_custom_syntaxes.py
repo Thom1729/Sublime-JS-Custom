@@ -62,10 +62,10 @@ def merge(*dicts):
     return ret
 
 def get_configurations():
-    defaults = SETTINGS.get('defaults')
+    defaults = SETTINGS.get('defaults', {})
     return {
         name: merge(defaults, config)
-        for name, config in SETTINGS.get('configurations').items()
+        for name, config in SETTINGS.get('configurations', {}).items()
     }
 
 def auto_build():
