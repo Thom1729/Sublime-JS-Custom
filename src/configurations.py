@@ -18,7 +18,10 @@ class ConfigurationManager():
         defaults = self.settings.get('defaults', {})
         return {
             name: merge(defaults, config)
-            for name, config in self.settings.get('configurations', {}).items()
+            for name, config in merge(
+                { '~embed': self.settings.get('embed_configuration', {}) },
+                self.settings.get('configurations', {})
+            ).items()
         }
 
     def _handle_settings_change(self):
