@@ -96,7 +96,7 @@ class BuildJsCustomSyntaxesCommand(sublime_plugin.WindowCommand):
         from yamlmacros import build
         from yamlmacros.src.error_highlighter import ErrorHighlighter
 
-        panel = OutputPanel(self.window, 'YAMLMacros')
+        panel = OutputPanel.create(self.window, 'YAMLMacros')
         panel.show()
         error_highlighter = ErrorHighlighter(self.window, 'YAMLMacros')
 
