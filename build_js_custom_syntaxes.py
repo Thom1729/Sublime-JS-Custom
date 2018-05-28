@@ -3,8 +3,10 @@ import sublime_plugin
 
 import os
 from os import path
+import re
 
 from package_control import events
+from sublime_lib.output_panel import OutputPanel
 
 SOURCE_PATH = 'Packages/JSCustom/src/JS Custom.sublime-syntax.yaml-macros'
 
@@ -92,10 +94,10 @@ def auto_build():
 class BuildJsCustomSyntaxesCommand(sublime_plugin.WindowCommand):
     def run(self, versions=None):
         from yamlmacros import build
-        from yamlmacros.src.output_panel import OutputPanel
         from yamlmacros.src.error_highlighter import ErrorHighlighter
 
         panel = OutputPanel(self.window, 'YAMLMacros')
+        panel.show()
         error_highlighter = ErrorHighlighter(self.window, 'YAMLMacros')
 
         source_text = sublime.load_resource('Packages/JSCustom/src/JS Custom.sublime-syntax.yaml-macros')
@@ -123,6 +125,7 @@ class BuildJsCustomSyntaxesCommand(sublime_plugin.WindowCommand):
                 destination_path=path.join(SYNTAXES_PATH, name + '.sublime-syntax'),
                 arguments=merge({
                     'name': 'JS Custom - %s' % name,
+                    'scope': 'source.js.%s' % re.sub(r'[^\w-]', '', name.lower()),
                     'file_path': SOURCE_PATH,
                 }, configurations[name]),
                 error_stream=panel,

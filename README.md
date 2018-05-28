@@ -124,6 +124,10 @@ These options don't affect the syntax highlighting itself, but rather the way th
 
 The name of the syntax as it will appear in the syntax selector. (If this is omitted, the syntax will be named “JS Custom - <var>name</var>”, where <var>name</var> is the key in the `configurations` object.)
 
+#### `scope`: string
+
+The top-level scope that will be used for the syntax. (If this is omitted, the scope will be “source.js.<var>name</var>”, where <var>name</var> is based on the key in the `configurations` object.)
+
 #### `file_extensions`: array
 
 An array of file extensions. Files with the given extensions will be use this syntax.
