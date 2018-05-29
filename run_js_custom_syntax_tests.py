@@ -4,7 +4,8 @@ import sublime_plugin
 import os
 from os import path
 
-from .src.output import OutputPanel
+from sublime_lib.output_panel import OutputPanel
+
 from .src.build import build_configuration
 from .src.paths import resource_path, system_path, clean_tests, TEST_PATH
 
@@ -57,7 +58,8 @@ class RunJsCustomSyntaxTestsCommand(sublime_plugin.WindowCommand):
     def run(self):
         clean_tests()
 
-        output = OutputPanel(self.window, 'YAMLMacros', scroll_to_end=True)
+        output = OutputPanel.create(self.window, 'YAMLMacros')
+        output.show()
 
         cases = sublime.decode_value(sublime.load_resource('Packages/JSCustom/tests/tests.json'));
 
