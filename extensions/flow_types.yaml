@@ -85,6 +85,7 @@ contexts: !merge
         - flow-type-generic-parameters
         - method-name
         - method-declaration-expect-prefix
+        - function-declaration-expect-async
 
   export-extended: !prepend
     - include: flow-type-alias
