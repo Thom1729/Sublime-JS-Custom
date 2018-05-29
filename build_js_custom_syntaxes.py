@@ -59,6 +59,7 @@ def auto_build(new_configurations, old_configurations):
 class BuildJsCustomSyntaxesCommand(sublime_plugin.WindowCommand):
     def run(self, versions=None):
         output = OutputPanel.create(self.window, 'YAMLMacros')
+        output.show()
         
         configurations = configuration_manager.get_configurations()
 
