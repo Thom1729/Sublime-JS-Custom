@@ -3,6 +3,20 @@
 ---
 !merge
 variables: !merge
+  arrow_func_lookahead: |-
+    (?x)(?:
+      \s*(async\s*)?
+      (?:
+        {{identifier}}
+        |\( (?: [^()]|\([^()]*\) )* \)
+      )
+      (?:
+        \s*:
+        \s*{{identifier}}
+      )?
+      \s*=>
+    )
+
   class_element_name: |-
     (?x)\+?(?:
       {{property_name}}
