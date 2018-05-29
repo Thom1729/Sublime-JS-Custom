@@ -87,21 +87,13 @@ contexts: !merge
         - method-declaration-expect-prefix
         - function-declaration-expect-async
 
-  export-extended: !prepend
-    - include: flow-type-alias
-    - match: (?:const|let|var){{identifier_break}}
-      scope: storage.type.js
-      set:
-        - variable-binding-list-top
-        - variable-binding-top
-
   parenthesized-expression:
     - match: \(
-      scope: punctuation.section.group.js
+      scope: punctuation.section.group.begin.js
       set:
         - meta_scope: meta.group.js
         - match: \)
-          scope: punctuation.section.group.js
+          scope: punctuation.section.group.end.js
           pop: true
         - match: (?=:)
           push: flow-type-annotation
