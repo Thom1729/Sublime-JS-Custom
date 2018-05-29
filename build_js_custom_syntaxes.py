@@ -5,10 +5,10 @@ import os
 from os import path
 
 from package_control import events
+from sublime_lib.output_panel import OutputPanel
 
 from .src.paths import clean_syntaxes, clear_user_data, compiled_syntaxes_system_path
 from .src.build import build_configurations
-from .src.output import OutputPanel
 from .src.configurations import ConfigurationManager
 
 def plugin_loaded():
@@ -58,7 +58,7 @@ def auto_build(new_configurations, old_configurations):
 
 class BuildJsCustomSyntaxesCommand(sublime_plugin.WindowCommand):
     def run(self, versions=None):
-        output = OutputPanel(self.window, 'YAMLMacros', scroll_to_end=True)
+        output = OutputPanel.create(self.window, 'YAMLMacros')
         
         configurations = configuration_manager.get_configurations()
 
