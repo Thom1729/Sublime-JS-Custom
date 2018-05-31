@@ -326,7 +326,9 @@ contexts: !merge
   flow-type-typeof:
     - match: typeof{{identifier_break}}
       scope: keyword.operator.js
-      set: expression-no-comma
+      set:
+        - left-expression-end
+        - expression-begin
 
   flow-type-object:
     - match: \{\|
