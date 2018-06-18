@@ -1,6 +1,5 @@
 {
     "defaults": {
-        "comma_operator": false,
         "custom_template_tags": false,
         "flow_types": false,
         "jsx": false,
