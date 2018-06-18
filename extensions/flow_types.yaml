@@ -18,9 +18,13 @@ variables: !merge
     )
 
   class_element_name: |-
-    (?x)\+?(?:
-      {{property_name}}
-      | \#{{identifier}}
+    (?x:
+      \+?
+      (?:
+        \*?
+        {{property_name}}
+        | \#{{identifier}}
+      )
     )
 
   method_lookahead: |-
@@ -32,7 +36,7 @@ variables: !merge
 
 contexts: !merge
   class-name:
-    - match: '{{identifier}}'
+    - match: '{{non_reserved_identifier}}'
       scope: entity.name.class.js
       set: flow-type-generic-parameters
     - include: else-pop
@@ -65,6 +69,7 @@ contexts: !merge
   function-declaration:
     - match: ''
       set:
+        - function-meta
         - function-declaration-expect-body
         - function-declaration-meta
         - flow-type-annotation
@@ -78,6 +83,7 @@ contexts: !merge
   method-declaration:
     - match: ''
       set:
+        - function-meta
         - function-declaration-expect-body
         - function-declaration-meta
         - flow-type-annotation
@@ -208,7 +214,8 @@ contexts: !merge
       set:
         - flow-type-meta
         - flow-type
-    - include: else-pop
+    - match: (?!\s*(?:$|:|//|/\*))
+      pop: true
 
   flow-type-annotation-optional:
     - match: \?(?=:)
