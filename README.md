@@ -80,10 +80,6 @@ Highlight template string literals for [Styled Components](https://www.styled-co
 
 These extensions allow you to personalize your highlighting in various ways.
 
-#### `comma_operator`: boolean
-
-Scope the [comma operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Comma_Operator) `keyword.operator.comma`. Other uses of the comma, such as to separate array items or function arguments, will still be scoped `punctuation.separator.comma`.
-
 #### `string_object_keys`: boolean
 
 Highlight unquoted object keys as strings, matching [babel-sublime](https://github.com/babel/babel-sublime)'s behavior.
