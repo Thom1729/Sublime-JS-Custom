@@ -4,7 +4,7 @@
 !merge
 variables: !merge
   arrow_func_lookahead: |-
-    (?x)(?:
+    (?x:
       \s*(async\s*)?
       (?:
         {{identifier}}
@@ -28,11 +28,11 @@ variables: !merge
     )
 
   method_lookahead: |-
-    (?x)(?=
+    (?x:(?=
       (?: get|set|async ){{identifier_break}}
       | \*
       | {{property_name}} \s* (?:\(|<)
-    )
+    ))
 
 contexts: !merge
   class-name:
