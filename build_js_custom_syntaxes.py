@@ -7,23 +7,28 @@ import re
 
 from package_control import events
 from sublime_lib.output_panel import OutputPanel
+from sublime_lib.settings_dict import NamedSettingsDict
 
 SOURCE_PATH = 'Packages/JSCustom/src/JS Custom.sublime-syntax.yaml-macros'
+
+SUBSCRIPTION_KEY = None
 
 def plugin_loaded():
     global SYNTAXES_PATH
     SYNTAXES_PATH = path.join(sublime.packages_path(), 'User', 'JS Custom', 'Syntaxes')
 
     global SETTINGS
-    SETTINGS = sublime.load_settings('JS Custom.sublime-settings')
-
-    global old_configurations
-    old_configurations = get_configurations()
+    SETTINGS = NamedSettingsDict('JS Custom.sublime-settings')
 
     ensure_sanity()
 
-    SETTINGS.clear_on_change('JSCustom')
-    SETTINGS.add_on_change('JSCustom', auto_build)
+    global SUBSCRIPTION_KEY
+    SUBSCRIPTION_KEY = SETTINGS.subscribe(get_configurations, auto_build)
+
+def plugin_unloaded():
+    global SUBSCRIPTION_KEY
+    if SUBSCRIPTION_KEY:
+       SETTINGS.unsubscribe(SUBSCRIPTION_KEY)
 
 def is_ruamel_yaml_available():
     try:
@@ -63,22 +68,19 @@ def merge(*dicts):
         ret.update(d)
     return ret
 
-def get_configurations():
-    defaults = SETTINGS.get('defaults', {})
+def get_configurations(settings):
+    defaults = settings['defaults']
 
     return {
         name: merge(defaults, config)
         for name, config in merge(
-            { '~embed': SETTINGS.get('embed_configuration', {}) },
-            SETTINGS.get('configurations', {})
+            { '~embed': settings['embed_configuration'] },
+            settings['configurations']
         ).items()
     }
 
-def auto_build():
-    if not SETTINGS.get('auto_build', False): return
-
-    global old_configurations
-    new_configurations = get_configurations()
+def auto_build(new_configurations, old_configurations):
+    if not SETTINGS['auto_build']: return
 
     changed = [
         name
@@ -89,20 +91,16 @@ def auto_build():
     if changed:
         sublime.active_window().run_command('build_js_custom_syntaxes', { 'versions': changed })
 
-    old_configurations = new_configurations
-
 class BuildJsCustomSyntaxesCommand(sublime_plugin.WindowCommand):
     def run(self, versions=None):
         from yamlmacros import build
-        from yamlmacros.src.error_highlighter import ErrorHighlighter
 
         panel = OutputPanel.create(self.window, 'YAMLMacros')
         panel.show()
-        error_highlighter = ErrorHighlighter(self.window, 'YAMLMacros')
 
         source_text = sublime.load_resource('Packages/JSCustom/src/JS Custom.sublime-syntax.yaml-macros')
 
-        configurations = get_configurations()
+        configurations = get_configurations(SETTINGS)
         config_names = set(configurations)
 
         old_syntaxes = [
@@ -129,5 +127,4 @@ class BuildJsCustomSyntaxesCommand(sublime_plugin.WindowCommand):
                     'file_path': SOURCE_PATH,
                 }, configurations[name]),
                 error_stream=panel,
-                error_highlighter=error_highlighter
             )
