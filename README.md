@@ -8,6 +8,8 @@ JS Custom can be installed via [Package Control](https://packagecontrol.io/insta
 
 Alternatively, you can install JS Custom manually by cloning it into your Packages directory as “JSCustom”.
 
+JS Custom relies on Sublime's built-in JavaScript package for some functionality, including regular expression highlighting, so you should not disable the built-in package.
+
 ## Usage
 
 JS Custom ships with two example configurations: “JS Custom - Default” and “JS Custom - React”. These should automatically be built and available for use upon installation.
