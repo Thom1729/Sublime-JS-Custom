@@ -20,7 +20,11 @@ def plugin_loaded():
     global SETTINGS
     SETTINGS = NamedSettingsDict('JS Custom.sublime-settings')
 
-    ensure_sanity()
+    if events.install("JSCustom") or events.post_upgrade("JSCustom"):
+        def build():
+            sublime.active_window().run_command('build_js_custom_syntaxes')
+
+        sublime.set_timeout_async(build, 500)
 
     global SUBSCRIPTION_KEY
     SUBSCRIPTION_KEY = SETTINGS.subscribe(get_configurations, auto_build)
@@ -30,38 +34,6 @@ def plugin_unloaded():
     if SUBSCRIPTION_KEY:
        SETTINGS.unsubscribe(SUBSCRIPTION_KEY)
 
-def is_ruamel_yaml_available():
-    try:
-        import ruamel.yaml
-        return True
-    except ImportError:
-        return False
-
-def is_yamlmacros_available():
-    try:
-        import yamlmacros
-        return True
-    except ImportError:
-        return False
-
-def ensure_sanity():
-    if not is_ruamel_yaml_available():
-        from package_control import sys_path
-        sys_path.add_dependency('ruamel-yaml')
-
-    if not is_yamlmacros_available():
-        from package_control import sys_path
-        sys_path.add_dependency('yaml_macros_engine')
-
-    if not path.exists(SYNTAXES_PATH):
-        print("JS Custom: Building syntaxes...")
-        os.makedirs(SYNTAXES_PATH)
-
-        def build():
-            sublime.active_window().run_command('build_js_custom_syntaxes')
-
-        sublime.set_timeout_async(build, 500)
-
 def merge(*dicts):
     ret = {}
     for d in dicts:
@@ -69,14 +41,16 @@ def merge(*dicts):
     return ret
 
 def get_configurations(settings):
-    defaults = settings['defaults']
-
-    return {
-        name: merge(defaults, config)
-        for name, config in merge(
+    configs = settings['configurations']
+    if settings['embed_configuration']:
+        configs = merge(
             { '~embed': settings['embed_configuration'] },
             settings['configurations']
-        ).items()
+        )
+
+    return {
+        name: merge(settings['defaults'], config)
+        for name, config in configs.items()
     }
 
 def auto_build(new_configurations, old_configurations):
@@ -97,6 +71,8 @@ class BuildJsCustomSyntaxesCommand(sublime_plugin.WindowCommand):
 
         panel = OutputPanel.create(self.window, 'YAMLMacros')
         panel.show()
+
+        os.makedirs(SYNTAXES_PATH, exist_ok=True)
 
         source_text = sublime.load_resource('Packages/JSCustom/src/JS Custom.sublime-syntax.yaml-macros')
 
