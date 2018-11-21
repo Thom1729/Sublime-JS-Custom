@@ -1,24 +1,28 @@
 from yamlmacros.lib.extend import apply
-from yamlmacros.lib.syntax import rule as _rule
 
 from yamlmacros import process_macros
+from yamlmacros.src.util import merge
+from yamlmacros.lib.include import include_resource
 
 import sublime
 from os import path
 
-def include_resource(resource):
-    file_contents = sublime.load_resource(resource)
+
+def _include_resource(file_path, loader):
+    file_contents = sublime.load_resource(file_path)
     return process_macros(
         file_contents,
-        arguments={ "file_path": resource },
+        arguments=merge(loader.context, { "file_path": file_path }),
     )
+
 
 def has_value(val):
     return val is not None and val is not False
 
-def get_extensions(node, eval, arguments):
+
+def get_extensions(node, eval, arguments, loader):
     return [
-        include_resource(file_path)
+        _include_resource(file_path, loader)
         for file_path in sublime.find_resources('*.yaml')
         if path.dirname(file_path).endswith('Packages/JSCustom/extensions')
         and has_value(arguments.get(path.splitext(path.basename(file_path))[0], None))
