@@ -6,15 +6,17 @@ from os import path
 
 from package_control import events
 from sublime_lib.output_panel import OutputPanel
+from sublime_lib.settings_dict import NamedSettingsDict
 
 from .src.paths import clean_syntaxes, clear_user_data, compiled_syntaxes_system_path
 from .src.build import build_configurations
-from .src.configurations import ConfigurationManager
+from .src.configurations import get_configurations
 
 def plugin_loaded():
-    global configuration_manager
-    configuration_manager = ConfigurationManager('JS Custom')
-    configuration_manager.add_on_change(auto_build)
+    global SETTINGS
+    global UNSUBSCRIBE
+    SETTINGS = NamedSettingsDict('JS Custom')
+    UNSUBSCRIBE = SETTINGS.subscribe(get_configurations, auto_build)
 
     ensure_sanity()
 
@@ -26,6 +28,9 @@ def plugin_loaded():
         sublime.active_window().run_command('build_js_custom_syntaxes')
 
 def plugin_unloaded():
+    if UNSUBSCRIBE:
+        UNSUBSCRIBE()
+
     if events.remove('JS Custom'):
         print('JS Custom: Uninstalling. Removing all syntaxes.')
         clear_user_data()
@@ -44,7 +49,7 @@ def ensure_sanity():
         sys_path.add_dependency('yaml_macros_engine')
 
 def auto_build(new_configurations, old_configurations):
-    if not configuration_manager.get_setting('auto_build', False): return
+    if not SETTINGS.get('auto_build', False): return
 
     changed = [
         name
@@ -61,7 +66,7 @@ class BuildJsCustomSyntaxesCommand(sublime_plugin.WindowCommand):
         output = OutputPanel.create(self.window, 'YAMLMacros')
         output.show()
         
-        configurations = configuration_manager.get_configurations()
+        configurations = get_configurations(SETTINGS)
 
         output_path = compiled_syntaxes_system_path()
 
