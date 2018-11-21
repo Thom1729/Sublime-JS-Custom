@@ -5,8 +5,8 @@ import os
 from os import path
 
 from package_control import events
-from sublime_lib.output_panel import OutputPanel
-from sublime_lib.settings_dict import NamedSettingsDict
+from sublime_lib import OutputPanel
+from sublime_lib import NamedSettingsDict
 
 from .src.paths import clean_syntaxes, clear_user_data, compiled_syntaxes_system_path
 from .src.build import build_configurations
