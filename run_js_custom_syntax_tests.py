@@ -6,7 +6,7 @@ from os import path
 from sublime_lib import OutputPanel
 
 from .src.build import build_configuration
-from .src.paths import clean_tests, TEST_PATH
+from .src.paths import clean_tests, USER_DATA_PATH
 
 
 __all__ = ['RunJsCustomSyntaxTestsCommand']
@@ -38,22 +38,22 @@ def run_syntax_tests(tests, output):
 
 
 def run_tests_for_configuration(name, configuration, output, tests):
-    p = TEST_PATH.file_path() / name
+    p = USER_DATA_PATH / 'Tests' / name
 
-    p.mkdir(parents=True)
+    p.file_path().mkdir(parents=True)
 
     build_configuration(name, configuration, p, output)
 
-    syntax_path = TEST_PATH / name / (name + '.sublime-syntax')
+    syntax_path = p / (name + '.sublime-syntax')
 
     for test in tests:
-        x = TEST_PATH / name / test['filename']
-        with open(str(x.file_path()), 'w', encoding='utf-8') as file:
+        x = p / test['filename']
+        with x.file_path().open('w', encoding='utf-8') as file:
             file.write('// SYNTAX TEST "%s"\n' % str(syntax_path))
             file.write(test['contents'])
 
     test_paths = [
-        TEST_PATH / name / test['filename']
+        p / test['filename']
         for test in tests
     ]
 

@@ -13,9 +13,10 @@ def build_configurations(configurations, destination_path, output):
     source_text = SOURCE_PATH.read_text()
 
     for name, configuration in configurations.items():
+        d = str(destination_path / (name + '.sublime-syntax'))
         build(
             source_text=source_text,
-            destination_path=str(destination_path / (name + '.sublime-syntax')),
+            destination_path=d,
             arguments=merge({
                 'name': 'JS Custom - %s' % name,
                 'scope': 'source.js.%s' % re.sub(r'[^\w-]', '', name.lower()),
@@ -30,9 +31,10 @@ def build_configuration(name, configuration, destination_path, output):
 
     source_text = SOURCE_PATH.read_text()
 
+    d = str((destination_path / (name + '.sublime-syntax')).file_path())
     build(
         source_text=source_text,
-        destination_path=str(destination_path / (name + '.sublime-syntax')),
+        destination_path=d,
         arguments=merge({
             'name': 'JS Custom - %s' % name,
             'scope': 'source.js.%s' % re.sub(r'[^\w-]', '', name.lower()),

@@ -1,21 +1,10 @@
-import sublime
-
 from sublime_lib import ResourcePath
 
-import os
-from os import path
 import shutil
 
 TEST_PATH = ResourcePath('Packages/User/JS Custom/Tests')
+USER_DATA_PATH = ResourcePath('Packages/User/JS Custom/')
 SOURCE_PATH = ResourcePath('Packages/JSCustom/src/syntax/JS Custom.sublime-syntax.yaml-macros')
-
-
-def resource_path(*parts):
-    return path.join('Packages', *parts)
-
-
-def system_path(*parts):
-    return path.join(sublime.packages_path(), *parts)
 
 
 def compiled_syntaxes_system_path():
@@ -34,7 +23,7 @@ def clean_syntaxes(keep=set()):
 
 
 def clear_user_data():
-    shutil.rmtree(system_path('User', 'JS Custom'))
+    shutil.rmtree(str(ResourcePath('Packages/User/JS Custom').file_path()))
 
 
 def tests_system_path():
@@ -44,4 +33,4 @@ def tests_system_path():
 def clean_tests():
     if tests_system_path().exists():
         shutil.rmtree(str(tests_system_path()))
-    os.makedirs(str(tests_system_path()))
+    tests_system_path().mkdir(parents=True)
