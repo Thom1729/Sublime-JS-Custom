@@ -13,7 +13,7 @@ def build_configurations(configurations, destination_path, output):
     source_text = SOURCE_PATH.read_text()
 
     for name, configuration in configurations.items():
-        d = str(destination_path / (name + '.sublime-syntax'))
+        d = str((destination_path / (name + '.sublime-syntax')).file_path())
         build(
             source_text=source_text,
             destination_path=d,

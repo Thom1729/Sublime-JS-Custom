@@ -1,12 +1,10 @@
 import sublime
 import sublime_plugin
 
-from os import path
-
 from sublime_lib import OutputPanel
 
 from .src.build import build_configuration
-from .src.paths import clean_tests, USER_DATA_PATH
+from .src.paths import clean_tests, USER_DATA_PATH, PACKAGE_PATH
 
 
 __all__ = ['RunJsCustomSyntaxTestsCommand']
@@ -46,15 +44,17 @@ def run_tests_for_configuration(name, configuration, output, tests):
 
     syntax_path = p / (name + '.sublime-syntax')
 
-    for test in tests:
-        x = p / test['filename']
+    for test_path in tests:
+        x = p / test_path.name
         with x.file_path().open('w', encoding='utf-8') as file:
-            file.write('// SYNTAX TEST "%s"\n' % str(syntax_path))
-            file.write(test['contents'])
+            file.write('// SYNTAX TEST "{}"\n{}'.format(
+                str(syntax_path),
+                test_path.read_text()
+            ))
 
     test_paths = [
-        p / test['filename']
-        for test in tests
+        p / test_path.name
+        for test_path in tests
     ]
 
     run_syntax_tests(test_paths, output)
@@ -67,23 +67,19 @@ class RunJsCustomSyntaxTestsCommand(sublime_plugin.WindowCommand):
         output = OutputPanel.create(self.window, 'YAMLMacros')
         output.show()
 
-        cases = sublime.decode_value(sublime.load_resource('Packages/JSCustom/tests/tests.json'))
+        from sublime_lib import ResourcePath
 
-        syntax_tests = [
-            {
-                'filename': path.basename(file_path),
-                'contents': sublime.load_resource(file_path),
-                'suite': path.basename(path.dirname(file_path)),
-            }
-            for file_path in sublime.find_resources('syntax_test*')
-            if file_path.startswith('Packages/JSCustom/tests')
-        ]
+        cases = sublime.decode_value(
+            (PACKAGE_PATH / 'tests/tests.json').read_text()
+        )
+
+        syntax_tests = PACKAGE_PATH.glob('tests/**/syntax_test*')
 
         for name, case in cases.items():
             tests = [
-                test
-                for test in syntax_tests
-                if test['suite'] in case['tests']
+                test_path
+                for test_path in syntax_tests
+                if test_path.parent.name in case['tests']
             ]
 
             run_tests_for_configuration(name, case['configuration'], output, tests)

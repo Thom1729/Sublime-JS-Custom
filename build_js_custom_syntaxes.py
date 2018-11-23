@@ -4,7 +4,7 @@ import sublime_plugin
 from package_control import events
 from sublime_lib import OutputPanel, NamedSettingsDict
 
-from .src.paths import clean_syntaxes, clear_user_data, compiled_syntaxes_system_path
+from .src.paths import clean_syntaxes, clear_user_data, USER_DATA_PATH
 from .src.build import build_configurations
 from .src.configurations import get_configurations
 
@@ -73,8 +73,6 @@ class BuildJsCustomSyntaxesCommand(sublime_plugin.WindowCommand):
 
         configurations = get_configurations(SETTINGS)
 
-        output_path = compiled_syntaxes_system_path()
-
         clean_syntaxes(keep=set(configurations))
 
         if versions:
@@ -83,4 +81,4 @@ class BuildJsCustomSyntaxesCommand(sublime_plugin.WindowCommand):
                 for name in versions
             }
 
-        build_configurations(configurations, output_path, output)
+        build_configurations(configurations, USER_DATA_PATH / 'Syntaxes', output)
