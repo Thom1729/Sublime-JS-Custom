@@ -1,13 +1,12 @@
 import sublime
 import sublime_plugin
 
-import os
 from os import path
 
 from sublime_lib import OutputPanel
 
 from .src.build import build_configuration
-from .src.paths import resource_path, system_path, clean_tests, TEST_PATH
+from .src.paths import clean_tests, TEST_PATH
 
 
 __all__ = ['RunJsCustomSyntaxTestsCommand']
@@ -20,7 +19,7 @@ def run_syntax_tests(tests, output):
     failed_assertions = 0
 
     for t in tests:
-        assertions, test_output_lines = sublime_api.run_syntax_test(t)
+        assertions, test_output_lines = sublime_api.run_syntax_test(str(t))
         total_assertions += assertions
         if len(test_output_lines) > 0:
             failed_assertions += len(test_output_lines)
@@ -39,21 +38,22 @@ def run_syntax_tests(tests, output):
 
 
 def run_tests_for_configuration(name, configuration, output, tests):
-    p = system_path(TEST_PATH, name)
+    p = TEST_PATH.file_path() / name
 
-    os.makedirs(p)
+    p.mkdir(parents=True)
 
     build_configuration(name, configuration, p, output)
 
-    syntax_path = resource_path(TEST_PATH, name, name + '.sublime-syntax')
+    syntax_path = TEST_PATH / name / (name + '.sublime-syntax')
 
     for test in tests:
-        with open(system_path(TEST_PATH, name, test['filename']), 'w', encoding='utf-8') as file:
-            file.write('// SYNTAX TEST "%s"\n' % syntax_path)
+        x = TEST_PATH / name / test['filename']
+        with open(str(x.file_path()), 'w', encoding='utf-8') as file:
+            file.write('// SYNTAX TEST "%s"\n' % str(syntax_path))
             file.write(test['contents'])
 
     test_paths = [
-        resource_path(TEST_PATH, name, test['filename'])
+        TEST_PATH / name / test['filename']
         for test in tests
     ]
 

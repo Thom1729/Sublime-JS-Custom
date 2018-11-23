@@ -1,11 +1,13 @@
 import sublime
 
+from sublime_lib import ResourcePath
+
 import os
 from os import path
 import shutil
 
-TEST_PATH = 'User/JS Custom/Tests'
-SOURCE_PATH = 'Packages/JSCustom/src/syntax/JS Custom.sublime-syntax.yaml-macros'
+TEST_PATH = ResourcePath('Packages/User/JS Custom/Tests')
+SOURCE_PATH = ResourcePath('Packages/JSCustom/src/syntax/JS Custom.sublime-syntax.yaml-macros')
 
 
 def resource_path(*parts):
@@ -17,19 +19,18 @@ def system_path(*parts):
 
 
 def compiled_syntaxes_system_path():
-    return system_path('User', 'JS Custom', 'Syntaxes')
+    return ResourcePath('Packages/User/JS Custom/Syntaxes').file_path()
 
 
 def clean_syntaxes(keep=set()):
-    directory_path = compiled_syntaxes_system_path()
+    directory_path = ResourcePath('Packages/User/JS Custom/Syntaxes').file_path()
 
-    if path.exists(directory_path):
-        for filename in os.listdir(directory_path):
-            name, ext = path.splitext(filename)
-            if ext == '.sublime-syntax' and name not in keep:
-                os.remove(path.join(directory_path, filename))
+    if directory_path.exists():
+        for filename in directory_path.iterdir():
+            if filename.suffix == '.sublime-syntax' and filename.name not in keep:
+                (directory_path / filename).unlink()
     else:
-        os.makedirs(directory_path)
+        directory_path.mkdir(parents=True)
 
 
 def clear_user_data():
@@ -37,10 +38,10 @@ def clear_user_data():
 
 
 def tests_system_path():
-    return system_path(TEST_PATH)
+    return TEST_PATH.file_path()
 
 
 def clean_tests():
-    if path.exists(tests_system_path()):
-        shutil.rmtree(tests_system_path())
-    os.makedirs(tests_system_path())
+    if tests_system_path().exists():
+        shutil.rmtree(str(tests_system_path()))
+    os.makedirs(str(tests_system_path()))
