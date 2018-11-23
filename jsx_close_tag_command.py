@@ -4,6 +4,10 @@ import sublime_plugin
 TAG_BEGIN_SCOPE = 'punctuation.definition.tag.begin.js'
 TAG_END_SCOPE = 'punctuation.definition.tag.end.js'
 
+
+__all__ = ['JsxCloseTagCommand']
+
+
 class JsxCloseTagCommand(sublime_plugin.TextCommand):
     def run(self, edit, insert_slash=False):
         for region in reversed(self.view.sel()):
@@ -62,7 +66,7 @@ class JsxCloseTagCommand(sublime_plugin.TextCommand):
                 return pos
             else:
                 pos -= 1
-        
+
         raise ValueError("Can't find open tag.")
 
     def find_after(self, selector, pos):
@@ -73,5 +77,5 @@ class JsxCloseTagCommand(sublime_plugin.TextCommand):
                 return pos
             else:
                 pos += 1
-        
+
         raise ValueError("Can't find open tag.")

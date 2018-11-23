@@ -6,6 +6,10 @@ import re
 from .paths import SOURCE_PATH
 from .util import merge
 
+
+__all__ = ['build_configurations', 'build_configuration']
+
+
 def build_configurations(configurations, destination_path, output):
     from yamlmacros import build
 
@@ -22,6 +26,7 @@ def build_configurations(configurations, destination_path, output):
             }, configuration),
             error_stream=output,
         )
+
 
 def build_configuration(name, configuration, destination_path, output):
     from yamlmacros import build

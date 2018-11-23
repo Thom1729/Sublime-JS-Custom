@@ -4,10 +4,14 @@ import sublime_plugin
 import os
 from os import path
 
-from sublime_lib.output_panel import OutputPanel
+from sublime_lib import OutputPanel
 
 from .src.build import build_configuration
 from .src.paths import resource_path, system_path, clean_tests, TEST_PATH
+
+
+__all__ = ['RunJsCustomSyntaxTestsCommand']
+
 
 def run_syntax_tests(tests, output):
     import sublime_api
@@ -33,6 +37,7 @@ def run_syntax_tests(tests, output):
     output.print(message.format(*params))
     output.print()
 
+
 def run_tests_for_configuration(name, configuration, output, tests):
     p = system_path(TEST_PATH, name)
 
@@ -40,7 +45,7 @@ def run_tests_for_configuration(name, configuration, output, tests):
 
     build_configuration(name, configuration, p, output)
 
-    syntax_path = resource_path(TEST_PATH, name, name+'.sublime-syntax')
+    syntax_path = resource_path(TEST_PATH, name, name + '.sublime-syntax')
 
     for test in tests:
         with open(system_path(TEST_PATH, name, test['filename']), 'w', encoding='utf-8') as file:
@@ -54,6 +59,7 @@ def run_tests_for_configuration(name, configuration, output, tests):
 
     run_syntax_tests(test_paths, output)
 
+
 class RunJsCustomSyntaxTestsCommand(sublime_plugin.WindowCommand):
     def run(self):
         clean_tests()
@@ -61,7 +67,7 @@ class RunJsCustomSyntaxTestsCommand(sublime_plugin.WindowCommand):
         output = OutputPanel.create(self.window, 'YAMLMacros')
         output.show()
 
-        cases = sublime.decode_value(sublime.load_resource('Packages/JSCustom/tests/tests.json'));
+        cases = sublime.decode_value(sublime.load_resource('Packages/JSCustom/tests/tests.json'))
 
         syntax_tests = [
             {

@@ -8,17 +8,17 @@ TEST_PATH = 'User/JS Custom/Tests'
 SOURCE_PATH = 'Packages/JSCustom/src/syntax/JS Custom.sublime-syntax.yaml-macros'
 
 
-
 def resource_path(*parts):
     return path.join('Packages', *parts)
+
 
 def system_path(*parts):
     return path.join(sublime.packages_path(), *parts)
 
 
-
 def compiled_syntaxes_system_path():
     return system_path('User', 'JS Custom', 'Syntaxes')
+
 
 def clean_syntaxes(keep=set()):
     directory_path = compiled_syntaxes_system_path()
@@ -31,11 +31,14 @@ def clean_syntaxes(keep=set()):
     else:
         os.makedirs(directory_path)
 
+
 def clear_user_data():
     shutil.rmtree(system_path('User', 'JS Custom'))
 
+
 def tests_system_path():
     return system_path(TEST_PATH)
+
 
 def clean_tests():
     if path.exists(tests_system_path()):
