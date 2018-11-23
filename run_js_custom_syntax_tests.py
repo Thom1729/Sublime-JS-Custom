@@ -43,7 +43,7 @@ def run_tests_for_configuration(name, configuration, output, tests):
     syntax_path = resource_path(TEST_PATH, name, name+'.sublime-syntax')
 
     for test in tests:
-        with open(system_path(TEST_PATH, name, test['filename']), 'w') as file:
+        with open(system_path(TEST_PATH, name, test['filename']), 'w', encoding='utf-8') as file:
             file.write('// SYNTAX TEST "%s"\n' % syntax_path)
             file.write(test['contents'])
 

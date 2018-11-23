@@ -3,7 +3,8 @@
         "*": [
             "ruamel-yaml",
             "yaml_macros_engine",
-            "sublime_lib"
+            "sublime_lib",
+            "pathlib"
         ]
     }
 }
