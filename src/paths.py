@@ -4,7 +4,6 @@ import shutil
 
 USER_DATA_PATH = ResourcePath('Packages/User/JS Custom')
 PACKAGE_PATH = ResourcePath('Packages/JSCustom')
-# SOURCE_PATH = ResourcePath('Packages/JSCustom/src/syntax/JS Custom.sublime-syntax.yaml-macros')
 SOURCE_PATH = PACKAGE_PATH / 'src/syntax/JS Custom.sublime-syntax.yaml-macros'
 
 
