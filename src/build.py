@@ -2,6 +2,7 @@ import re
 
 from .paths import SOURCE_PATH
 from .util import merge
+from .defer import defer_each
 
 
 __all__ = ['build_configurations']
@@ -12,7 +13,9 @@ def build_configurations(configurations, destination_path, output=None):
 
     source_text = SOURCE_PATH.read_text()
 
-    for name, configuration in configurations.items():
+    def _build(value):
+        name, configuration = value
+
         d = destination_path / (name + '.sublime-syntax')
         build(
             source_text=source_text,
@@ -24,3 +27,5 @@ def build_configurations(configurations, destination_path, output=None):
             }, configuration),
             error_stream=output,
         )
+
+    defer_each(_build, configurations.items())
