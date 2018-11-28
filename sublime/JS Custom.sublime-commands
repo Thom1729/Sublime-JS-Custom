@@ -4,8 +4,8 @@
         "command": "build_js_custom_syntaxes"
     },
     {
-        "caption": "JS Custom: Run Syntax Tests",
-        "command": "run_js_custom_syntax_tests"
+        "caption": "JS Custom: Clear User Data",
+        "command": "clear_js_custom_user_data"
     },
     {
         "caption": "Preferences: JS Custom",

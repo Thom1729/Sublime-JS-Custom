@@ -1,7 +1,6 @@
 import sublime
 import sublime_plugin
 
-import shutil
 from package_control import events
 from sublime_lib import OutputPanel, NamedSettingsDict
 
@@ -38,7 +37,7 @@ def plugin_unloaded():
 
     if events.remove('JS Custom'):
         print('JS Custom: Uninstalling. Removing all syntaxes.')
-        shutil.rmtree(str(USER_DATA_PATH), ignore_errors=True)
+        sublime.run_command('clear_js_custom_user_data')
 
 
 def ensure_sanity():
