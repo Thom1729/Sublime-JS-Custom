@@ -1,11 +1,14 @@
 import re
 
-from .paths import SOURCE_PATH
+from .paths import PACKAGE_PATH
 from .util import merge
 from .defer import defer_each
 
 
 __all__ = ['build_configurations']
+
+
+SOURCE_PATH = PACKAGE_PATH / 'src/syntax/JS Custom.sublime-syntax.yaml-macros'
 
 
 def build_configurations(configurations, destination_path, output=None):

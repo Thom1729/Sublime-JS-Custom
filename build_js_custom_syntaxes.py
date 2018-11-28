@@ -1,15 +1,19 @@
 import sublime
 import sublime_plugin
 
+import shutil
 from package_control import events
 from sublime_lib import OutputPanel, NamedSettingsDict
 
-from .src.paths import clean_syntaxes, clear_user_data, USER_DATA_PATH
+from .src.paths import USER_DATA_PATH
 from .src.build import build_configurations
 from .src.configurations import get_configurations
 
 
 __all__ = ['plugin_loaded', 'plugin_unloaded', 'BuildJsCustomSyntaxesCommand']
+
+
+SYNTAXES_BUILD_PATH = USER_DATA_PATH / 'Syntaxes'
 
 
 def plugin_loaded():
@@ -34,7 +38,7 @@ def plugin_unloaded():
 
     if events.remove('JS Custom'):
         print('JS Custom: Uninstalling. Removing all syntaxes.')
-        clear_user_data()
+        shutil.rmtree(str(USER_DATA_PATH), ignore_errors=True)
 
 
 def ensure_sanity():
@@ -73,7 +77,14 @@ class BuildJsCustomSyntaxesCommand(sublime_plugin.WindowCommand):
 
         configurations = get_configurations(SETTINGS)
 
-        clean_syntaxes(keep=set(configurations))
+        for syntax_path in SYNTAXES_BUILD_PATH.glob('*.sublime-syntax'):
+            if syntax_path.name not in configurations:
+                syntax_path.file_path().unlink()
+
+        try:
+            SYNTAXES_BUILD_PATH.file_path().mkdir(parents=True)
+        except FileExistsError:
+            pass
 
         if versions:
             configurations = {
@@ -81,4 +92,4 @@ class BuildJsCustomSyntaxesCommand(sublime_plugin.WindowCommand):
                 for name in versions
             }
 
-        build_configurations(configurations, USER_DATA_PATH / 'Syntaxes', output)
+        build_configurations(configurations, SYNTAXES_BUILD_PATH, output)

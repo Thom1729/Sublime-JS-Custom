@@ -1,9 +1,13 @@
 import sublime_api
+import shutil
 
 from unittesting import DeferrableTestCase
 
 from JSCustom.src.build import build_configurations
-from JSCustom.src.paths import clean_tests, PACKAGE_PATH, USER_DATA_PATH
+from JSCustom.src.paths import PACKAGE_PATH, USER_DATA_PATH
+
+
+TESTS_PATH = USER_DATA_PATH / 'Tests'
 
 
 class TestSyntaxes(DeferrableTestCase):
@@ -11,12 +15,13 @@ class TestSyntaxes(DeferrableTestCase):
 
     @classmethod
     def setUpClass(cls):
-        clean_tests()
+        shutil.rmtree(str(TESTS_PATH.file_path()), ignore_errors=True)
+        TESTS_PATH.file_path().mkdir(parents=True)
 
         cls.all_tests = PACKAGE_PATH.glob('tests/**/syntax_test*')
 
     def _test_syntaxes(self, name, configuration, tests):
-        test_working_path = USER_DATA_PATH / 'Tests' / name
+        test_working_path = TESTS_PATH / name
         test_working_path.file_path().mkdir(parents=True)
 
         test_source_paths = [
@@ -37,6 +42,7 @@ class TestSyntaxes(DeferrableTestCase):
                 ))
 
         yield syntax_path.exists
+        yield 200  # Hope this gives Sublime long enough to compile it.
 
         all_failures = []
         for path, text in test_source_paths:
