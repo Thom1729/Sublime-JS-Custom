@@ -11,8 +11,6 @@ from sublime_lib.settings_dict import NamedSettingsDict
 
 SOURCE_PATH = 'Packages/JSCustom/src/JS Custom.sublime-syntax.yaml-macros'
 
-SUBSCRIPTION_KEY = None
-
 def plugin_loaded():
     global SYNTAXES_PATH
     SYNTAXES_PATH = path.join(sublime.packages_path(), 'User', 'JS Custom', 'Syntaxes')
@@ -26,13 +24,12 @@ def plugin_loaded():
 
         sublime.set_timeout_async(build, 500)
 
-    global SUBSCRIPTION_KEY
-    SUBSCRIPTION_KEY = SETTINGS.subscribe(get_configurations, auto_build)
+    global UNSUBSCRIBE
+    UNSUBSCRIBE = SETTINGS.subscribe(get_configurations, auto_build)
 
 def plugin_unloaded():
-    global SUBSCRIPTION_KEY
-    if SUBSCRIPTION_KEY:
-       SETTINGS.unsubscribe(SUBSCRIPTION_KEY)
+    if UNSUBSCRIBE:
+       UNSUBSCRIBE()
 
 def merge(*dicts):
     ret = {}
