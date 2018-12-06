@@ -243,13 +243,13 @@ someFunction({
 //  ^^^ storage.type
 //      ^^^^^^^^^^^^^^^^^^ meta.function - meta.function meta.function
 //      ^^^^^^^^^^^^^^^^ meta.function.declaration
-//      ^^^ variable.other.readwrite entity.name.function
+//      ^^^ entity.name.function variable.other.readwrite
 //            ^^^^^^^^ storage.type.function
     }
 
     baz = function*()
 //  ^^^^^^^^^^^^^^^^^ meta.function.declaration - meta.function meta.function
-//  ^^^ variable.other.readwrite entity.name.function
+//  ^^^ entity.name.function variable.other.readwrite
 //        ^^^^^^^^ storage.type.function
 //                ^ keyword.generator.asterisk
     {
@@ -335,6 +335,15 @@ not_a_comment;
 
     let ಠ_ಠ;
 //      ^^^ variable.other.readwrite
+
+    function \u004axyz () {}; // Letter J
+//           ^^^^^^^^^ entity.name.function
+
+    function xyz\u004axyz () {};
+//           ^^^^^^^^^^^^ entity.name.function
+
+    function xyz\u{0ca0}xyz () {}; // Letter ಠ
+//           ^^^^^^^^^^^^^^ entity.name.function
 
     import$;export$;class$;throw$;break$;continue$;goto$;return$;debugger$;let$;const$;var$;
 //  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ - keyword
@@ -589,7 +598,7 @@ function x() {}
 
 var $ = function(baz) {
 //  ^^^^^^^^^^^^^^^^^ meta.function.declaration
-//  ^ variable.other.dollar.only punctuation.dollar entity.name.function
+//  ^ entity.name.function variable.other.dollar.only punctuation.dollar
 }
 
 $()
@@ -645,8 +654,51 @@ for (var i = 0; i < 10; i++) {
 }
 // <- meta.block
 
-    for (const x of list) {}
+    for (; x in list;) {}
+//  ^^^^^^^^^^^^^^^^^^^^^ meta.for
 //  ^^^ keyword.control.loop
+//      ^^^^^^^^^^^^^^ meta.group
+//       ^ punctuation.separator.expression
+//           ^^ keyword.operator
+//                  ^ punctuation.separator.expression
+
+    for (a[x in list];;) {}
+//  ^^^^^^^^^^^^^^^^^^^^^^^ meta.for
+//  ^^^ keyword.control.loop
+//      ^^^^^^^^^^^^^^^^ meta.group
+//        ^^^^^^^^^^^ meta.brackets
+//           ^^ keyword.operator
+//                   ^ punctuation.separator.expression
+//                    ^ punctuation.separator.expression
+
+    for (;function () {}/a/g;) {}
+//                      ^ keyword.operator
+
+    for (const x in list) {}
+//  ^^^^^^^^^^^^^^^^^^^^^^^^ meta.for
+//  ^^^ keyword.control.loop
+//      ^^^^^^^^^^^^^^^^^ meta.group
+//       ^^^^^ storage.type
+//               ^^ keyword.operator.word
+
+    for (const x of list) {}
+//  ^^^^^^^^^^^^^^^^^^^^^^^^ meta.for
+//  ^^^ keyword.control.loop
+//      ^^^^^^^^^^^^^^^^^ meta.group
+//       ^^^^^ storage.type
+//               ^^ keyword.operator.word
+
+    for (x in list) {}
+//  ^^^^^^^^^^^^^^^^^^ meta.for
+//  ^^^ keyword.control.loop
+//      ^^^^^^^^^^^ meta.group
+//         ^^ keyword.operator.word
+
+    for (x of list) {}
+//  ^^^^^^^^^^^^^^^^^^ meta.for
+//  ^^^ keyword.control.loop
+//      ^^^^^^^^^^^ meta.group
+//         ^^ keyword.operator.word
 
     for await (const x of list) {}
 //  ^^^ keyword.control.loop
@@ -829,6 +881,20 @@ class MyClass extends TheirClass {
 //     ^ keyword.operator.assignment
 //       ^^ constant.numeric
 
+    f = a => b;
+//  ^^^^^^^^ meta.function.declaration
+//  ^ entity.name.function variable.other.readwrite
+//      ^ variable.parameter.function
+
+    g = function() {};
+//  ^^^^^^^^^^^^^^^^^ meta.function
+//  ^ entity.name.function variable.other.readwrite
+
+    #h = function() {};
+//  ^^^^^^^^^^^^^^^^^^ meta.function
+//  ^ punctuation.definition.variable
+//   ^ entity.name.function variable.other.readwrite
+
     static x = 42;
 //  ^^^^^^ storage.modifier.js
 //         ^ variable.other.readwrite
@@ -862,6 +928,15 @@ class MyClass extends TheirClass {
 //          ^ variable.other.readwrite
 //            ^ keyword.operator.assignment
 //              ^^ constant.numeric
+
+    static f = a => b;
+//         ^^^^^^^^ meta.function.declaration
+//         ^ entity.name.function variable.other.readwrite
+//             ^ variable.parameter.function
+
+    static g = function() {};
+//         ^^^^^^^^^^^^^^^^^ meta.function
+//         ^ entity.name.function variable.other.readwrite
 
     a, 'b' = 50, "c", [d] = 100, #e;
 //  ^ variable.other.readwrite
@@ -1102,6 +1177,16 @@ const test = ({a, b, c=()=>({active:false}) }) => {};
 //     ^^^^^^^^^^^ meta.block - meta.object-literal
 //       ^^^^^^ keyword.control.flow
 );
+
+({
+    a = {},
+//    ^ keyword.operator.assignment
+//      ^^ punctuation.section.block
+//        ^ punctuation.separator.comma - keyword.operator.comma
+    b,
+//   ^ punctuation.separator.comma - keyword.operator.comma
+}) => null;
+// ^^ storage.type.function.arrow
 
 MyClass.foo = function() {}
 // ^^^^^^^^^^^^^^^^^^^^^ meta.function.declaration
@@ -1473,15 +1558,16 @@ new FooBar(function(){
 })
 
 ['foo'].bar = function() {
-//      ^ meta.property.object entity.name.function
+//      ^^^ entity.name.function meta.property.object
 }
 
 ['foo'].$ = function() {
-//      ^ meta.property.object.dollar.only entity.name.function
+//      ^ entity.name.function meta.property.object.dollar.only punctuation.dollar
 }
 
 ['foo'].$bar = function() {
-//      ^ meta.property.object.dollar entity.name.function
+//      ^^^^ entity.name.function meta.property.object.dollar
+//      ^ punctuation.dollar
 }
 
 {
