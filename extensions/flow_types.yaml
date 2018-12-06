@@ -113,6 +113,18 @@ contexts: !merge
     - match: '{{method_lookahead}}'
       set: method-declaration
 
+    - match: |-
+        (?x)(?=
+          \#? {{identifier}}
+          \s* = \s*
+          {{either_func_lookahead}}
+        )
+      set:
+        - function-initializer
+        - flow-type-annotation-optional
+        - function-name-meta
+        - field-name
+
     - match: (?={{property_name}})
       set:
         - field-initializer-or-method-declaration
@@ -184,15 +196,6 @@ contexts: !merge
       set: flow-type
     - match: (?=\S)
       pop: true
-
-  # flow-type-comment-block:
-  #   - match: '/\*::'
-  #     scope: comment.block.js punctuation.definition.comment.begin.js
-  #     push:
-  #       - match: \*/
-  #         scope: comment.block.js punctuation.definition.comment.end.js
-  #         pop: true
-  #       - include: statements
 
   flow-type-pragma:
     - match: '(//)\s*(?=@)'
