@@ -10,6 +10,7 @@ def atomic_replace(dest):
         dir=str(dest.parent),
         encoding='utf-8',
         delete=False,
+        prefix=dest.name + '.temp-'
     ) as temp:
         yield temp
 
