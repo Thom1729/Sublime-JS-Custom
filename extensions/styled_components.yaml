@@ -37,7 +37,7 @@ contexts: !merge
                   0: punctuation.definition.template-expression.begin.js
                 push:
                   - clear_scopes: true
-                  - meta_scope: soucre.js.react meta.template.expression.js
+                  - meta_scope: !format '{scope} meta.template.expression.js'
                   - meta_content_scope: source.js.embedded.expression
                   - match: '\}'
                     scope: punctuation.definition.template-expression.end.js
