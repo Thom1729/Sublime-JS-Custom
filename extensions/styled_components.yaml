@@ -4,7 +4,7 @@
 !merge
 contexts: !merge
   expression-begin: !prepend
-    - match: (?=(?:styled|injectGlobal|keyframes){{identifier_break}})
+    - match: (?=(?:styled|createGlobalStyle|injectGlobal|keyframes){{identifier_break}})
       set:
         - styled-component-end
         - styled-component-begin
@@ -23,7 +23,7 @@ contexts: !merge
             scope: punctuation.definition.string.template.end.js
             pop: true
           - include: immediately-pop
-        - - clear_scopes: 1
+        - - clear_scopes: true
           - meta_scope: source.css.embedded.js
           - include: immediately-pop
         - - match: ''
@@ -36,8 +36,8 @@ contexts: !merge
                 captures:
                   0: punctuation.definition.template-expression.begin.js
                 push:
-                  - clear_scopes: 1
-                  - meta_scope: meta.template.expression.js
+                  - clear_scopes: true
+                  - meta_scope: soucre.js.react meta.template.expression.js
                   - meta_content_scope: source.js.embedded.expression
                   - match: '\}'
                     scope: punctuation.definition.template-expression.end.js
