@@ -12,20 +12,21 @@ from .src.configurations import get_configurations
 __all__ = ['plugin_loaded', 'plugin_unloaded', 'BuildJsCustomSyntaxesCommand']
 
 
+PACKAGE_NAME = 'JSCustom'
 SYNTAXES_BUILD_PATH = USER_DATA_PATH / 'Syntaxes'
 
 
 def plugin_loaded():
     global SETTINGS
     global UNSUBSCRIBE
-    SETTINGS = NamedSettingsDict('JS Custom')
+    SETTINGS = NamedSettingsDict(PACKAGE_NAME)
     UNSUBSCRIBE = SETTINGS.subscribe(get_configurations, auto_build)
 
-    if events.install('JS Custom'):
+    if events.install(PACKAGE_NAME):
         ensure_dependencies_loaded()
         print('JS Custom: New installation. Building all syntaxes.')
         sublime.active_window().run_command('build_js_custom_syntaxes')
-    elif events.post_upgrade('JS Custom'):
+    elif events.post_upgrade(PACKAGE_NAME):
         ensure_dependencies_loaded()
         print('JS Custom: Installation upgraded. Rebuilding all syntaxes.')
         sublime.active_window().run_command('build_js_custom_syntaxes')
@@ -35,7 +36,7 @@ def plugin_unloaded():
     if UNSUBSCRIBE:
         UNSUBSCRIBE()
 
-    if events.remove('JS Custom'):
+    if events.remove(PACKAGE_NAME):
         print('JS Custom: Uninstalling. Removing all syntaxes.')
         sublime.run_command('clear_js_custom_user_data')
 
