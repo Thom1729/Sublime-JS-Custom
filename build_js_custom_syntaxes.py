@@ -21,12 +21,12 @@ def plugin_loaded():
     SETTINGS = NamedSettingsDict('JS Custom')
     UNSUBSCRIBE = SETTINGS.subscribe(get_configurations, auto_build)
 
-    ensure_sanity()
-
     if events.install('JS Custom'):
+        ensure_dependencies_loaded()
         print('JS Custom: New installation. Building all syntaxes.')
         sublime.active_window().run_command('build_js_custom_syntaxes')
     elif events.post_upgrade('JS Custom'):
+        ensure_dependencies_loaded()
         print('JS Custom: Installation upgraded. Rebuilding all syntaxes.')
         sublime.active_window().run_command('build_js_custom_syntaxes')
 
@@ -40,18 +40,12 @@ def plugin_unloaded():
         sublime.run_command('clear_js_custom_user_data')
 
 
-def ensure_sanity():
-    from package_control import sys_path
+def ensure_dependencies_loaded():
+    from package_control.package_manager import PackageManager
+    from package_control.sys_path import add_dependency
 
-    try:
-        import ruamel.yaml  # noqa: F401
-    except ImportError:
-        sys_path.add_dependency('ruamel-yaml')
-
-    try:
-        import yamlmacros  # noqa: F401
-    except ImportError:
-        sys_path.add_dependency('yaml_macros_engine')
+    for dependency in PackageManager().get_dependencies('JSCustom'):
+        add_dependency(dependency)
 
 
 def auto_build(new_configurations, old_configurations):
