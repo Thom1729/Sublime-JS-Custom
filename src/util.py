@@ -1,8 +1,4 @@
-__all__ = ['coalesce', 'merge']
-
-
-def coalesce(*args):
-    return next((x for x in args if x is not None), None)
+__all__ = ['merge']
 
 
 def merge(*dicts):

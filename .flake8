@@ -1,6 +1,8 @@
 [flake8]
 
-ignore = E731
+ignore =
+    E731,
+    W503,
 
 exclude =
     .git

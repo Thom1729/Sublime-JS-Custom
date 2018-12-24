@@ -1,6 +1,6 @@
 import sublime_plugin
 
-from .src.settings import get_settings
+from ..settings import get_settings
 
 
 __all__ = ['JsxCloseTagListener']

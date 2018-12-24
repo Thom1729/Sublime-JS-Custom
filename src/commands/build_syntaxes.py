@@ -2,10 +2,10 @@ import sublime_plugin
 
 from sublime_lib import OutputPanel
 
-from .src.settings import get_settings
-from .src.paths import USER_DATA_PATH
-from .src.build import build_configurations
-from .src.configurations import get_configurations
+from ..settings import get_settings
+from ..paths import USER_DATA_PATH
+from ..build import build_configurations
+from ..configurations import get_configurations
 
 __all__ = ['BuildJsCustomSyntaxesCommand']
 
