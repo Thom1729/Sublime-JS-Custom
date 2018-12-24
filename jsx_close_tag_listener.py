@@ -1,5 +1,6 @@
-import sublime
 import sublime_plugin
+
+from .src.settings import get_settings
 
 
 __all__ = ['JsxCloseTagListener']
@@ -7,13 +8,9 @@ __all__ = ['JsxCloseTagListener']
 
 class JsxCloseTagListener(sublime_plugin.ViewEventListener):
     def on_text_command(self, command_name, args):
-        if command_name != 'close_tag':
-            return
-
-        if not self.view.match_selector(0, 'source.js'):
-            return
-
-        if not sublime.load_settings('JS Custom.sublime-settings').get('jsx_close_tag', False):
-            return
-
-        return ('jsx_close_tag', args)
+        if (
+            command_name == 'close_tag'
+            and get_settings()['jsx_close_tag']
+            and self.view.match_selector(0, 'source.js')
+        ):
+            return ('jsx_close_tag', args)

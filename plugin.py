@@ -4,7 +4,7 @@ from package_control import events
 from package_control.package_manager import PackageManager
 from package_control.sys_path import add_dependency
 
-from sublime_lib import NamedSettingsDict
+from .src.settings import get_settings
 
 from .src.configurations import get_configurations
 
@@ -16,10 +16,8 @@ PACKAGE_NAME = 'JSCustom'
 
 
 def plugin_loaded():
-    global SETTINGS
     global UNSUBSCRIBE
-    SETTINGS = NamedSettingsDict('JS Custom')
-    UNSUBSCRIBE = SETTINGS.subscribe(get_configurations, auto_build)
+    UNSUBSCRIBE = get_settings().subscribe(get_configurations, auto_build)
 
     if events.install(PACKAGE_NAME):
         ensure_dependencies_loaded()
@@ -46,7 +44,7 @@ def ensure_dependencies_loaded():
 
 
 def auto_build(new_configurations, old_configurations):
-    if not SETTINGS.get('auto_build', False):
+    if not get_settings().get('auto_build', False):
         return
 
     changed = [

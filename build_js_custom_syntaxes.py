@@ -1,7 +1,8 @@
 import sublime_plugin
 
-from sublime_lib import OutputPanel, NamedSettingsDict
+from sublime_lib import OutputPanel
 
+from .src.settings import get_settings
 from .src.paths import USER_DATA_PATH
 from .src.build import build_configurations
 from .src.configurations import get_configurations
@@ -17,7 +18,7 @@ class BuildJsCustomSyntaxesCommand(sublime_plugin.WindowCommand):
         output = OutputPanel.create(self.window, 'YAMLMacros')
         output.show()
 
-        configurations = get_configurations(NamedSettingsDict('JS Custom'))
+        configurations = get_configurations(get_settings())
 
         for syntax_path in SYNTAXES_BUILD_PATH.glob('*.sublime-syntax'):
             if syntax_path.name not in configurations:
