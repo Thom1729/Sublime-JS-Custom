@@ -453,16 +453,27 @@ contexts: !merge
     - include: else-pop
 
   flow-type-alias:
-    - match: type{{identifier_break}}
-      scope: storage.type.js
+    - match: (?=type{{identifier_break}})
       set:
-        - !meta meta.declaration.type.js
-        - flow-type-alias-initializer
-        - flow-type-generic-parameters
-        - - match: '{{identifier}}'
-            scope: entity.name.type.js
-            pop: True
-        - - include: else-pop
+        - - match: (?={{identifier}})
+            set:
+              - !meta meta.declaration.type.js
+              - flow-type-alias-initializer
+              - flow-type-generic-parameters
+              - - match: '{{identifier}}'
+                  scope: entity.name.type.js
+                  pop: True
+              - - include: else-pop
+
+          - match: (?=\S)
+            set: [ expression-statement, expression-end ]
+
+        - - match: type{{identifier_break}}(?=\s*(?:$|{{identifier}}))
+            scope: storage.type.js
+            set:
+              - meta_scope: meta.declaration.type.js
+              - include: else-pop
+          - include: expression-begin
 
   flow-type-alias-initializer:
     - match: '='

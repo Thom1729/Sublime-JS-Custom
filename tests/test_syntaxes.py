@@ -11,7 +11,7 @@ TESTS_PATH = USER_DATA_PATH / 'Tests'
 
 
 class TestSyntaxes(DeferrableTestCase):
-    maxdiff = None
+    maxDiff = None
 
     @classmethod
     def setUpClass(cls):

@@ -316,7 +316,7 @@ class MyClass {
 /* Type aliases */
 
     type MyType = number;
-//  ^^^^^^^^^^^^^^^^^^^^ meta.declaration.type
+//  ^^^^^^^^^^^^^^^^^^^^ meta.declaration.type - meta.declaration.type meta.declaration.type
 //  ^^^^ storage.type
 //       ^^^^^^ entity.name.type
 //              ^ keyword.operator.assignment
@@ -334,6 +334,26 @@ class MyClass {
 //                  ^ punctuation.section.generic.end
 //                    ^ keyword.operator.assignment
 //                      ^^^^^^ support.type.primitive.number
+
+    type;
+//  ^^^^ variable.other.readwrite - storage
+
+    type = function() {};
+//  ^^^^^^^^^^^^^^^^^^^^ meta.function
+//  ^^^^ entity.name.function variable.other.readwrite - storage
+
+    type
+//  ^^^^ storage.type
+    /foo/g;
+//  ^ keyword.operator.arithmetic - string
+
+    type
+//  ^^^^ storage.type
+    foo;
+//  ^^^ meta.declaration.type entity.name.type
+
+    type /**/ foo;
+//            ^^^ meta.declaration.type entity.name.type
 
 /* Type casting expressions */
 
