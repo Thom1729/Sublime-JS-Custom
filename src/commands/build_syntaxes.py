@@ -21,7 +21,7 @@ class BuildJsCustomSyntaxesCommand(sublime_plugin.WindowCommand):
         configurations = get_configurations(get_settings())
 
         for syntax_path in SYNTAXES_BUILD_PATH.glob('*.sublime-syntax'):
-            if syntax_path.name not in configurations:
+            if syntax_path.stem not in configurations:
                 syntax_path.file_path().unlink()
 
         try:
