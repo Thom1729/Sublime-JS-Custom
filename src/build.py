@@ -1,5 +1,6 @@
 import re
 from threading import Thread
+from yamlmacros import build
 
 from .paths import PACKAGE_PATH
 from .util import merge
@@ -14,8 +15,6 @@ SOURCE_PATH = PACKAGE_PATH / 'src/syntax/JS Custom.sublime-syntax.yaml-macros'
 
 def build_configurations(configurations, destination_path, output=None):
     def run():
-        from yamlmacros import build
-
         source_text = SOURCE_PATH.read_text()
 
         for name, configuration in configurations.items():
