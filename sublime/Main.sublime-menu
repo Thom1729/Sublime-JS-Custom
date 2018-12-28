@@ -27,6 +27,10 @@
                                 "caption": "Rebuild Syntaxes",
                                 "command": "build_js_custom_syntaxes"
                             },
+                            {
+                                "caption": "Clear User Data",
+                                "command": "clear_js_custom_user_data"
+                            }
                         ]
                     }
                 ]

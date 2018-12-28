@@ -6,15 +6,39 @@ Customizable JavaScript syntax highlighting for Sublime Text supporting JSX, Flo
 
 JS Custom can be installed via [Package Control](https://packagecontrol.io/installation).
 
-Alternatively, you can install JS Custom manually by cloning it into your Packages directory as “JSCustom”.
+Alternatively, you can install JS Custom manually by cloning it into your Packages directory as “JSCustom”. If you do, you may need to manually install its dependencies.
 
 ## Usage
 
 JS Custom ships with two example configurations: “JS Custom - Default” and “JS Custom - React”. These should automatically be built and available for use upon installation.
 
-To customize your syntaxes, choose Preferences &rarr; Package Settings &rarr; JS Custom &rarr; Settings from the menubar. The package default settings will be shown on the left; your user settings will be on the right. When you change your user settings, your custom syntaxes will automatically be recompiled. (This may take a few seconds, especially if you have a lot of configurations.)
+To customize your syntaxes, choose Preferences → Package Settings → JS Custom → Settings from the menubar. The package default settings will be shown on the left; your user settings will be on the right. When you change your user settings, your custom syntaxes will automatically be recompiled. (This may take a few seconds, especially if you have a lot of configurations.)
 
-If you modify your user settings outside Sublime Text, this package may not notice your modifications. You can force it to rebuild all of your custom syntaxes by choosing Preferences &rarr; Package Settings &rarr; JS Custom &rarr; Rebuild Syntaxes from the menubar, or by choosing “JS Custom: Rebuild Syntaxes” from the command palette.
+If you modify your user settings outside Sublime Text, this package may not notice your modifications. You can force it to rebuild all of your custom syntaxes by choosing Preferences → Package Settings → JS Custom → Rebuild Syntaxes from the menubar, or by choosing “JS Custom: Rebuild Syntaxes” from the command palette.
+
+## Commands
+
+JS Custom provides the following commands. Except for “JSX Close Tag”, they are available in the command palette and under Preferences → Package Settings → JS Custom.
+
+### JS Custom: Rebuild Syntaxes (`build_js_custom_syntaxes`)
+
+Rebuild all of your custom syntaxes and remove any obsolete compiled syntaxes.
+
+This command takes an optional `versions` argument accepting a list of configuration names. If you pass `versions`, only the specified configurations will be rebuilt.
+
+### JS Custom: Clear User Data (`clear_js_custom_user_data`)
+
+Remove the `Packages/User/JS Custom` directory, including all compiled syntaxes.
+
+### Preferences: JS Custom
+
+Open the default JS Custom preferences and your own JS Custom user preferences side-by-side in a new window (using the built-in `edit_settings` command).
+
+### JSX Close Tag (`jsx_close_tag`)
+
+As the built-in `close_tag` command, but should work for JSX tags.
+
+This command is not available in the command palette or the JS Custom menu. By default, whenever you run the `close_tag` command in a JavaScript file, then the `jsx_close_tag` command will be run instead. You can disable this with the `jsx_close_tag` setting.
 
 ## Configuration
 
