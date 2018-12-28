@@ -1,5 +1,7 @@
 import sublime
 
+from sublime_lib import ResourcePath
+
 from package_control import events
 from package_control.package_manager import PackageManager
 from package_control.sys_path import add_dependency
@@ -20,7 +22,7 @@ __all__ = [
 ]
 
 
-PACKAGE_NAME = 'JSCustom'
+PACKAGE_NAME = ResourcePath.from_file_path(__file__).package
 
 
 def plugin_loaded():
