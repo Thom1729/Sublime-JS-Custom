@@ -39,7 +39,7 @@ def merge(*dicts):
 
 def get_configurations(settings):
     configs = settings['configurations']
-    if settings['embed_configuration']:
+    if settings.get('embed_configuration', None):
         configs = merge(
             { '~embed': settings['embed_configuration'] },
             settings['configurations']
