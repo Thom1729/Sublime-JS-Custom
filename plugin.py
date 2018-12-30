@@ -23,6 +23,7 @@ __all__ = [
 
 
 PACKAGE_NAME = ResourcePath.from_file_path(__file__).package
+UNSUBSCRIBE = None
 
 
 def plugin_loaded():
