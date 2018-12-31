@@ -22,11 +22,14 @@ __all__ = [
 ]
 
 
-PACKAGE_NAME = ResourcePath.from_file_path(__file__).package
+PACKAGE_NAME = None
 UNSUBSCRIBE = None
 
 
 def plugin_loaded():
+    global PACKAGE_NAME
+    PACKAGE_NAME = ResourcePath.from_file_path(__file__).package
+
     global UNSUBSCRIBE
     UNSUBSCRIBE = get_settings().subscribe(get_configurations, auto_build)
 
@@ -51,7 +54,7 @@ def plugin_unloaded():
 
 
 def ensure_dependencies_loaded():
-    for dependency in PackageManager().get_dependencies('JSCustom'):
+    for dependency in PackageManager().get_dependencies(PACKAGE_NAME):
         add_dependency(dependency)
 
 
