@@ -10,6 +10,7 @@ from sublime_lib.output_panel import OutputPanel
 from sublime_lib.settings_dict import NamedSettingsDict
 
 SOURCE_PATH = 'Packages/JSCustom/src/JS Custom.sublime-syntax.yaml-macros'
+UNSUBSCRIBE = None
 
 def plugin_loaded():
     global SYNTAXES_PATH
