@@ -1,4 +1,4 @@
-JS Custom - customizable JavaScript syntax highlighting for Sublime Text
+JS Custom - Customizable JavaScript syntax highlighting for Sublime Text
 ========================================================================
 
 Upon installation, JS Custom will compile a couple of example syntaxes, “JS Custom - Default” and “JS Custom - React”. You can try these out right away. To customize your syntaxes, choose Preferences → Package Settings → JS Custom → Settings from the menubar. When you save your user settings file, JS Custom will recompile your syntaxes on the fly.
