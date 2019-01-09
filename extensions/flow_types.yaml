@@ -93,18 +93,43 @@ contexts: !merge
         - method-declaration-expect-prefix
         - function-declaration-expect-async
 
+  arrow-function-declaration:
+    - match: ''
+      set:
+        - function-meta
+        - arrow-function-expect-body
+        - function-declaration-meta
+        - arrow-function-expect-arrow
+        - flow-type-annotation-arrow-function
+        - arrow-function-expect-parameters
+        - function-declaration-expect-async
+
+  # expression-end: !prepend
+  #   - match: (?=:)
+  #     push: flow-type-annotation-arrow-function
+
   parenthesized-expression:
     - match: \(
       scope: punctuation.section.group.begin.js
       set:
-        - meta_scope: meta.group.js
-        - match: \)
-          scope: punctuation.section.group.end.js
-          pop: true
-        - match: (?=:)
-          push: flow-type-annotation
-        - match: (?=\S)
-          push: expression
+        - - match: ':'
+            scope: punctuation.separator.type.js
+            set:
+              - - include: immediately-pop
+              - flow-type-meta
+              - - match: (?=\s*=>)
+                  pop: true
+                - include: flow-type-end
+              - flow-type-begin
+          - include: else-pop
+        - - meta_scope: meta.group.js
+          - match: \)
+            scope: punctuation.section.group.end.js
+            pop: true
+          - match: (?=:)
+            push: flow-type-annotation
+          - match: (?=\S)
+            push: expression
 
   class-field:
     - match: \+
@@ -224,6 +249,19 @@ contexts: !merge
     - match: \?(?=:)
       scope: storage.modifier.optional.js
     - include: flow-type-annotation
+
+  flow-type-annotation-arrow-function:
+    - match: ':'
+      scope: punctuation.separator.type.js
+      set:
+        - - include: immediately-pop
+        - flow-type-meta
+        - - match: (?=\s*=>)
+            pop: true
+          - include: flow-type-end
+        - flow-type-begin
+    - match: (?!\s*(?:$|:|//|/\*))
+      pop: true
 
   flow-type-meta:
     - meta_scope: meta.flow-type.js

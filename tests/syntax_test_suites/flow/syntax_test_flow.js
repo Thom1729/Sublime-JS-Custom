@@ -257,6 +257,18 @@ function f(
 //       ^^^^^^^^^^^^^^^ meta.flow-type
 ) {}
 
+    (foo): string => bar;
+//  ^^^^^^^^^^^^^^^^^^^^ meta.function
+//       ^^^^^^^^ meta.flow-type
+//         ^^^^^^ support.type.primitive.string
+//                ^^ storage.type.function.arrow
+
+    (foo)
+    : string => bar;
+//  ^^^^^^^^ meta.flow-type
+//    ^^^^^^ support.type.primitive.string
+//           ^^ storage.type.function.arrow
+
 /* Classes */
 
 class MyClass {
