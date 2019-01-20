@@ -12,7 +12,10 @@ from .src.configurations import get_configurations
 from .src.commands.build_syntaxes import BuildJsCustomSyntaxesCommand
 from .src.commands.clear_user_data import ClearJsCustomUserDataCommand
 from .src.commands.jsx_close_tag import JsxCloseTagCommand
+from .src.commands.auto_set_syntax import AutoSetJsCustomSyntaxCommand
+
 from .src.listeners.jsx_close_tag import JsxCloseTagListener
+from .src.listeners.auto_set_syntax import SetSyntaxListener
 
 
 __all__ = [

@@ -34,11 +34,21 @@ Remove the `Packages/User/JS Custom` directory, including all compiled syntaxes.
 
 Open the default JS Custom preferences and your own JS Custom user preferences side-by-side in a new window (using the built-in `edit_settings` command).
 
+## Internal Commands
+
+These commands are not listed in the command palette or in the JS Custom menu.
+
 ### JSX Close Tag (`jsx_close_tag`)
 
 As the built-in `close_tag` command, but should work for JSX tags.
 
-This command is not available in the command palette or the JS Custom menu. By default, whenever you run the `close_tag` command in a JavaScript file, then the `jsx_close_tag` command will be run instead. You can disable this with the `jsx_close_tag` setting.
+If the `jsx_close_tag` setting is `True` (the default), then whenever you run the `close_tag` command in a JavaScript file, the `jsx_close_tag` command will be run instead.
+
+### Auto Set JS Custom Syntax (`auto_set_js_custom_syntax`)
+
+If the current project settings have a key named `JSCustom.js_syntax`, then set the syntax for the current view to the value of that key. The value may be either the resource path of a syntax definition, or a scope name preceded by `scope:`.
+
+If the `auto_set_syntax` setting is `True` (the default), then whenever you open a JavaScript file, the `auto_set_js_custom_syntax` command will be run.
 
 ## Configuration
 
@@ -62,7 +72,11 @@ If true, JS Custom will automatically rebuild your syntaxes when you modify your
 
 ### `jsx_close_tag`: boolean
 
-If true, when you run the `close_tag` command in a JavaScript file, this package's `jsx_close_tag` command will be invoked instead.
+If true, then whenever you run the `close_tag` command in a JavaScript file, this package's `jsx_close_tag` command will be invoked instead.
+
+### `auto_set_syntax`: boolean
+
+If true, then whenever you open a JavaScript file, this package's `auto_set_js_custom_syntax` command will be invoked.
 
 ## Syntax Options
 

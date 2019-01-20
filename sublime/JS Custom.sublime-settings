@@ -23,5 +23,6 @@
     },
 
     "auto_build": true,
-    "jsx_close_tag": true
+    "jsx_close_tag": true,
+    "auto_set_syntax": true,
 }
