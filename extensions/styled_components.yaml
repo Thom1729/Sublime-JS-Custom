@@ -23,7 +23,7 @@ contexts: !merge
             scope: punctuation.definition.string.template.end.js
             pop: true
           - include: immediately-pop
-        - - clear_scopes: true
+        - - clear_scopes: 1
           - meta_scope: source.css.embedded.js
           - include: immediately-pop
         - - match: ''
