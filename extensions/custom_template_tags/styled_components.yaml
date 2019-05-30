@@ -23,7 +23,7 @@ contexts: !merge
             scope: punctuation.definition.string.template.end.js
             pop: true
           - include: immediately-pop
-        - - clear_scopes: true
+        - - clear_scopes: !if [!argument clear_all_scopes, true, 1]
           - meta_scope: source.css.embedded.js
           - include: immediately-pop
         - - match: ''
@@ -36,7 +36,7 @@ contexts: !merge
                 captures:
                   0: punctuation.definition.template-expression.begin.js
                 push:
-                  - clear_scopes: true
+                  - clear_scopes: !if [!argument clear_all_scopes, true, 1]
                   - meta_scope: !format '{scope} meta.template.expression.js'
                   - meta_content_scope: source.js.embedded.expression
                   - match: '\}'

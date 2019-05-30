@@ -4,3 +4,4 @@
 !apply
   - !include_resource Packages/JSCustom/src/syntax/JavaScript.yaml
   - !get_extensions /Packages/JSCustom/extensions/*.yaml
+  - !get_newfangled_extensions Packages/JSCustom/extensions

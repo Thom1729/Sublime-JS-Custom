@@ -7,7 +7,7 @@ contexts: !merge
     - include: literal-string-template-custom
 
   literal-string-template-custom: !foreach
-    in: !argument custom_template_tags
+    in: !argument tags
     as: [tag, include]
     value:
       match: !format '({tag})\s*(`)'
@@ -21,7 +21,7 @@ contexts: !merge
             scope: punctuation.definition.string.template.end.js
             pop: true
           - include: immediately-pop
-        - - clear_scopes: 1
+        - - clear_scopes: !if [!argument clear_all_scopes, true, 1]
           - include: immediately-pop
         - - match: ''
             set: !argument include
@@ -31,7 +31,7 @@ contexts: !merge
               - match: '\$\{'
                 scope: punctuation.definition.template-expression.begin.js
                 push:
-                  - clear_scopes: 1
+                  - clear_scopes: !if [!argument clear_all_scopes, true, 1]
                   - meta_scope: meta.template.expression.js
                   - meta_content_scope: source.js.embedded.expression
                   - match: '\}'
