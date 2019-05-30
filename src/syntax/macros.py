@@ -1,6 +1,5 @@
 import sublime
 import importlib
-from uuid import uuid4
 
 from yamlmacros.lib.extend import apply
 from yamlmacros.lib.include import include_resource  # noqa: F401
@@ -34,15 +33,12 @@ def find_extensions(path):
 
 
 def load_extension_functions(name, path):
-    temp_name = 'JSCustom_extension_{!s}'.format(uuid4())
-
     ret = {
         'get_options': lambda options: options,
     }
 
-    with TemporaryPackageFinder(temp_name, path):
-        importlib.import_module(temp_name)
-        module = importlib.import_module(name, temp_name)
+    with TemporaryPackageFinder(path, prefix='JSCustom_extension') as package:
+        module = importlib.import_module(name, package.__name__)
         return {
             'get_options': getattr(module, 'get_options', lambda options: options)
         }

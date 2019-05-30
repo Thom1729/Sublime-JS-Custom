@@ -1,42 +1,30 @@
 %YAML 1.2
-%TAG ! tag:yaml-macros:yamlmacros.lib.extend,yamlmacros.lib.arguments:
+%TAG ! tag:yaml-macros:yamlmacros.lib.extend,yamlmacros.lib.arguments,yamlmacros.lib.include:
 ---
 !merge
 contexts: !merge
   tagged-template: !prepend
-    - include: literal-string-template-custom
+    - meta_include_prototype: false
+    - include: literal-string-template-custom-comments
+    - include: prototype
+    - include: literal-string-template-custom-tags
 
-  literal-string-template-custom: !foreach
-    in: !argument tags
+  literal-string-template-custom-tags: !foreach
+    in: !argument [tags, {}]
     as: [tag, include]
     value:
       match: !format '({tag})\s*(`)'
       captures:
         1: variable.function.tagged-template.js
         2: punctuation.definition.string.template.begin.js
-      set:
-        - - meta_include_prototype: false
-          - meta_scope: string.template.js
-          - match: "`"
-            scope: punctuation.definition.string.template.end.js
-            pop: true
-          - include: immediately-pop
-        - - clear_scopes: !if [!argument clear_all_scopes, true, 1]
-          - include: immediately-pop
-        - - match: ''
-            set: !argument include
-            with_prototype:
-              - match: (?=`)
-                pop: true
-              - match: '\$\{'
-                scope: punctuation.definition.template-expression.begin.js
-                push:
-                  - clear_scopes: !if [!argument clear_all_scopes, true, 1]
-                  - meta_scope: meta.template.expression.js
-                  - meta_content_scope: source.js.embedded.expression
-                  - match: '\}'
-                    scope: punctuation.definition.template-expression.end.js
-                    pop: true
-                  - match: (?=\S)
-                    push: expression
-              - include: string-content
+      set: !include_resource Packages/JSCustom/extensions/custom_template_tags/template.yaml
+
+  literal-string-template-custom-comments: !foreach
+    in: !argument [comments, {}]
+    as: [tag, include]
+    value:
+      match: !format '(/\*\s*{tag}\s*\*/)\s*(`)'
+      captures:
+        1: variable.function.tagged-template.js
+        2: punctuation.definition.string.template.begin.js
+      set: !include_resource Packages/JSCustom/extensions/custom_template_tags/template.yaml

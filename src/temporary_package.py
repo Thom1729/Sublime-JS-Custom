@@ -1,10 +1,12 @@
 import sys
+from uuid import uuid4
 
+import importlib
 from importlib.abc import MetaPathFinder, SourceLoader
 
 from sublime_lib import ResourcePath
 
-__all__ = ['temporary_package', 'TemporaryPackageFinder']
+__all__ = ['TemporaryPackageFinder']
 
 
 class TemporaryFileLoader(SourceLoader):
@@ -23,12 +25,21 @@ class TemporaryFileLoader(SourceLoader):
 
 
 class TemporaryPackageFinder(MetaPathFinder):
-    def __init__(self, name, path):
-        self.name = name
+    def __init__(self, path, name = None, *, prefix = None, suffix = None):
         self.path = path
+        if name is None:
+            self._name = '{prefix}{token}{suffix}'.format(
+                prefix=prefix or '',
+                token=uuid4(),
+                suffix=suffix or '',
+            )
+        elif prefix is not None or suffix is not None:
+            raise ValueError("Argument `name` is incompatible with `prefix` and `suffix`.")
+        else:
+            self._name = name
 
     def is_mine(self, fullname):
-        return fullname == self.name or fullname.startswith(self.name + '.')
+        return fullname == self._name or fullname.startswith(self._name + '.')
 
     def find_loader(self, fullname, path):
         if self.is_mine(fullname):
@@ -58,6 +69,7 @@ class TemporaryPackageFinder(MetaPathFinder):
 
     def __enter__(self):
         sys.meta_path.append(self)
+        return importlib.import_module(self._name)
 
     def __exit__(self, *args):
         try:

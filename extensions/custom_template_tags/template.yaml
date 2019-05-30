@@ -1,0 +1,28 @@
+%YAML 1.2
+%TAG ! tag:yaml-macros:yamlmacros.lib.arguments:
+---
+- - meta_include_prototype: false
+  - meta_scope: string.template.js
+  - match: "`"
+    scope: punctuation.definition.string.template.end.js
+    pop: true
+  - include: immediately-pop
+- - clear_scopes: !if [!argument clear_all_scopes, true, 1]
+  - include: immediately-pop
+- - match: ''
+    set: !argument include
+    with_prototype:
+      - match: (?=`)
+        pop: true
+      - match: '\$\{'
+        scope: punctuation.definition.template-expression.begin.js
+        push:
+          - clear_scopes: !if [!argument clear_all_scopes, true, 1]
+          - meta_scope: meta.template.expression.js
+          - meta_content_scope: source.js.embedded.expression
+          - match: '\}'
+            scope: punctuation.definition.template-expression.end.js
+            pop: true
+          - match: (?=\S)
+            push: expression
+      - include: string-content

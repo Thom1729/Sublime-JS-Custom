@@ -1,5 +1,5 @@
 %YAML 1.2
-%TAG ! tag:yaml-macros:yamlmacros.lib.extend,yamlmacros.lib.arguments:
+%TAG ! tag:yaml-macros:yamlmacros.lib.extend,yamlmacros.lib.arguments,yamlmacros.lib.include:
 ---
 !merge
 contexts: !merge
@@ -16,35 +16,9 @@ contexts: !merge
 
     - match: '`'
       scope: punctuation.definition.string.template.begin
-      set:
-        - - meta_include_prototype: false
-          - meta_scope: string.template.js
-          - match: "`"
-            scope: punctuation.definition.string.template.end.js
-            pop: true
-          - include: immediately-pop
-        - - clear_scopes: !if [!argument clear_all_scopes, true, 1]
-          - meta_scope: source.css.embedded.js
-          - include: immediately-pop
-        - - match: ''
-            set:
-              - include: scope:source.js.css
-            with_prototype:
-              - match: (?=`)
-                pop: true
-              - match: '\$\{'
-                captures:
-                  0: punctuation.definition.template-expression.begin.js
-                push:
-                  - clear_scopes: !if [!argument clear_all_scopes, true, 1]
-                  - meta_scope: !format '{scope} meta.template.expression.js'
-                  - meta_content_scope: source.js.embedded.expression
-                  - match: '\}'
-                    scope: punctuation.definition.template-expression.end.js
-                    pop: true
-                  - match: (?=\S)
-                    push: expression
-              - include: string-content
+      set: !with
+        - include: scope:source.js.css
+        - !include_resource Packages/JSCustom/extensions/custom_template_tags/template.yaml
 
     - include: expression-end
 
