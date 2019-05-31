@@ -3,6 +3,7 @@ import importlib
 
 from yamlmacros.lib.extend import apply
 from yamlmacros.lib.include import include_resource  # noqa: F401
+from yamlmacros import get_loader
 
 from sublime_lib import ResourcePath
 
@@ -23,25 +24,20 @@ def get_extensions(path):
     return ret
 
 
-def find_extensions(path):
-    for about_path in ResourcePath.glob_resources('*.syntax-extension'):
-        about = sublime.decode_value(about_path.read_text())
-        about.setdefault('name', about_path.stem)
-        about.setdefault('path', about_path)
-        yield about
-
-
 def get_newfangled_extensions(path):
     arguments = (yield).context
     ret = []
 
-    for about in find_extensions(path):
-        name = about['name']
-        about_path = about['path']
-
+    for path in ResourcePath.glob_resources('*.syntax-extension'):
+        name = path.stem
         options = arguments.get(name)
+
         if options is not None and options is not False:
-            print('EXTENSION', name)
+
+            yaml = get_loader(macros_root=str(path.parent))
+            documents = yaml.load_all(path.read_text())
+
+            metadata = next(documents)
 
             def get_options(options):
                 if isinstance(options, dict):
@@ -49,9 +45,8 @@ def get_newfangled_extensions(path):
                 else:
                     return {}
 
-            extension_path = about_path.parent / about.get('extension', 'extension.yaml')
-
-            with (yield get_options(options)):
-                ret.append((yield from include_resource(str(extension_path))))
+            with (yield).set_context(**get_options(options)):
+                result = next(documents)
+                ret.append(result)
 
     return ret
