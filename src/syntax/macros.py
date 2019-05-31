@@ -33,19 +33,19 @@ def get_newfangled_extensions(path):
         options = arguments.get(name)
 
         if options is not None and options is not False:
-
             yaml = get_loader(macros_root=str(path.parent))
             documents = yaml.load_all(path.read_text())
 
             metadata = next(documents)
 
-            def get_options(options):
-                if isinstance(options, dict):
-                    return options
+            if not isinstance(options, dict):
+                default_argument = metadata.get('default_argument')
+                if default_argument:
+                    options = { default_argument: options }
                 else:
-                    return {}
+                    options = {}
 
-            with (yield).set_context(**get_options(options)):
+            with yaml.constructor.set_context(**options):
                 result = next(documents)
                 ret.append(result)
 
