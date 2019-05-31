@@ -1,0 +1,64 @@
+%YAML 1.2
+%TAG ! tag:yaml-macros:yamlmacros.lib.extend,yamlmacros.lib.arguments:
+---
+!merge
+contexts: !merge
+  expression-begin: !prepend
+    - match: (?=(?:styled|css|createGlobalStyle|injectGlobal|keyframes){{identifier_break}})
+      set:
+        - styled-component-end
+        - styled-component-begin
+
+  styled-component-end:
+    - match: \.
+      scope: punctuation.accessor.dot.js
+      push: styled-component-begin
+
+    - match: '`'
+      scope: punctuation.definition.string.template.begin
+      set:
+        - - meta_include_prototype: false
+          - meta_scope: string.template.js
+          - match: "`"
+            scope: punctuation.definition.string.template.end.js
+            pop: true
+          - include: immediately-pop
+        - - clear_scopes: true
+          - meta_scope: source.css.embedded.js
+          - include: immediately-pop
+        - - match: ''
+            set:
+              - include: scope:source.js.css
+            with_prototype:
+              - match: (?=`)
+                pop: true
+              - match: '\$\{'
+                captures:
+                  0: punctuation.definition.template-expression.begin.js
+                push:
+                  - clear_scopes: true
+                  - meta_scope: !format '{scope} meta.template.expression.js'
+                  - meta_content_scope: source.js.embedded.expression
+                  - match: '\}'
+                    scope: punctuation.definition.template-expression.end.js
+                    pop: true
+                  - match: (?=\S)
+                    push: expression
+              - include: string-content
+
+    - include: expression-end
+
+  styled-component-begin:
+    - match: '{{identifier}}(?=\s*\()'
+      scope: variable.function.js
+      pop: true
+
+    - match: '{{identifier}}(?=\s*`)'
+      scope: variable.function.tagged-template.js
+      pop: true
+
+    - match: '{{identifier}}'
+      scope: variable.other.readwrite.js
+      pop: true
+
+    - include: else-pop
