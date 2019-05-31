@@ -17,15 +17,15 @@ def atomic_replace(dest):
         delete=False,
         prefix=dest.name + '.temp-'
     ) as temp:
+        temp_path = temp.name
+        dest_path = str(dest)
+
         try:
             yield temp
 
             temp.flush()
             os.fsync(temp.fileno())
             temp.close()
-
-            temp_path = temp.name
-            dest_path = str(dest)
 
             try:
                 os.replace(temp_path, dest_path)
