@@ -1,14 +1,8 @@
-import sublime
-import importlib
-
 from yamlmacros.lib.extend import apply
 from yamlmacros.lib.include import include_resource  # noqa: F401
 from yamlmacros import get_loader
 
 from sublime_lib import ResourcePath
-
-
-from JSCustom.src.temporary_package import TemporaryPackageFinder
 
 
 __all__ = ['apply', 'include_resource', 'get_extensions', 'get_newfangled_extensions']
@@ -41,7 +35,7 @@ def get_newfangled_extensions(path):
             if not isinstance(options, dict):
                 default_argument = metadata.get('default_argument')
                 if default_argument:
-                    options = { default_argument: options }
+                    options = {default_argument: options}
                 else:
                     options = {}
 
