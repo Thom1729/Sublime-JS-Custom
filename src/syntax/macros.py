@@ -1,24 +1,12 @@
-from yamlmacros.lib.extend import apply
-from yamlmacros.lib.include import include_resource  # noqa: F401
 from yamlmacros import get_loader
 
 from sublime_lib import ResourcePath
 
 
-__all__ = ['apply', 'include_resource', 'get_extensions', 'get_newfangled_extensions']
+__all__ = ['get_extensions']
 
 
 def get_extensions(path):
-    arguments = (yield).context
-    ret = []
-    for file_path in ResourcePath.glob_resources(path):
-        if arguments.get(file_path.stem) not in (None, False):
-            ret.append((yield from include_resource(str(file_path))))
-
-    return ret
-
-
-def get_newfangled_extensions(path):
     arguments = (yield).context
     ret = []
 
@@ -31,6 +19,9 @@ def get_newfangled_extensions(path):
             documents = yaml.load_all(path.read_text())
 
             metadata = next(documents)
+
+            if metadata is None:
+                metadata = {}
 
             if not isinstance(options, dict):
                 default_argument = metadata.get('default_argument')
