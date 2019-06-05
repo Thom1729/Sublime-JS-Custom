@@ -18,19 +18,22 @@ def list_extensions(path):
     for path in path.rglob('*.syntax-extension'):
         parsed_documents = list(parse_documents(path.read_text()))
 
-        constructor = get_loader(macros_root=str(path.parent)).constructor
-
         metadata = {
             'name': path.stem,
             'macros_root': str(path.parent)
         }
 
-        given_metadata = constructor.construct_document(parsed_documents[0])
+        if len(parsed_documents) == 1:
+            value_document = parsed_documents[0]
+        else:
+            metadata_document, value_document = parsed_documents
 
-        if given_metadata:
-            metadata.update(**given_metadata)
+            constructor = get_loader(macros_root=str(path.parent)).constructor
+            given_metadata = constructor.construct_document(parsed_documents[0])
+            if given_metadata:
+                metadata.update(**given_metadata)
 
-        yield (metadata, parsed_documents[1])
+        yield (metadata, value_document)
 
 
 def get_extensions(path):
