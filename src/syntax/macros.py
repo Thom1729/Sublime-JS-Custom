@@ -1,3 +1,4 @@
+from ruamel.yaml import SafeLoader
 from yamlmacros import get_loader
 
 from sublime_lib import ResourcePath
@@ -6,22 +7,45 @@ from sublime_lib import ResourcePath
 __all__ = ['get_extensions']
 
 
+def parse_documents(text):
+    loader = SafeLoader(text)
+    composer = loader.composer
+    while composer.check_node():
+        yield composer.get_node()
+
+
+def list_extensions(path):
+    for path in path.rglob('*.syntax-extension'):
+        parsed_documents = list(parse_documents(path.read_text()))
+
+        constructor = get_loader(macros_root=str(path.parent)).constructor
+
+        metadata = {
+            'name': path.stem,
+            'macros_root': str(path.parent)
+        }
+
+        given_metadata = constructor.construct_document(parsed_documents[0])
+
+        if given_metadata:
+            metadata.update(**given_metadata)
+
+        yield (metadata, parsed_documents[1])
+
+
 def get_extensions(path):
     arguments = (yield).context
     ret = []
 
-    for path in ResourcePath.glob_resources('*.syntax-extension'):
-        name = path.stem
-        options = arguments.get(name)
+    extensions = list(list_extensions(ResourcePath(path)))
+
+    for extension in extensions:
+        metadata, extension_value = extension
+
+        options = arguments.get(metadata['name'])
 
         if options is not None and options is not False:
-            yaml = get_loader(macros_root=str(path.parent))
-            documents = yaml.load_all(path.read_text())
-
-            metadata = next(documents)
-
-            if metadata is None:
-                metadata = {}
+            constructor = get_loader(macros_root=metadata['macros_root']).constructor
 
             if not isinstance(options, dict):
                 default_argument = metadata.get('default_argument')
@@ -30,8 +54,8 @@ def get_extensions(path):
                 else:
                     options = {}
 
-            with yaml.constructor.set_context(**options):
-                result = next(documents)
+            with constructor.set_context(**options):
+                result = constructor.construct_document(extension_value)
                 ret.append(result)
 
     return ret
