@@ -10,6 +10,8 @@ from JSCustom.src.paths import PACKAGE_PATH, USER_DATA_PATH
 TESTS_PATH = USER_DATA_PATH / 'Tests'
 TEST_SUITES_PATH = PACKAGE_PATH / 'tests/syntax_test_suites'
 
+SYNTAX_DELAY = 200
+
 
 class TestSyntaxes(DeferrableTestCase):
     maxDiff = None
@@ -29,7 +31,7 @@ class TestSyntaxes(DeferrableTestCase):
         syntax_path = test_working_path / (name + '.sublime-syntax')
 
         yield syntax_path.exists
-        yield 200  # Hope this gives Sublime long enough to compile it.
+        yield SYNTAX_DELAY  # Hope this gives Sublime long enough to compile it.
 
         syntax_test_header = '// SYNTAX TEST "{!s}"\n'.format(syntax_path)
         all_failures = []
@@ -45,7 +47,11 @@ class TestSyntaxes(DeferrableTestCase):
 
                 yield test_dest.exists
                 assertion_count, failures = sublime_api.run_syntax_test(str(test_dest))
-                all_failures.extend(failures)
+
+                if failures and failures[0].endswith('does not match scope [text.plain]'):
+                    raise RuntimeError('Sublime did no compile {!s} in time.'.format(test_dest))
+                else:
+                    all_failures.extend(failures)
 
         self.assertEqual(all_failures, [])
 
