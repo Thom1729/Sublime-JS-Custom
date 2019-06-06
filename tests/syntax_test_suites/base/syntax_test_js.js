@@ -1,4 +1,3 @@
-// SYNTAX TEST "Packages/JavaScript/JavaScript.sublime-syntax"
 
 import TheirClass from "./mypath";
 //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.import.js
