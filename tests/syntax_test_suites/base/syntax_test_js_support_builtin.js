@@ -1,4 +1,3 @@
-// SYNTAX TEST "Packages/JavaScript/JavaScript.sublime-syntax"
 
     isNaN;
 //  ^^^^^ support.function - meta.function-call

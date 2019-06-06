@@ -1,4 +1,3 @@
-// SYNTAX TEST "Packages/User/JS Custom/Tests/flow/flow.sublime-syntax"
 
 /* Built-in types */
 
