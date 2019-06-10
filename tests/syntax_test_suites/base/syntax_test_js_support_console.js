@@ -1,4 +1,3 @@
-// SYNTAX TEST "Packages/JavaScript/JavaScript.sublime-syntax"
 
     console;
 //  ^^^^^^^ support.type.object.console
