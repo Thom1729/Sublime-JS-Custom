@@ -48,6 +48,15 @@ contexts: !merge
     - include: flow-type-declare
     - include: flow-type-alias
 
+  import-item: !prepend
+    - include: flow-type-import-type
+
+  import-brace: !prepend
+    - include: flow-type-import-type
+
+  export-extended: !prepend
+    - include: flow-type-export-type
+
   variable-binding-pattern:
     - match: ''
       set:
@@ -148,6 +157,16 @@ contexts: !merge
         - inherited-class-expression-end
         - inherited-class-expression-begin
     - include: else-pop
+
+  flow-type-import-type:
+    - match: type{{identifier_break}}
+      scope: storage.type.js
+
+  flow-type-export-type:
+    - match: type{{identifier_break}}(?=\s*\{)
+      scope: storage.type.js
+      set: export-item
+    - include: flow-type-alias
 
   flow-type-declare:
     - match: declare{{identifier_break}}(?=\s*(?:type|class|function|var|let|const|opaque|export|module){{identifier_break}})

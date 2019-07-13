@@ -370,3 +370,21 @@ class MyClass {
 // Arrow functions
 // Module Types
 // Special comments
+
+/* Imports/exports */
+
+    import { type Foo } from 'bar';
+//           ^^^^ storage.type
+//                ^^^ variable.other.readwrite
+
+    import type Foo from 'bar';
+//         ^^^^ storage.type
+//              ^^^ variable.other.readwrite
+
+    export type { Foo };
+//         ^^^^ storage.type
+//                ^^^ variable.other.readwrite
+
+    export type Foo = bar;
+//         ^^^^ storage.type
+//              ^^^ entity.name.type
