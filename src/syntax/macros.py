@@ -50,7 +50,11 @@ def get_extensions(path):
         if options is not None and options is not False:
             constructor = get_loader(macros_root=metadata['macros_root']).constructor
 
-            if not isinstance(options, dict):
+            if 'legacy_argument' in metadata:
+                options = {
+                    metadata['legacy_argument']: options
+                }
+            elif not isinstance(options, dict):
                 default_argument = metadata.get('default_argument')
                 if default_argument:
                     options = {default_argument: options}

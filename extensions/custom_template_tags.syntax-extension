@@ -1,5 +1,5 @@
 ---
-default_argument: custom_template_tags
+legacy_argument: custom_template_tags
 ...
 %YAML 1.2
 %TAG ! tag:yaml-macros:yamlmacros.lib.extend,yamlmacros.lib.arguments:
