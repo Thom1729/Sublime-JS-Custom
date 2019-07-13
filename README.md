@@ -96,10 +96,6 @@ Highlight [Flow type annotations](https://flow.org/en/docs/types/).
 
 Highlight [eslint configuration directives](https://eslint.org/docs/user-guide/configuring) in comments.
 
-#### `styled_components`: boolean
-
-Highlight template string literals for [Styled Components](https://www.styled-components.com/).
-
 ### Personalization
 
 These extensions allow you to personalize your highlighting in various ways.
@@ -108,33 +104,45 @@ These extensions allow you to personalize your highlighting in various ways.
 
 Highlight unquoted object keys as strings, matching [babel-sublime](https://github.com/babel/babel-sublime)'s behavior.
 
-#### `custom_template_tags`: object
+#### `custom_templates`: object
 
-Highlight user-defined [tagged template literals](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals).
+Use custom syntax highlighting inside [template literals](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals). Several sub-options are available:
 
-Each key in the given object should be a JavaScript identifier representing a template literal tag. The associated value should be a string specifying a context to include: for instance, `“scope:source.css”`
+By default, the special `embed_configuration` disables this to avoid syntax recursion errors.
 
-Example:
+##### `tags`: object
+
+Highlight tagged template literals based on the tag. Each key in `tag` should be a JavaScript identifier representing a template literal tag. The associated value should be a string specifying a context to include.
+
+For example, to highlight template strings with the `style` tag as CSS, use the following configuration:
 
 ```json
 {
     "configurations": {
         "My Config": {
-            "custom_template_tags": {
-                "style": "scope:source.css"
+            "custom_templates": {
+                "tags": {
+                    "style": "scope:source.css"
+                }
             }
         }
     }
 }
 ```
 
-Then, if you use “JS Custom - My Config” to highlight the following code, the contents of the template literal will be highlighted as CSS.
+Then, if you use “JS Custom - My Config” to highlight the following code, the contents of this template literal will be highlighted as CSS:
 
 ```js
 const myStyle = style`div { color: red }`;
 ```
 
-By default, the special `embed_configuration` disables this to avoid syntax recursion errors.
+##### `styled_components`: boolean
+
+Highlight template string literals for [Styled Components](https://www.styled-components.com/).
+
+##### `clear_all_scopes`: boolean
+
+Inside custom template literals, clear all of the enclosing JavaScript scopes. Ordinarily, only the `string` scope will be cleared. Enable this option if you're using a third-party tool that requires it.
 
 ### Metadata
 
@@ -155,6 +163,18 @@ An array of file extensions. Files with the given extensions will be use this sy
 #### `hidden`: boolean
 
 If this is `true`, the compiled syntax will not appear in the syntax menu or the command palette. It can still be referenced or included by other syntaxes.
+
+### Deprecated
+
+These options have been superseded by newer, more flexible options.
+
+#### custom_template_tags
+
+Superseded by `custom_templates.tags`.
+
+#### styled_components
+
+Superseded by `custom_templates.styled_components`.
 
 ## Frequently Asked Questions
 

@@ -20,6 +20,7 @@
         "hidden": true,
         "file_extensions": [],
         "custom_template_tags": false,
+        "custom_templates": false,
     },
 
     "auto_build": true,
