@@ -162,6 +162,9 @@ contexts: !merge
     - match: type{{identifier_break}}
       scope: storage.type.js
 
+    - match: typeof{{identifier_break}}
+      scope: keyword.operator.js
+
   flow-type-export-type:
     - match: type{{identifier_break}}(?=\s*\{)
       scope: storage.type.js

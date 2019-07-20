@@ -388,3 +388,28 @@ class MyClass {
     export type Foo = bar;
 //         ^^^^ storage.type
 //              ^^^ entity.name.type
+
+    import typeof React from 'React';
+//         ^^^^^^ keyword.operator
+//                ^^^^^ variable.other.readwrite
+//                      ^^^^ keyword.control.import-export
+
+    import {typeof useState} from 'React';
+//          ^^^^^^ keyword.operator
+//                 ^^^^^^^^ variable.other.readwrite
+//                           ^^^^ keyword.control.import-export
+
+    import typeof {useState} from 'React';
+//         ^^^^^^ keyword.operator
+//                 ^^^^^^^^ variable.other.readwrite
+//                           ^^^^ keyword.control.import-export
+
+    import {typeof useState as UseState} from 'React';
+//          ^^^^^^ keyword.operator
+//                 ^^^^^^^^ variable.other.readwrite
+//                          ^^ keyword.control.import-export
+
+    import typeof {useState as UseState} from 'React';
+//         ^^^^^^ keyword.operator
+//                 ^^^^^^^^ variable.other.readwrite
+//                          ^^ keyword.control.import-export
