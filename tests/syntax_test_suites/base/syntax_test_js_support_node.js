@@ -1,3 +1,4 @@
+// SYNTAX TEST "Packages/JavaScript/JavaScript.sublime-syntax"
 
     global;
 //  ^^^^^^ support.type.object.node

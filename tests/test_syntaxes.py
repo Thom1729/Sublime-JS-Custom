@@ -10,7 +10,7 @@ from JSCustom.src.paths import PACKAGE_PATH, USER_DATA_PATH
 TESTS_PATH = USER_DATA_PATH / 'Tests'
 TEST_SUITES_PATH = PACKAGE_PATH / 'tests/syntax_test_suites'
 
-SYNTAX_DELAY = 200
+SYNTAX_DELAY = 500
 
 
 class TestSyntaxes(DeferrableTestCase):
@@ -49,7 +49,7 @@ class TestSyntaxes(DeferrableTestCase):
                 assertion_count, failures = sublime_api.run_syntax_test(str(test_dest))
 
                 if failures and failures[0].endswith('does not match scope [text.plain]'):
-                    raise RuntimeError('Sublime did no compile {!s} in time.'.format(test_dest))
+                    raise RuntimeError('Sublime did not compile {!s} in time.'.format(test_dest))
                 else:
                     all_failures.extend(failures)
 

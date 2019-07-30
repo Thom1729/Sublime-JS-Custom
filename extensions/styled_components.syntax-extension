@@ -15,12 +15,12 @@ contexts: !merge
       push: styled-component-begin
 
     - match: '`'
-      scope: punctuation.definition.string.template.begin
+      scope: punctuation.definition.string.begin
       set:
         - - meta_include_prototype: false
-          - meta_scope: string.template.js
+          - meta_scope: meta.string.js string.quoted.other.js
           - match: "`"
-            scope: punctuation.definition.string.template.end.js
+            scope: punctuation.definition.string.end.js
             pop: true
           - include: immediately-pop
         - - clear_scopes: true
@@ -34,13 +34,13 @@ contexts: !merge
                 pop: true
               - match: '\$\{'
                 captures:
-                  0: punctuation.definition.template-expression.begin.js
+                  0: punctuation.definition.interpolation.begin.js
                 push:
                   - clear_scopes: true
-                  - meta_scope: !format '{scope} meta.template.expression.js'
+                  - meta_scope: !format '{scope} meta.interpolation.js'
                   - meta_content_scope: source.js.embedded.expression
                   - match: '\}'
-                    scope: punctuation.definition.template-expression.end.js
+                    scope: punctuation.definition.interpolation.end.js
                     pop: true
                   - match: (?=\S)
                     push: expression
