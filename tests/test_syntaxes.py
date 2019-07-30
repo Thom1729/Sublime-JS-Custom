@@ -88,3 +88,19 @@ class TestSyntaxes(DeferrableTestCase):
             },
             tests=["base", "flow"],
         )
+
+    def test_templates(self):
+        yield from self._test_syntaxes(
+            name="templates",
+            configuration={
+                "file_extensions": [],
+                "hidden": True,
+                "custom_templates": {
+                    'tags': {
+                        'css': 'scope:source.css',
+                    },
+                    'styled_components': True,
+                }
+            },
+            tests=["base", "templates"],
+        )
