@@ -99,6 +99,9 @@ class TestSyntaxes(DeferrableTestCase):
                     'tags': {
                         'css': 'scope:source.css',
                     },
+                    'comments': {
+                        'css': 'scope:source.css',
+                    },
                     'styled_components': True,
                 }
             },
