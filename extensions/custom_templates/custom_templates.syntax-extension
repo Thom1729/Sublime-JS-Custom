@@ -27,7 +27,7 @@ contexts: !merge
     in: !argument [comments, {}]
     as: [tag, include]
     value:
-      match: !format '(?<=/\*(?:{tag})\*/)'
+      match: !format '(?<=/\*(?:{tag})\*/|/\* (?:{tag}) \*/)'
       scope: variable.function.tagged-template.js
       set: !include_resource Packages/JSCustom/extensions/custom_templates/template.yaml
 
