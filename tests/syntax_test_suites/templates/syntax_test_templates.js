@@ -1,4 +1,3 @@
-// SYNTAX TEST "Packages/User/JS Custom/Tests/templates/templates.sublime-syntax"
 
     css`a { color: red; }`
 //  ^^^ variable.function.tagged-template
@@ -32,3 +31,11 @@
 //  ^ string.quoted.other punctuation.definition.string.begin
 //   ^^^^^^^^^^^ source.js.css - string
 //              ^ string.quoted.other punctuation.definition.string.end
+
+    /*css*/`a { color: red; }`
+//  ^^^^^^^ comment.block
+//         ^^^^^^^^^^^^^^^^^^^ meta.string
+//          ^^^^^^^^^^^^^^^^^ source.css - string
+    `div { color: blue; }`;
+//  ^^^^^^^^^^^^^^^^^^^^^^ meta.string
+//   ^^^^^^^^^^^^^^^^^^^^ source.css - string

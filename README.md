@@ -136,6 +136,30 @@ Then, if you use “JS Custom - My Config” to highlight the following code, th
 const myStyle = style`div { color: red }`;
 ```
 
+##### `comments`: object
+
+Highlight tagged template literals based on a preceding block comment. Example configuration:
+
+```json
+{
+    "configurations": {
+        "My Config": {
+            "custom_templates": {
+                "comments": {
+                    "style": "scope:source.css"
+                }
+            }
+        }
+    }
+}
+```
+
+Example JavaScript:
+
+```js
+const myStyle = /*style*/`div { color: red }`;
+```
+
 ##### `styled_components`: boolean
 
 Highlight template string literals for [Styled Components](https://www.styled-components.com/).

@@ -8,11 +8,18 @@ contexts: !merge
     - include: literal-string-template-custom-tags
     - include: styled-components
 
+  expression-begin: !prepend
+    # Keep the slow backreferences out of this frequently-used context.
+    - match: (?=`)
+      set:
+        - include: literal-string-template-custom-comments
+        - include: literal-string-template
+
   literal-string-template-custom-tags: !foreach
     in: !argument [tags, {}]
     as: [tag, include]
     value:
-      match: !format '{tag}(?=\s*`)'
+      match: !format '(?:{tag})(?=\s*`)'
       scope: variable.function.tagged-template.js
       set: !include_resource Packages/JSCustom/extensions/custom_templates/template.yaml
 
@@ -20,7 +27,7 @@ contexts: !merge
     in: !argument [comments, {}]
     as: [tag, include]
     value:
-      match: !format '/\*\s*{tag}\s*\*/(?=\s*`)'
+      match: !format '(?<=/\*(?:{tag})\*/)'
       scope: variable.function.tagged-template.js
       set: !include_resource Packages/JSCustom/extensions/custom_templates/template.yaml
 
