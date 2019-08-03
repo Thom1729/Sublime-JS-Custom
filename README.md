@@ -158,6 +158,7 @@ Example JavaScript:
 
 ```js
 const myStyle = /*style*/`div { color: red }`;
+const myStyle = /* style */`div { color: red }`;
 ```
 
 ##### `styled_components`: boolean

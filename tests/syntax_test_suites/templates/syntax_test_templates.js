@@ -36,6 +36,11 @@
 //  ^^^^^^^ comment.block
 //         ^^^^^^^^^^^^^^^^^^^ meta.string
 //          ^^^^^^^^^^^^^^^^^ source.css - string
+
+    /* css */`a { color: red; }`
+//  ^^^^^^^^^ comment.block
+//           ^^^^^^^^^^^^^^^^^^^ meta.string
+//            ^^^^^^^^^^^^^^^^^ source.css - string
     `div { color: blue; }`;
 //  ^^^^^^^^^^^^^^^^^^^^^^ meta.string
 //   ^^^^^^^^^^^^^^^^^^^^ source.css - string
