@@ -102,6 +102,9 @@ class TestSyntaxes(DeferrableTestCase):
                     'comments': {
                         'css': 'scope:source.css',
                     },
+                    'lookaheads': {
+                        r'select\b': 'scope:source.sql',
+                    },
                     'styled_components': True,
                 }
             },
