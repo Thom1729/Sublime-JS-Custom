@@ -112,10 +112,10 @@
     baz={{ xyzzy:42 }}
 //      ^^^^^^^^^^^^^^ meta.interpolation
 //      ^ punctuation.definition.interpolation.begin
-//       ^^^^^^^^^^^^ source.js.embedded.jsx meta.object-literal
-//         ^^^^^ meta.object-literal.key
+//       ^^^^^^^^^^^^ source.js.embedded.jsx meta.mapping
+//         ^^^^^ meta.mapping.key
 //              ^ punctuation.separator.key-value
-//               ^^ constant.numeric.decimal
+//               ^^ constant.numeric.integer.decimal
 //                   ^ punctuation.definition.interpolation.end
 
 
@@ -129,10 +129,10 @@
 //  ^^^^^^^^^^^^^^^^^ meta.interpolation
 //   ^^^^^^^^^^^^^^^ source.js.embedded.jsx
 //   ^^^ keyword.operator.spread
-//      ^^^^^^^^^^^^ meta.object-literal
-//        ^^^^^ meta.object-literal.key
+//      ^^^^^^^^^^^^ meta.mapping
+//        ^^^^^ meta.mapping.key
 //             ^ punctuation.separator.key-value
-//              ^^ constant.numeric.decimal
+//              ^^ constant.numeric.integer.decimal
 //                  ^ punctuation.definition.interpolation.end
 
     // baz
@@ -167,10 +167,10 @@
     {{ xyzzy:42 }}
 //  ^^^^^^^^^^^^^^ meta.interpolation
 //   ^^^^^^^^^^^^ source.js.embedded.jsx
-//   ^^^^^^^^^^^^ meta.object-literal
-//     ^^^^^ meta.object-literal.key
+//   ^^^^^^^^^^^^ meta.mapping
+//     ^^^^^ meta.mapping.key
 //          ^ punctuation.separator.key-value
-//           ^^ constant.numeric.decimal
+//           ^^ constant.numeric.integer.decimal
 //               ^ punctuation.definition.interpolation.end
 
     {//}
