@@ -13,6 +13,7 @@ contexts: !merge
     - match: (?=`)
       set:
         - include: literal-string-template-custom-comments
+        - include: literal-string-template-custom-lookahead
         - include: literal-string-template
 
   literal-string-template-custom-tags: !foreach
@@ -27,7 +28,15 @@ contexts: !merge
     in: !argument [comments, {}]
     as: [tag, include]
     value:
-      match: !format '(?<=/\*(?:{tag})\*/)'
+      match: !format '(?<=/\*(?:{tag})\*/|/\* (?:{tag}) \*/)'
+      scope: variable.function.tagged-template.js
+      set: !include_resource Packages/JSCustom/extensions/custom_templates/template.yaml
+
+  literal-string-template-custom-lookahead: !foreach
+    in: !argument [lookaheads, {}]
+    as: [lookahead, include]
+    value:
+      match: !format '(?=`(?:{lookahead}))'
       scope: variable.function.tagged-template.js
       set: !include_resource Packages/JSCustom/extensions/custom_templates/template.yaml
 

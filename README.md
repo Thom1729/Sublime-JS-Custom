@@ -138,7 +138,7 @@ const myStyle = style`div { color: red }`;
 
 ##### `comments`: object
 
-Highlight tagged template literals based on a preceding block comment. Example configuration:
+Highlight untagged template literals based on a preceding block comment. Example configuration:
 
 ```json
 {
@@ -158,6 +158,31 @@ Example JavaScript:
 
 ```js
 const myStyle = /*style*/`div { color: red }`;
+const myStyle = /* style */`div { color: red }`;
+```
+
+##### `lookaheads`: object
+
+Highlight untagged template literals based on the contents. Example configuration:
+
+```json
+{
+    "configurations": {
+        "My Config": {
+            "custom_templates": {
+                "lookaheads": {
+                    "select\b": "scope:source.sql"
+                }
+            }
+        }
+    }
+}
+```
+
+Example JavaScript:
+
+```js
+const myQuery = `select 1 from dual`;
 ```
 
 ##### `styled_components`: boolean

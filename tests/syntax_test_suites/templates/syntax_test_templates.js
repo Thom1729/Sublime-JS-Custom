@@ -17,6 +17,12 @@
 //       ^ punctuation.definition.string.begin
 //            ^ punctuation.definition.string.end
 
+    `select * from dual`;
+//  ^^^^^^^^^^^^^^^^^^^^ meta.string
+//  ^ string.quoted.other punctuation.definition.string.begin
+//   ^^^^^^^^^^^^^^^^^^ source.sql - string
+//                     ^ string.quoted.other punctuation.definition.string.end
+
     styled`color: red`
 //  ^^^^^^ variable.function.tagged-template
 //        ^ string.quoted.other punctuation.definition.string.begin
@@ -36,6 +42,11 @@
 //  ^^^^^^^ comment.block
 //         ^^^^^^^^^^^^^^^^^^^ meta.string
 //          ^^^^^^^^^^^^^^^^^ source.css - string
+
+    /* css */`a { color: red; }`
+//  ^^^^^^^^^ comment.block
+//           ^^^^^^^^^^^^^^^^^^^ meta.string
+//            ^^^^^^^^^^^^^^^^^ source.css - string
     `div { color: blue; }`;
 //  ^^^^^^^^^^^^^^^^^^^^^^ meta.string
 //   ^^^^^^^^^^^^^^^^^^^^ source.css - string
