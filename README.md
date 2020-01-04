@@ -12,6 +12,8 @@ Alternatively, you can install JS Custom manually by cloning it into your Packag
 
 JS Custom ships with two example configurations: “JS Custom - Default” and “JS Custom - React”. These should automatically be built and available for use upon installation.
 
+All syntaxes built by JS Custom are created inside your User package. They are found in the Syntax menu under “User”, not under “JS Custom”.
+
 To customize your syntaxes, choose Preferences → Package Settings → JS Custom → Settings from the menubar. The package default settings will be shown on the left; your user settings will be on the right. When you change your user settings, your custom syntaxes will automatically be recompiled. (This may take a few seconds, especially if you have a lot of configurations.)
 
 If you modify your user settings outside Sublime Text, this package may not notice your modifications. You can force it to rebuild all of your custom syntaxes by choosing Preferences → Package Settings → JS Custom → Rebuild Syntaxes from the menubar, or by choosing “JS Custom: Rebuild Syntaxes” from the command palette.
