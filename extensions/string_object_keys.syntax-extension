@@ -4,11 +4,6 @@
 !merge
 contexts: !merge
   bare-property-name:
-    - match: '{{dollar_only_identifier}}'
-      scope: string.unquoted.js meta.object-literal.key.dollar.only.js punctuation.dollar.js
-    - match: '{{dollar_identifier}}'
-      scope: string.unquoted.js meta.object-literal.key.dollar.js
-      captures:
-        1: punctuation.dollar.js
     - match: '{{identifier}}'
-      scope: string.unquoted.js meta.object-literal.key.js
+      scope: string.unquoted.js
+      pop: true
