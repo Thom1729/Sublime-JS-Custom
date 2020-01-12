@@ -110,3 +110,15 @@ class TestSyntaxes(DeferrableTestCase):
             },
             tests=["base", "templates"],
         )
+
+
+    def test_string_object_keys(self):
+        yield from self._test_syntaxes(
+            name="string_object_keys",
+            configuration={
+                "file_extensions": [],
+                "hidden": True,
+                "string_object_keys": True,
+            },
+            tests=["base", "string_object_keys"],
+        )
