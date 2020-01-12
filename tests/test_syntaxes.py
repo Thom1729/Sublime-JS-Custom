@@ -1,3 +1,4 @@
+import sublime
 import sublime_api
 import shutil
 
@@ -21,8 +22,6 @@ class TestSyntaxes(DeferrableTestCase):
         shutil.rmtree(str(TESTS_PATH.file_path()), ignore_errors=True)
         TESTS_PATH.file_path().mkdir(parents=True)
 
-        cls.all_tests = TEST_SUITES_PATH.rglob('syntax_test*')
-
     def _test_syntaxes(self, name, configuration, tests):
         test_working_path = TESTS_PATH / name
         test_working_path.file_path().mkdir(parents=True)
@@ -30,28 +29,24 @@ class TestSyntaxes(DeferrableTestCase):
         build_configurations({name: configuration}, test_working_path)
         syntax_path = test_working_path / (name + '.sublime-syntax')
 
+        sublime.run_command('build_js_custom_tests', {
+            'syntax_path': str(syntax_path),
+            'suites': tests,
+            'destination_directory': str(test_working_path.file_path()),
+        })
+
         yield syntax_path.exists
         yield SYNTAX_DELAY  # Hope this gives Sublime long enough to compile it.
 
-        syntax_test_header = '// SYNTAX TEST "{!s}"\n'.format(syntax_path)
         all_failures = []
 
-        for test_source in self.all_tests:
-            if test_source.parent.name in tests:
-                test_dest = test_working_path / test_source.name
-                text = test_source.read_text().split('\n', 1)[1]
+        for test_dest in test_working_path.glob('syntax_test*'):
+            assertion_count, failures = sublime_api.run_syntax_test(str(test_dest))
 
-                with test_dest.file_path().open('w', encoding='utf-8') as file:
-                    file.write(syntax_test_header)
-                    file.write(text)
-
-                yield test_dest.exists
-                assertion_count, failures = sublime_api.run_syntax_test(str(test_dest))
-
-                if failures and failures[0].endswith('does not match scope [text.plain]'):
-                    raise RuntimeError('Sublime did not compile {!s} in time.'.format(test_dest))
-                else:
-                    all_failures.extend(failures)
+            if failures and failures[0].endswith('does not match scope [text.plain]'):
+                raise RuntimeError('Sublime did not compile {!s} in time.'.format(test_dest))
+            else:
+                all_failures.extend(failures)
 
         self.assertEqual(all_failures, [])
 
