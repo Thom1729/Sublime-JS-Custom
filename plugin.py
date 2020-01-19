@@ -9,7 +9,7 @@ from package_control.sys_path import add_dependency
 from .src.settings import get_settings
 from .src.configurations import get_configurations
 
-from .src.commands.build_syntaxes import BuildJsCustomSyntaxesCommand
+from .src.commands.build_syntaxes import BuildJsCustomSyntaxCommand, BuildJsCustomSyntaxesCommand
 from .src.commands.build_tests import BuildJsCustomTestsCommand
 from .src.commands.clear_user_data import ClearJsCustomUserDataCommand
 from .src.commands.jsx_close_tag import JsxCloseTagCommand
@@ -19,6 +19,7 @@ from .src.listeners.jsx_close_tag import JsxCloseTagListener
 __all__ = [
     'plugin_loaded', 'plugin_unloaded',
     'BuildJsCustomSyntaxesCommand',
+    'BuildJsCustomSyntaxCommand',
     'BuildJsCustomTestsCommand',
     'ClearJsCustomUserDataCommand',
     'JsxCloseTagCommand',
