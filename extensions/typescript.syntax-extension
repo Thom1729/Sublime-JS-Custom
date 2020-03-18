@@ -1,0 +1,328 @@
+%YAML 1.2
+%TAG ! tag:yaml-macros:yamlmacros.lib.syntax,yamlmacros.lib.extend,yamlmacros.lib.arguments:
+---
+!merge
+
+variables: !merge
+  dot_accessor: |-
+    (?x: # Also match !.
+      !\.
+      |
+      (?:
+        \.
+        (?! \? [\[(] )
+        \??
+      )
+    )
+
+contexts: !merge
+
+  property-access: !prepend
+    - match: \!\.
+      scope: punctuation.accessor.js
+      push:
+        - match: '(?={{identifier}}\s*(?:\.\?)?\()'
+          set:
+            - call-method-meta
+            - function-call-arguments
+            - call-path
+            - object-property
+        - include: object-property
+
+  statement: !prepend
+    - match: interface{{identifier_break}}
+      scope: storage.type.js
+      set:
+        - ts-interface-meta
+        - ts-interface-body
+        - ts-interface-name
+
+    - include: ts-enum
+
+    - match: type{{identifier_break}}
+      scope: storage.type.js
+      set:
+        - ts-type-alias-meta
+        - ts-type-alias-body
+        - generic-type-parameter-list
+        - ts-type-alias-name
+
+    - match: const{{identifier_break}}
+      scope: storage.type.js
+      set:
+        - include: ts-enum
+        - match: (?=\S)
+          set:
+            - expect-semicolon
+            - variable-binding-list-top
+            - variable-binding-top
+
+    - match: declare{{identifier_break}}
+      scope: storage.type.js
+      set:
+        - include: ts-enum
+        - include: else-pop
+
+    - match: abstract{{identifier_break}}
+      scope: storage.modifier.js
+      set:
+        - include: class
+        - include: else-pop
+
+  ts-interface-meta:
+    - meta_include_prototype: false
+    - meta_scope: meta.interface.js
+    - include: immediately-pop
+
+  ts-interface-name:
+    - match: '{{identifier}}'
+      scope: entity.name.interface.js
+      pop: true
+    - include: else-pop
+
+  ts-interface-body:
+    - match: \{
+      scope: punctuation.section.block.begin.js
+      set:
+        - meta_scope: meta.block.js
+        - match: \}
+          scope: punctuation.section.block.end.js
+          pop: true
+        - match: '{{identifier}}'
+          scope: variable.other.readwrite.js
+          push:
+            - expect-semicolon
+            - ts-type-annotation-optional
+
+  ts-enum:
+    - match: enum{{identifier_break}}
+      scope: storage.type.js
+      set:
+        - ts-enum-meta
+        - ts-enum-body
+        - ts-enum-name
+
+  ts-enum-meta:
+    - meta_include_prototype: false
+    - meta_scope: meta.enum.js
+    - include: immediately-pop
+
+  ts-enum-name:
+    - match: '{{identifier}}'
+      scope: entity.name.enum.js
+      pop: true
+    - include: else-pop
+
+  ts-enum-body:
+    - match: \{
+      scope: punctuation.section.block.begin.js
+      set:
+        - meta_scope: meta.block.js
+        - match: \}
+          scope: punctuation.section.block.end.js
+          pop: true
+        - include: comma-separator
+        - match: '{{identifier}}'
+          scope: variable.other.readwrite.js
+          push: initializer
+
+  ts-type-alias-meta:
+    - meta_include_prototype: false
+    - meta_scope: meta.type-alias.js
+    - include: immediately-pop
+
+  ts-type-alias-name:
+    - match: '{{identifier}}'
+      scope: entity.name.type.js
+      pop: true
+    - include: else-pop
+
+  ts-type-alias-body:
+    - match: '='
+      scope: keyword.operator.assignment.js
+      set: ts-type-expression
+    - include: else-pop
+
+  variable-binding-pattern:
+    - match: ''
+      set:
+        - - include: ts-type-annotation
+        - - include: variable-binding-name
+          - include: variable-binding-array-destructuring
+          - include: variable-binding-object-destructuring
+          - include: else-pop
+
+  function-declaration:
+    - meta_include_prototype: false
+    - match: ''
+      set:
+        - function-meta
+        - function-declaration-expect-body
+        - function-declaration-meta
+        - ts-type-annotation
+        - function-declaration-expect-parameters
+        - generic-type-parameter-list
+        - function-declaration-expect-name
+        - function-declaration-expect-generator-star
+        - function-declaration-expect-function-keyword
+        - function-declaration-expect-async
+
+  generic-type-parameter-list:
+    - match: \<
+      scope: punctuation.definition.generic.begin.js
+      set:
+        - meta_scope: meta.generic.js
+        - match: \>
+          scope: punctuation.definition.generic.end.js
+          pop: true
+        - match: '{{identifier}}'
+          scope: variable.parameter.generic.js
+          push: generic-constraints
+        - include: comma-separator
+    - include: else-pop
+
+  generic-constraints:
+    - match: extends{{identifier_break}}
+      scope: storage.modifier.extends.js
+      push: ts-type-expression
+    - include: else-pop
+
+  function-parameter-binding-pattern:
+    - match: ''
+      set:
+        - - include: ts-type-annotation-optional
+        - - include: function-parameter-binding-name
+          - include: function-parameter-binding-array-destructuring
+          - include: function-parameter-binding-object-destructuring
+          - include: else-pop
+
+  function-parameter-binding-list: !prepend
+    - match: readonly{{identifier_break}}
+      scope: storage.modifier.js
+
+  class-field: !prepend
+    - match: (?:private|public|protected|readonly){{identifier_break}}
+      scope: storage.modifier.js
+
+  field-initializer-or-method-declaration:
+    - match: (?=\()
+      set:
+        - function-meta
+        - function-declaration-expect-body
+        - function-declaration-meta
+        - function-declaration-expect-parameters
+    - match: (?=\S)
+      set:
+        - class-field-rest
+        - initializer
+        - ts-type-annotation
+
+  expression-end: !prepend
+    - include: ts-type-assertion
+
+  ts-type-assertion:
+    - match: as{{identifier_break}}
+      scope: keyword.operator.type.js
+      push:
+        - ts-type-meta
+        - ts-type-expression
+
+  ts-type-annotation:
+    - match: ':'
+      scope: punctuation.separator.type.js
+      set:
+        - ts-type-meta
+        - ts-type-expression
+    - include: else-pop
+
+  ts-type-annotation-optional:
+    - match: \?(?=:)
+      scope: storage.modifier.optional.js
+    - include: ts-type-annotation
+
+  ts-type-meta:
+    - meta_include_prototype: false
+    - meta_content_scope: meta.type.js
+    - include: immediately-pop
+
+  ts-type-expression: !stack [ ts-type-expression-end, ts-type-expression-begin ]
+
+  ts-type-expression-end:
+    - match: \[\]
+      scope: storage.modifier.array.js
+    - match: \[
+      scope: punctuation.section.brackets.begin.js
+      set:
+        - meta_scope: meta.brackets.js
+        - match: \]
+          scope: punctuation.section.brackets.end.js
+          pop: true
+        - match: (?=\S)
+          push: ts-type-expression
+    - match: \<
+      scope: punctuation.definition.generic.begin.js
+      set:
+        - meta_scope: meta.generic.js
+        - match: \>
+          scope: punctuation.definition.generic.end.js
+          pop: true
+        - include: comma-separator
+        - match: (?=\S)
+          push: ts-type-expression
+    - match: \&
+      scope: keyword.operator.type.intersection.js
+      push: ts-type-expression-begin
+    - match: \|
+      scope: keyword.operator.type.union.js
+      push: ts-type-expression-begin
+    - match: is{{identifier_break}}
+      scope: keyword.operator.word.js
+      push: ts-type-expression-begin
+    - include: else-pop
+
+  ts-type-expression-begin:
+    - match: keyof
+      scope: keyword.operator.type.js
+    - include: ts-type-tuple
+    - include: ts-type-special
+    - include: ts-type-primitive
+    - include: ts-type-basic
+    - include: literal-string
+    - include: literal-number
+    - include: else-pop
+
+  ts-type-tuple:
+    - match: \[
+      scope: punctuation.section.brackets.begin.js
+      set:
+        - meta_scope: meta.sequence.js
+        - match: \]
+          scope: punctuation.section.brackets.end.js
+          pop: true
+        - include: ts-type-list
+
+  ts-type-list:
+    - include: comma-separator
+    - match: (?=\S)
+      push: ts-type-expression
+
+  ts-type-special: !foreach
+    in: [ any, void, never ]
+    value:
+      match: !format '{value}{{{{identifier_break}}}}'
+      scope: !format 'support.type.{value}.js'
+      pop: true
+
+  ts-type-primitive: !foreach
+    in: [ boolean, number, string, 'null', undefined, object ]
+    value:
+      match: !format '{value}{{{{identifier_break}}}}'
+      scope: !format 'support.type.primitive.{value}.js'
+      pop: true
+
+  ts-type-basic:
+    - match: '{{identifier}}'
+      scope: support.class.js
+      pop: true
+
+  # enum
