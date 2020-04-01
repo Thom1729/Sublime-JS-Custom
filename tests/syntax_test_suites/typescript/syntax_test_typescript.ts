@@ -78,6 +78,10 @@
         readonly foo;
 //      ^^^^^^^^ storage.modifier
 //               ^^^ variable.other.readwrite
+
+        foo(): any {
+            
+        }
     }
 
     abstract class Foo {}
