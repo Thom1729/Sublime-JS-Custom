@@ -16,8 +16,7 @@ variables: !merge
     )
 
 contexts: !merge
-
-  import-type:
+  ts-import-type:
     - match: type{{identifier_break}}
       scope: keyword.control.import-export.js
     - include: else-pop
@@ -36,7 +35,7 @@ contexts: !merge
             - import-meta
             - expect-semicolon
             - import-string-or-items
-            - import-type
+            - ts-import-type
 
     - match: export{{identifier_break}}
       scope: keyword.control.import-export.js
@@ -45,7 +44,7 @@ contexts: !merge
         - export-extended
 
   export-extended: !prepend
-    - include: type-declaration
+    - include: ts-type-declaration
 
   property-access: !prepend
     - match: \!\.
@@ -59,7 +58,7 @@ contexts: !merge
             - object-property
         - include: object-property
 
-  type-declaration:
+  ts-type-declaration:
     - match: type{{identifier_break}}
       scope: storage.type.js
       set:
@@ -78,7 +77,7 @@ contexts: !merge
         - ts-interface-name
 
     - include: ts-enum
-    - include: type-declaration
+    - include: ts-type-declaration
 
     - match: const{{identifier_break}}
       scope: storage.type.js
@@ -405,7 +404,7 @@ contexts: !merge
     - match: \(
       scope: punctuation.section.group.begin.js
       set:
-        - meta_scope: meta.mapping.js
+        - meta_scope: meta.group.js
         - match: \)
           scope: punctuation.section.group.end.js
           set:

@@ -1,5 +1,32 @@
 // SYNTAX TEST "Packages/User/JS Custom/Syntaxes/TypeScript.sublime-syntax"
 
+/* Import/Export */
+
+    import type T from 'somewhere';
+//  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.import
+//  ^^^^^^ keyword.control.import-export
+//         ^^^^ keyword.control.import-export
+//              ^ variable.other.readwrite
+//                ^^^^ keyword.control.import-export
+//                     ^^^^^^^^^^^ meta.string string.quoted.single
+
+    import type { U, V } from 'somewhere';
+//  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.import
+//  ^^^^^^ keyword.control.import-export
+//         ^^^^ keyword.control.import-export
+//              ^^^^^^^^ meta.block
+//                ^ variable.other.readwrite
+//                 ^ punctuation.separator.comma
+//                   ^ variable.other.readwrite
+//                       ^^^^ keyword.control.import-export
+//                            ^^^^^^^^^^^ meta.string string.quoted.single
+
+    export type T = any;
+//  ^^^^^^^^^^^^^^^^^^^ meta.export
+//  ^^^^^^ keyword.control.import-export
+//         ^^^^^^^^^^^^ meta.type-alias
+//                     ^ punctuation.terminator.statement.empty - meta.export
+
 /* Declarations */
 
     interface Foo {
@@ -79,9 +106,12 @@
 //      ^^^^^^^^ storage.modifier
 //               ^^^ variable.other.readwrite
 
-        foo(): any {
-            
-        }
+        foo(): any {}
+//      ^^^^^^^^^^^ meta.function.declaration
+//      ^^^ entity.name.function
+//           ^ punctuation.separator.type
+//             ^^^ meta.type support.type.any
+//                 ^^ meta.function meta.block
     }
 
     abstract class Foo {}
@@ -241,6 +271,10 @@ let x: 'a string';
 let x: 42;
 //     ^^ meta.type constant.numeric.integer.decimal
 
+let x: typeof Foo;
+//     ^^^^^^^^^^ meta.type
+//     ^^^^^ keyword.operator.type
+//            ^^^ support.class
 let x: keyof Foo;
 //     ^^^^^^^^^ meta.type
 //     ^^^^^ keyword.operator.type
@@ -251,3 +285,33 @@ let x: Foo["bar"];
 //     ^^^ support.class
 //        ^^^^^^^ meta.brackets
 //         ^^^^^ meta.string string.quoted.double
+
+let x: Foo.bar;
+//     ^^^^^^^ meta.type
+//     ^^^ support.class
+//        ^ punctuation.separator.accessor
+//         ^^^ support.class
+
+let x: { a: any, b?: any };
+//     ^^^^^^^^^^^^^^^^^^^ meta.type meta.mapping
+//     ^ punctuation.section.braces.begin
+//       ^ variable.other.readwrite
+//        ^ punctuation.separator.type
+//          ^^^ meta.type support.type.any
+//               ^ variable.other.readwrite
+//                ^ storage.modifier.optional
+//                 ^ punctuation.separator.type
+//                   ^^^ meta.type support.type.any
+//                       ^ punctuation.section.braces.end
+
+let x: ( foo ?: any ) => bar;
+//     ^^^^^^^^^^^^^^^^^^^^^ meta.type
+//     ^^^^^^^^^^^^^^ meta.group
+//     ^ punctuation.section.group.begin
+//       ^^^ variable.other.readwrite
+//           ^ storage.modifier.optional
+//            ^ punctuation.separator.type
+//              ^^^ support.type.any
+//                  ^ punctuation.section.group.end
+//                    ^^ storage.type.function
+//                       ^^^ support.class
