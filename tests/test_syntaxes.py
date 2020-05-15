@@ -4,7 +4,9 @@ import shutil
 
 from unittesting import DeferrableTestCase
 
-from JSCustom.src.build import build_configurations
+from sublime_lib import OutputPanel
+
+from JSCustom.src.build import build_configuration
 from JSCustom.src.paths import PACKAGE_PATH, USER_DATA_PATH
 
 
@@ -26,8 +28,10 @@ class TestSyntaxes(DeferrableTestCase):
         test_working_path = TESTS_PATH / name
         test_working_path.file_path().mkdir(parents=True)
 
-        build_configurations({name: configuration}, test_working_path)
+        output = OutputPanel.create(sublime.active_window(), 'YAMLMacros')
+
         syntax_path = test_working_path / (name + '.sublime-syntax')
+        build_configuration(name, configuration, syntax_path.file_path(), output)
 
         sublime.run_command('build_js_custom_tests', {
             'syntax_path': str(syntax_path),
@@ -115,4 +119,15 @@ class TestSyntaxes(DeferrableTestCase):
                 "string_object_keys": True,
             },
             tests=["base", "string_object_keys"],
+        )
+
+    def test_typescript(self):
+        yield from self._test_syntaxes(
+            name="typescript",
+            configuration={
+                "file_extensions": [],
+                "hidden": True,
+                "typescript": True,
+            },
+            tests=["base", "typescript"],
         )
