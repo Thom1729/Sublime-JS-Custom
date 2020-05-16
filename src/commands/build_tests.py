@@ -1,5 +1,6 @@
 import sublime_plugin
-from pathlib import Path
+
+from os.path import join
 
 from JSCustom.src.paths import PACKAGE_PATH
 
@@ -21,9 +22,9 @@ class BuildJsCustomTestsCommand(sublime_plugin.ApplicationCommand):
         ]
 
         for source_path in test_paths:
-            destination_path = Path(destination_directory) / source_path.name
+            destination_path = join(destination_directory, source_path.name)
             text = source_path.read_text().split('\n', 1)[1]
 
-            with destination_path.open('w', encoding='utf-8') as file:
+            with open(destination_path, 'w', encoding='utf-8') as file:
                 file.write(syntax_test_header)
                 file.write(text)
