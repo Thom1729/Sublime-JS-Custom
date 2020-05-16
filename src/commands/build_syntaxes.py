@@ -1,6 +1,5 @@
 import sublime_plugin
 
-from pathlib import Path
 from threading import Thread
 from sublime_lib import OutputPanel
 
@@ -50,4 +49,4 @@ class BuildJsCustomSyntaxCommand(sublime_plugin.WindowCommand):
         output = OutputPanel.create(self.window, 'YAMLMacros')
         output.show()
 
-        build_configuration(name, configuration, Path(destination_path), output)
+        build_configuration(name, configuration, destination_path, output)
