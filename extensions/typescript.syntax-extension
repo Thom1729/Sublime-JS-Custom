@@ -317,6 +317,7 @@ contexts: !merge
         - include: comma-separator
         - match: (?=\S)
           push: ts-type-expression
+
     - match: \&
       scope: keyword.operator.type.intersection.js
       push: ts-type-expression-begin
@@ -332,6 +333,21 @@ contexts: !merge
       - match: '{{identifier}}'
         scope: support.class.js
         pop: true
+
+    - match: extends{{identifier_break}}
+      scope: keyword.operator.type.extends.js
+      push:
+        - - match: \?
+            scope: keyword.operator.type.js
+            set:
+              - - match: ':'
+                  scope: keyword.operator.type.js
+                  set: ts-type-expression
+                - include: else-pop
+              - ts-type-expression
+          - include: else-pop
+        - ts-type-expression
+
     - include: else-pop
 
   ts-type-expression-begin:

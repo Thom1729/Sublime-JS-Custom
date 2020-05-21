@@ -315,3 +315,13 @@ let x: ( foo ?: any ) => bar;
 //                  ^ punctuation.section.group.end
 //                    ^^ storage.type.function
 //                       ^^^ support.class
+
+let x: T extends U ? V : W;
+//     ^^^^^^^^^^^^^^^^^^^ meta.type
+//     ^ support.class
+//       ^^^^^^^ keyword.operator.type.extends
+//               ^ support.class
+//                 ^ keyword.operator.type
+//                   ^ support.class
+//                     ^ keyword.operator.type
+//                       ^ support.class
