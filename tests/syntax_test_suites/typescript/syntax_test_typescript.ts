@@ -171,6 +171,19 @@ function f(): any {}
 //            ^^^meta.type support.type.any
 //                ^^ meta.block
 
+function f ( x : any , ... y : any ) {}
+//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.function
+//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.function.declaration
+//         ^^^^^^^^^^^^^^^^^^^^^^^^^ meta.function.declaration
+//           ^ meta.binding.name variable.parameter.function
+//             ^ punctuation.separator.type
+//               ^^^ meta.type support.type.any
+//                   ^ punctuation.separator.parameter.function
+//                     ^^^ keyword.operator.spread
+//                         ^ meta.binding.name variable.parameter.function
+//                           ^ punctuation.separator.type
+//                             ^^^ meta.type support.type.any
+
 function f<T, U>() {}
 //^^^^^^^^^^^^^^^^^^^ meta.function
 //^^^^^^^^^^^^^^^^^ meta.function.declaration
