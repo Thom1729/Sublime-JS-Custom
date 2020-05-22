@@ -39,14 +39,14 @@
 //      ^^^ variable.other.readwrite
 //         ^ punctuation.separator.type
 //           ^^^ meta.type support.type.any
-//              ^ punctuation.terminator.statement
+//              ^ punctuation.separator
         bar?: any;
 //^^^^^^^^^^^^^^^^^ meta.interface meta.block
 //      ^^^ variable.other.readwrite
 //         ^ storage.modifier.optional
 //          ^ punctuation.separator.type
 //            ^^^ meta.type support.type.any
-//               ^ punctuation.terminator.statement
+//               ^ punctuation.separator
     }
 //  ^ meta.block punctuation.section.block.end
 
@@ -117,6 +117,14 @@
     abstract class Foo {}
 //  ^^^^^^^^ storage.modifier
 //           ^^^^^ meta.class storage.type.class
+
+    namespace Foo {
+//  ^^^^^^^^^^^^^^^^ meta.namespace
+//  ^^^^^^^^^ storage.namespace
+//            ^^^ entity.name.namespace
+//                ^ meta.block punctuation.section.block.begin
+    }
+//  ^ meta.block punctuation.section.block.end
 
 /* Annotations */
 
@@ -220,10 +228,24 @@ let x: object;
 let x: Foo;
 //     ^^^ support.class
 
-let x: any[];
-//     ^^^^^ meta.type
+let x: any [ ];
+//     ^^^^^^ meta.type
 //     ^^^ support.type.any
-//        ^^ storage.modifier.array
+//         ^ storage.modifier.array
+//           ^ storage.modifier.array
+
+let x: any [
+//     ^^^^^^ meta.type
+//     ^^^ support.type.any
+//         ^ storage.modifier.array
+    ];
+//  ^ storage.modifier.array
+
+
+let x: any
+//     ^^^ meta.type support.type.any
+    [];
+//  ^^ meta.sequence punctuation.section.brackets - meta.type
 
 let x: Foo<any, any>;
 //     ^^^^^^^^^^^^^ meta.type
@@ -234,6 +256,12 @@ let x: Foo<any, any>;
 //            ^ punctuation.separator.comma
 //              ^^^ support.type.any
 //                 ^ punctuation.definition.generic.end
+
+let x: Foo
+//     ^^^ meta.type support.class
+    <;
+//  ^ - meta.type
+
 
 function f<T extends Foo>() {}
 //        ^^^^^^^^^^^^^^^ meta.function.declaration meta.generic
@@ -280,41 +308,140 @@ let x: keyof Foo;
 //     ^^^^^ keyword.operator.type
 //           ^^^ support.class
 
-let x: Foo["bar"];
-//     ^^^^^^^^^^ meta.type
-//     ^^^ support.class
-//        ^^^^^^^ meta.brackets
-//         ^^^^^ meta.string string.quoted.double
-
 let x: Foo.bar;
 //     ^^^^^^^ meta.type
 //     ^^^ support.class
 //        ^ punctuation.separator.accessor
 //         ^^^ support.class
 
-let x: { a: any, b?: any };
-//     ^^^^^^^^^^^^^^^^^^^ meta.type meta.mapping
-//     ^ punctuation.section.braces.begin
-//       ^ variable.other.readwrite
-//        ^ punctuation.separator.type
-//          ^^^ meta.type support.type.any
-//               ^ variable.other.readwrite
-//                ^ storage.modifier.optional
-//                 ^ punctuation.separator.type
-//                   ^^^ meta.type support.type.any
-//                       ^ punctuation.section.braces.end
+let x: {
+//     ^ meta.type punctuation.section.block.begin
 
-let x: ( foo ?: any ) => bar;
-//     ^^^^^^^^^^^^^^^^^^^^^ meta.type
-//     ^^^^^^^^^^^^^^ meta.group
+    a : any ,
+//  ^ variable.other.readwrite
+//    ^ punctuation.separator.type
+//      ^^^ support.type.any
+//          ^ punctuation.separator
+
+    b ? : any ;
+//  ^ variable.other.readwrite
+//    ^ storage.modifier.optional
+//      ^ punctuation.separator.type
+//        ^^^ support.type.any
+//            ^ punctuation.separator
+
+    ( foo : any ) : any ;
+//  ^ punctuation.section.group.begin
+//    ^^^ meta.binding.name variable.parameter.function
+//        ^ punctuation.separator.type
+//          ^^^ support.type.any
+//              ^ punctuation.section.group.end
+//                ^ punctuation.separator.type
+//                  ^^^ support.type.any
+//                      ^ punctuation.separator
+
+
+    <T>( foo : any ) : any ;
+//  ^^^ meta.generic
+//  ^ punctuation.definition.generic.begin
+//   ^ meta.generic variable.parameter.generic
+//    ^ punctuation.definition.generic.end
 //     ^ punctuation.section.group.begin
-//       ^^^ variable.other.readwrite
-//           ^ storage.modifier.optional
+//       ^^^ meta.binding.name variable.parameter.function
+//           ^ punctuation.separator.type
+//             ^^^ support.type.any
+//                 ^ punctuation.section.group.end
+//                   ^ punctuation.separator.type
+//                     ^^^ support.type.any
+//                         ^ punctuation.separator
+
+    a ( foo : any ) : any ;
+//  ^ variable.other.readwrite
+//    ^ punctuation.section.group.begin
+//      ^^^ meta.binding.name variable.parameter.function
+//          ^ punctuation.separator.type
+//            ^^^ support.type.any
+//                ^ punctuation.section.group.end
+//                  ^ punctuation.separator.type
+//                    ^^^ support.type.any
+//                        ^ punctuation.separator
+
+
+    a <T>( foo : any ) : any ;
+//  ^ variable.other.readwrite
+//    ^^^ meta.generic
+//    ^ punctuation.definition.generic.begin
+//     ^ meta.generic variable.parameter.generic
+//      ^ punctuation.definition.generic.end
+//       ^ punctuation.section.group.begin
+//         ^^^ meta.binding.name variable.parameter.function
+//             ^ punctuation.separator.type
+//               ^^^ support.type.any
+//                   ^ punctuation.section.group.end
+//                     ^ punctuation.separator.type
+//                       ^^^ support.type.any
+//                           ^ punctuation.separator
+
+    new ( foo : any ) : any ;
+//      ^ punctuation.section.group.begin
+//        ^^^ meta.binding.name variable.parameter.function
 //            ^ punctuation.separator.type
 //              ^^^ support.type.any
 //                  ^ punctuation.section.group.end
-//                    ^^ storage.type.function
-//                       ^^^ support.class
+//                    ^ punctuation.separator.type
+//                      ^^^ support.type.any
+//                          ^ punctuation.separator
+
+    new <T>( foo : any ) : any ;
+//      ^^^ meta.generic
+//      ^ punctuation.definition.generic.begin
+//       ^ meta.generic variable.parameter.generic
+//        ^ punctuation.definition.generic.end
+//         ^ punctuation.section.group.begin
+//           ^^^ meta.binding.name variable.parameter.function
+//               ^ punctuation.separator.type
+//                 ^^^ support.type.any
+//                     ^ punctuation.section.group.end
+//                       ^ punctuation.separator.type
+//                         ^^^ support.type.any
+//                             ^ punctuation.separator
+
+    [ foo : string ] : any ;
+//  ^^^^^^^^^^^^^^^^ meta.brackets
+//  ^ punctuation.section.brackets.begin
+//    ^^^ variable.other.readwrite
+//        ^ punctuation.separator.type
+//          ^^^^^^ support.type.primitive.string
+//                 ^ punctuation.section.brackets.end
+//                   ^ punctuation.separator.type
+//                     ^^^ support.type.any
+//                         ^ punctuation.separator
+
+    [ foo : number ] : any ;
+//  ^^^^^^^^^^^^^^^^ meta.brackets
+//  ^ punctuation.section.brackets.begin
+//    ^^^ variable.other.readwrite
+//        ^ punctuation.separator.type
+//          ^^^^^^ support.type.primitive.number
+//                 ^ punctuation.section.brackets.end
+//                   ^ punctuation.separator.type
+//                     ^^^ support.type.any
+//                         ^ punctuation.separator
+
+    }
+//  ^ meta.type punctuation.section.block.end
+
+let x: ( foo ? : any ) => bar;
+//     ^^^^^^^^^^^^^^^^^^^^^^ meta.type
+//     ^^^^^^^^^^^^^^^ meta.group
+//     ^ punctuation.section.group.begin
+//       ^^^ variable.other.readwrite
+//           ^ storage.modifier.optional
+//             ^ punctuation.separator.type
+//               ^^^ support.type.any
+//                   ^ punctuation.section.group.end
+//                     ^^ storage.type.function
+//                        ^^^ support.class
 
 let x: T extends U ? V : W;
 //     ^^^^^^^^^^^^^^^^^^^ meta.type
