@@ -291,7 +291,7 @@ contexts: !merge
       scope: variable.language.this.js
       push: ts-type-annotation
 
-  class-field: !prepend
+  class-body-contents: !prepend
     - match: (?:private|public|protected|readonly){{identifier_break}}
       scope: storage.modifier.js
 

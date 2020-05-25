@@ -106,6 +106,11 @@
 //      ^^^^^^^^ storage.modifier
 //               ^^^ variable.other.readwrite
 
+        private static foo;
+//      ^^^^^^^ storage.modifier
+//              ^^^^^^ storage.modifier
+//                     ^^^ variable.other.readwrite
+
         foo(): any {}
 //      ^^^^^^^^^^^ meta.function.declaration
 //      ^^^ entity.name.function
