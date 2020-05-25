@@ -119,9 +119,15 @@
 //                 ^^ meta.function meta.block
     }
 
-    abstract class Foo {}
+    abstract class Foo {
 //  ^^^^^^^^ storage.modifier
 //           ^^^^^ meta.class storage.type.class
+
+        abstract foo;
+//      ^^^^^^^^ storage.modifier
+//               ^^^ variable.other.readwrite
+
+    }
 
     namespace Foo {
 //  ^^^^^^^^^^^^^^^^ meta.namespace
