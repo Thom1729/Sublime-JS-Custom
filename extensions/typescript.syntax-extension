@@ -287,6 +287,10 @@ contexts: !merge
     - match: readonly{{identifier_break}}
       scope: storage.modifier.js
 
+    - match: this{{identifier_break}}
+      scope: variable.language.this.js
+      push: ts-type-annotation
+
   class-field: !prepend
     - match: (?:private|public|protected|readonly){{identifier_break}}
       scope: storage.modifier.js

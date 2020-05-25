@@ -200,6 +200,11 @@ function f(x): x is any {};
 //               ^^ keyword.operator.word
 //                  ^^^ support.type.any
 
+function f(this : any) {}
+//         ^^^^ variable.language.this
+//              ^ punctuation.separator.type
+//                ^^^ support.type.any
+
     (x: any) => 42;
 //  ^^^^^^^^^^^^^^ meta.function
 //  ^^^^^^^^^^^ meta.function.declaration
