@@ -132,6 +132,9 @@ contexts: !merge
         - include: ts-type-member
 
   ts-type-member:
+    - match: readonly{{identifier_break}}
+      scope: storage.modifier.js
+
     - match: (?=[<(])
       push: ts-construct-signature
 

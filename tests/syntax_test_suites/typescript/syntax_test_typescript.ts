@@ -343,6 +343,13 @@ let x: {
 //        ^^^ support.type.any
 //            ^ punctuation.separator
 
+    readonly c : any ;
+//  ^^^^^^^^ storage.modifier
+//           ^ variable.other.readwrite
+//             ^ punctuation.separator.type
+//               ^^^ support.type.any
+//                   ^ punctuation.separator
+
     ( foo : any ) : any ;
 //  ^ punctuation.section.group.begin
 //    ^^^ meta.binding.name variable.parameter.function
