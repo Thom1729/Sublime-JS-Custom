@@ -132,6 +132,9 @@ contexts: !merge
         - include: ts-type-member
 
   ts-type-member:
+    - match: '\+|-'
+      scope: storage.modifier.js
+
     - match: readonly{{identifier_break}}
       scope: storage.modifier.js
 
@@ -144,6 +147,10 @@ contexts: !merge
         - - include: immediately-pop
         -  ts-type-annotation
         -  ts-type-annotation-optional
+        - - match: '\+|-'
+            scope: storage.modifier.js
+            pop: true
+          - include: else-pop
         - - meta_scope: meta.brackets.js
           - match: \]
             scope: punctuation.section.brackets.end.js

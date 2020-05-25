@@ -536,6 +536,26 @@ let x: {
 //                           ^ punctuation.section.brackets.end
 //                             ^ punctuation.separator
 
+    - readonly [ P in keyof T ] - ? : T [ P ] ;
+//  ^ storage.modifier
+//    ^^^^^^^^ storage.modifier
+//             ^^^^^^^^^^^^^^^^ meta.brackets
+//             ^ punctuation.section.brackets.begin
+//               ^ variable.other.readwrite
+//                 ^^ keyword.operator.type
+//                    ^^^^^ keyword.operator.type
+//                          ^ meta.brackets support.class
+//                            ^ punctuation.section.brackets.end
+//                              ^ storage.modifier
+//                                ^ storage.modifier.optional
+//                                  ^ punctuation.separator.type
+//                                    ^ support.class
+//                                      ^^^^^ meta.brackets
+//                                      ^ punctuation.section.brackets.begin
+//                                        ^ support.class
+//                                          ^ punctuation.section.brackets.end
+//                                            ^ punctuation.separator
+    
     }
 //  ^ meta.type punctuation.section.block.end
 
