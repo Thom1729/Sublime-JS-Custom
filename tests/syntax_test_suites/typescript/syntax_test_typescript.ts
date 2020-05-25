@@ -178,6 +178,12 @@ let [ x: any = 42 ];
 //       ^^^ meta.type support.type.any
 //           ^ keyword.operator.assignment
 
+let x !: any ;
+//  ^ variable.other.readwrite
+//    ^ storage.modifier.definite
+//     ^ punctuation.separator.type
+//       ^^^ meta.type support.type.any
+
 function f(x: any = 42) {}
 //          ^ punctuation.separator.type
 //            ^^^meta.type support.type.any

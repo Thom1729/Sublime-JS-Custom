@@ -237,7 +237,9 @@ contexts: !merge
   variable-binding-pattern:
     - match: ''
       set:
-        - - include: ts-type-annotation
+        - - include: immediately-pop
+        - ts-type-annotation
+        - ts-type-annotation-definite
         - - include: variable-binding-name
           - include: variable-binding-array-destructuring
           - include: variable-binding-object-destructuring
@@ -361,6 +363,12 @@ contexts: !merge
   ts-type-annotation-optional:
     - match: \?
       scope: storage.modifier.optional.js
+      pop: true
+    - include: else-pop
+
+  ts-type-annotation-definite:
+    - match: \!
+      scope: storage.modifier.definite.js
       pop: true
     - include: else-pop
 
