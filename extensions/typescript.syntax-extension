@@ -268,14 +268,22 @@ contexts: !merge
           pop: true
         - match: '{{identifier}}'
           scope: variable.parameter.generic.js
-          push: generic-constraints
+          push:
+            - ts-type-parameter-default
+            - ts-type-parameter-constraint
         - include: comma-separator
     - include: else-pop
 
-  generic-constraints:
+  ts-type-parameter-constraint:
     - match: extends{{identifier_break}}
       scope: storage.modifier.extends.js
       push: ts-type-expression
+    - include: else-pop
+
+  ts-type-parameter-default:
+    - match: '='
+      scope: keyword.operator.assignment.js
+      set: ts-type-expression
     - include: else-pop
 
   function-parameter-binding-pattern:

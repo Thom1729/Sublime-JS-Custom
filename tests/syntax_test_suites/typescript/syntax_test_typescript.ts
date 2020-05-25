@@ -83,8 +83,24 @@
 //  ^^^^ storage.type
 //       ^ entity.name.type
 //         ^^^^^ meta.generic
+//         ^ punctuation.definition.generic.begin
+//           ^ variable.parameter.generic
+//             ^ punctuation.definition.generic.end
 //               ^ keyword.operator.assignment
 //                 ^^^ meta.type-alias support.type.any
+
+    type x < T = Foo > = any;
+//  ^^^^^^^^^^^^^^^^^^^^^^^^ meta.type-alias
+//  ^^^^ storage.type
+//       ^ entity.name.type
+//         ^^^^^^^^^^^ meta.generic
+//         ^ punctuation.definition.generic.begin
+//           ^ variable.parameter.generic
+//             ^ keyword.operator.assignment
+//               ^^^ support.class
+//                   ^ punctuation.definition.generic.end
+//                     ^ keyword.operator.assignment
+//                       ^^^ meta.type-alias support.type.any
 
     class Foo {
         foo: any = 42;
