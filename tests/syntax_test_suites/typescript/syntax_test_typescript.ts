@@ -252,6 +252,12 @@ x as boolean;
     foo!.bar;
 //     ^^ punctuation.accessor
 
+    x ! ;
+//  ^ variable.other.readwrite
+//    ^ keyword.operator.type
+//      ^ punctuation.terminator.statement
+
+
 /* Types */
 
 let x: any;

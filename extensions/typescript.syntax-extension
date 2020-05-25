@@ -341,6 +341,9 @@ contexts: !merge
     - include: ts-type-assertion
 
   ts-type-assertion:
+    - match: '!(?!\.)'
+      scope: keyword.operator.type.js
+
     - match: as{{identifier_break}}
       scope: keyword.operator.type.js
       push:
