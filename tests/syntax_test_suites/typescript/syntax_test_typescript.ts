@@ -269,7 +269,7 @@ let x: any [ "foo" | 'bar' ];
 //         ^^^^^^^^^^^^^^^^^ meta.brackets
 //         ^ punctuation.section.brackets.begin
 //           ^^^^^ meta.string string.quoted.double
-//                 ^ keyword.operator.type.other
+//                 ^ keyword.operator.type.union
 //                   ^^^^^ meta.string string.quoted.single
 //                         ^ punctuation.section.brackets.end
 
@@ -480,6 +480,22 @@ let x: {
 //                   ^ punctuation.separator.type
 //                     ^^^ support.type.any
 //                         ^ punctuation.separator
+
+    [ P in keyof T ] : T [ P ] ;
+//  ^^^^^^^^^^^^^^^^ meta.brackets
+//  ^ punctuation.section.brackets.begin
+//    ^ variable.other.readwrite
+//      ^^ keyword.operator.type
+//         ^^^^^ keyword.operator.type
+//               ^ meta.brackets support.class
+//                 ^ punctuation.section.brackets.end
+//                   ^ punctuation.separator.type
+//                     ^ support.class
+//                       ^^^^^ meta.brackets
+//                       ^ punctuation.section.brackets.begin
+//                         ^ support.class
+//                           ^ punctuation.section.brackets.end
+//                             ^ punctuation.separator
 
     }
 //  ^ meta.type punctuation.section.block.end

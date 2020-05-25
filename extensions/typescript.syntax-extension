@@ -128,7 +128,7 @@ contexts: !merge
           scope: punctuation.section.block.end.js
           pop: true
         - match: '[,;]'
-          scope: punctuation.separator
+          scope: punctuation.separator.js
         - include: ts-type-member
 
   ts-type-member:
@@ -141,7 +141,9 @@ contexts: !merge
     - match: \[
       scope: punctuation.section.brackets.begin.js
       push:
-        - - include: ts-type-annotation
+        - - include: immediately-pop
+        -  ts-type-annotation
+        -  ts-type-annotation-optional
         - - meta_scope: meta.brackets.js
           - match: \]
             scope: punctuation.section.brackets.end.js
@@ -149,7 +151,10 @@ contexts: !merge
           - match: '{{identifier}}'
             scope: variable.other.readwrite.js
             push:
-              - ts-type-annotation
+              - match: in{{identifier_break}}
+                scope: keyword.operator.type.js
+                set: ts-type-expression
+              - include: ts-type-annotation
 
     - match: new{{identifier_break}}
       scope: keyword.operator.new.js
@@ -412,14 +417,8 @@ contexts: !merge
         - match: \]
           scope: punctuation.section.brackets.end.js
           pop: true
-        - match: \|
-          scope: keyword.operator.type.other.js
-        - match: (?=[\d"'])
-          push:
-            - include: literal-string
-            - include: literal-number
-            - include: else-pop
-        - include: else-pop
+        - match: (?=\S)
+          push: ts-type-expression
 
     - match: \<
       scope: punctuation.definition.generic.begin.js
@@ -472,7 +471,7 @@ contexts: !merge
           pop: true
         - include: comma-separator
         - match: ;
-          scope: punctuation.separator.semicolon
+          scope: punctuation.separator.semicolon.js
         - match: '{{identifier}}'
           scope: variable.other.readwrite.js
           push:
