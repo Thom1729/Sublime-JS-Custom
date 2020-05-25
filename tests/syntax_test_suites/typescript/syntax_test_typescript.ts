@@ -26,7 +26,7 @@
 //  ^^^^^^ keyword.control.import-export
 //         ^^^^^^^^^^^^ meta.type-alias
 //                     ^ punctuation.terminator.statement.empty - meta.export
-
+“
 /* Declarations */
 
     interface Foo {
@@ -273,6 +273,13 @@ let x: undefined;
 //     ^^^^^^^^^ support.type.primitive.undefined
 let x: object;
 //     ^^^^^^ support.type.primitive.object
+
+let x: symbol;
+//     ^^^^^^ support.type.primitive.symbol
+
+let x: unique symbol;
+//     ^^^^^^ storage.modifier.unique
+//            ^^^^^^ support.type.primitive.symbol
 
 let x: Foo;
 //     ^^^ support.class

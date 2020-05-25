@@ -442,10 +442,13 @@ contexts: !merge
     - include: else-pop
 
   ts-type-expression-begin:
-    - match: keyof
+    - match: keyof{{identifier_break}}
       scope: keyword.operator.type.js
-    - match: typeof
+    - match: typeof{{identifier_break}}
       scope: keyword.operator.type.js
+
+    - match: unique{{identifier_break}}
+      scope: storage.modifier.unique.js
 
     - include: ts-type-tuple
     - include: ts-type-body
@@ -499,7 +502,7 @@ contexts: !merge
       pop: true
 
   ts-type-primitive: !foreach
-    in: [ boolean, number, string, 'null', undefined, object ]
+    in: [ boolean, number, string, 'null', undefined, object, symbol ]
     value:
       match: !format '{value}{{{{identifier_break}}}}'
       scope: !format 'support.type.primitive.{value}.js'
@@ -528,5 +531,3 @@ contexts: !merge
           push:
             - ts-type-annotation
             - ts-type-annotation-optional
-
-  # enum
