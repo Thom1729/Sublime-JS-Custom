@@ -560,3 +560,14 @@ let x: T extends U ? V : W;
 //                   ^ support.class
 //                     ^ keyword.operator.type
 //                       ^ support.class
+
+let x: T extends infer U ? V : W;
+//     ^^^^^^^^^^^^^^^^^^^^^^^^^ meta.type
+//     ^ support.class
+//       ^^^^^^^ keyword.operator.type.extends
+//               ^^^^^ keyword.operator.type
+//                     ^ support.class
+//                       ^ keyword.operator.type
+//                         ^ support.class
+//                           ^ keyword.operator.type
+//                             ^ support.class

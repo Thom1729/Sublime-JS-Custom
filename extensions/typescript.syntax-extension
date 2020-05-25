@@ -457,6 +457,8 @@ contexts: !merge
       scope: keyword.operator.type.js
     - match: typeof{{identifier_break}}
       scope: keyword.operator.type.js
+    - match: infer{{identifier_break}}
+      scope: keyword.operator.type.js
 
     - match: unique{{identifier_break}}
       scope: storage.modifier.unique.js
