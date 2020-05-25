@@ -263,12 +263,29 @@ let x: any [ ];
 //         ^ storage.modifier.array
 //           ^ storage.modifier.array
 
+let x: any [ "foo" | 'bar' ];
+//     ^^^^^^^^^^^^^^^^^^^^^ meta.type
+//     ^^^ support.type.any
+//         ^^^^^^^^^^^^^^^^^ meta.brackets
+//         ^ punctuation.section.brackets.begin
+//           ^^^^^ meta.string string.quoted.double
+//                 ^ keyword.operator.type.other
+//                   ^^^^^ meta.string string.quoted.single
+//                         ^ punctuation.section.brackets.end
+
+
+let x: any [ 0 ];
+//         ^^^^^ meta.type meta.brackets
+//         ^ punctuation.section.brackets.begin
+//           ^ constant.numeric.integer.decimal
+//             ^ punctuation.section.brackets.end
+
 let x: any [
 //     ^^^^^^ meta.type
 //     ^^^ support.type.any
-//         ^ storage.modifier.array
+//         ^ punctuation.section.brackets.begin
     ];
-//  ^ storage.modifier.array
+//  ^ punctuation.section.brackets.end
 
 
 let x: any

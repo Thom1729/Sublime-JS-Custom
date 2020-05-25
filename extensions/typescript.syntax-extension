@@ -397,12 +397,28 @@ contexts: !merge
       pop: true
     - include: prototype
 
-    - match: \[
+    - match: \[(?={{nothing}}\])
       scope: storage.modifier.array.js
       push:
         - match: \]
           scope: storage.modifier.array.js
           pop: true
+        - include: else-pop
+
+    - match: \[
+      scope: punctuation.section.brackets.begin.js
+      push:
+        - meta_scope: meta.brackets.js
+        - match: \]
+          scope: punctuation.section.brackets.end.js
+          pop: true
+        - match: \|
+          scope: keyword.operator.type.other.js
+        - match: (?=[\d"'])
+          push:
+            - include: literal-string
+            - include: literal-number
+            - include: else-pop
         - include: else-pop
 
     - match: \<
