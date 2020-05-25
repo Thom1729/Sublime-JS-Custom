@@ -167,6 +167,10 @@ function f(x: any = 42) {}
 //            ^^^meta.type support.type.any
 //                ^ keyword.operator.assignment
 
+function f(public x) {}
+//         ^^^^^^ storage.modifier
+//                ^ meta.binding.name variable.parameter.function
+
 function f(readonly x) {}
 //         ^^^^^^^^ storage.modifier
 //                  ^ meta.binding.name variable.parameter.function

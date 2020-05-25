@@ -289,7 +289,7 @@ contexts: !merge
           - include: else-pop
 
   function-parameter-binding-list: !prepend
-    - match: readonly{{identifier_break}}
+    - match: (?:private|public|protected|readonly){{identifier_break}}
       scope: storage.modifier.js
 
     - match: this{{identifier_break}}
