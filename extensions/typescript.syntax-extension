@@ -505,6 +505,8 @@ contexts: !merge
           scope: punctuation.section.brackets.end.js
           pop: true
         - include: comma-separator
+        - match: \.\.\.
+          scope: keyword.operator.spread.js
         - match: (?=\S)
           push:
             - ts-type-annotation-optional
