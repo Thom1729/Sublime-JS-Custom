@@ -108,7 +108,11 @@
 //         ^ punctuation.separator.type
 //           ^^^ meta.type support.type.any
 //               ^ keyword.operator.assignment
-    
+
+        declare foo;
+//      ^^^^^^^ storage.modifier
+//              ^^^ variable.other.readwrite
+
         public foo;
 //      ^^^^^^ storage.modifier
 //             ^^^ variable.other.readwrite

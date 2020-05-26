@@ -314,7 +314,7 @@ contexts: !merge
       push: ts-type-annotation
 
   class-body-contents: !prepend
-    - match: (?:private|public|protected|readonly|abstract){{identifier_break}}
+    - match: (?:private|public|protected|readonly|abstract|declare){{identifier_break}}
       scope: storage.modifier.js
 
   field-initializer-or-method-declaration:
