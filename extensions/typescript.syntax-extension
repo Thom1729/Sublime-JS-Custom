@@ -476,6 +476,8 @@ contexts: !merge
       scope: storage.modifier.unique.js
     - match: readonly{{identifier_break}}
       scope: storage.modifier.readonly.js
+    - match: asserts{{identifier_break}}
+      scope: storage.modifier.asserts.js
 
     - match: import{{identifier_break}}
       scope: keyword.operator.type.js

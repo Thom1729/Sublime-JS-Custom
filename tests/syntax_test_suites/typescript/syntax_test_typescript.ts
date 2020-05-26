@@ -237,6 +237,15 @@ function f(x): x is any {};
 //               ^^ keyword.operator.word
 //                  ^^^ support.type.any
 
+function f(x): asserts x is any {};
+//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.function
+//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.function.declaration
+//           ^ punctuation.separator.type
+//            ^^^^^^^^^^^^^^^^^ meta.type
+//             ^^^^^^^ storage.modifier.asserts
+//                       ^^ keyword.operator.word
+//                          ^^^ support.type.any
+
 function f(this : any) {}
 //         ^^^^ variable.language.this
 //              ^ punctuation.separator.type
