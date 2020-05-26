@@ -469,6 +469,8 @@ contexts: !merge
 
     - match: unique{{identifier_break}}
       scope: storage.modifier.unique.js
+    - match: readonly{{identifier_break}}
+      scope: storage.modifier.readonly.js
 
     - match: import{{identifier_break}}
       scope: keyword.operator.type.js

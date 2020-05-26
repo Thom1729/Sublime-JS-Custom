@@ -293,7 +293,7 @@ let x: unique symbol;
 //     ^^^^^^ storage.modifier.unique
 //            ^^^^^^ support.type.primitive.symbol
 let x: bigint;
-//     ^^^^^^^ support.type.primitive.bigint
+//     ^^^^^^ support.type.primitive.bigint
 
 let x: Foo;
 //     ^^^ support.class
@@ -303,6 +303,12 @@ let x: any [ ];
 //     ^^^ support.type.any
 //         ^ storage.modifier.array
 //           ^ storage.modifier.array
+
+let x: readonly any [];
+//     ^^^^^^^^^^^^^^^ meta.type
+//     ^^^^^^^^ storage.modifier.readonly
+//              ^^^ support.type.any
+//                  ^^ storage.modifier.array
 
 let x: any [ "foo" | 'bar' ];
 //     ^^^^^^^^^^^^^^^^^^^^^ meta.type
