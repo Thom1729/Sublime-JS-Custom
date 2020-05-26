@@ -356,8 +356,13 @@ contexts: !merge
     - match: as{{identifier_break}}
       scope: keyword.operator.type.js
       push:
-        - ts-type-meta
-        - ts-type-expression
+        - match: const{{identifier_break}}
+          scope: storage.modifier.const.js
+          pop: true
+        - match: (?=\S)
+          set:
+          - ts-type-meta
+          - ts-type-expression
 
   ts-type-annotation:
     - match: ':'

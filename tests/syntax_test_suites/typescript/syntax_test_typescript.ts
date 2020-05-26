@@ -255,6 +255,10 @@ x as boolean;
 //^^ keyword.operator.type
 //   ^^^^^^^ meta.type support.type.primitive.boolean
 
+x as const;
+//^^ keyword.operator.type
+//   ^^^^^ storage.modifier.const
+
     foo!.bar;
 //     ^^ punctuation.accessor
 
