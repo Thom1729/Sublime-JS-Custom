@@ -504,7 +504,11 @@ contexts: !merge
         - match: \]
           scope: punctuation.section.brackets.end.js
           pop: true
-        - include: ts-type-list
+        - include: comma-separator
+        - match: (?=\S)
+          push:
+            - ts-type-annotation-optional
+            - ts-type-expression
 
   ts-type-object:
     - match: \{
@@ -522,11 +526,6 @@ contexts: !merge
           push:
             - ts-type-annotation
             - ts-type-annotation-optional
-
-  ts-type-list:
-    - include: comma-separator
-    - match: (?=\S)
-      push: ts-type-expression
 
   ts-type-special: !foreach
     in: [ any, void, never ]

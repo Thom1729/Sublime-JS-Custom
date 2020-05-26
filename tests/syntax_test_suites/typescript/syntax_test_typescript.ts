@@ -354,14 +354,15 @@ function f<T extends Foo>() {}
 //           ^^^^^^^ storage.modifier.extends
 //                   ^^^ support.class
 
-let x: [any, any];
-//     ^^^^^^^^^^ meta.type
-//     ^^^^^^^^^^ meta.sequence
+let x: [ any , any ? ];
+//     ^^^^^^^^^^^^^^^ meta.type
+//     ^^^^^^^^^^^^^^^ meta.sequence
 //     ^ punctuation.section.brackets.begin
-//      ^^^ support.type.any
-//         ^ punctuation.separator.comma
-//           ^^^ support.type.any
-//              ^ punctuation.section.brackets.end
+//       ^^^ support.type.any
+//           ^ punctuation.separator.comma
+//             ^^^ support.type.any
+//                 ^ storage.modifier.optional
+//                   ^ punctuation.section.brackets.end
 
 let x: any & any;
 //     ^^^^^^^^^ meta.type
