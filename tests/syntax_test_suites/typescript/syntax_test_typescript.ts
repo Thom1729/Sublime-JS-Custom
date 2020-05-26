@@ -272,6 +272,8 @@ let x: void;
 //     ^^^^ support.type.void
 let x: never;
 //     ^^^^^ support.type.never
+let x: unknown;
+//     ^^^^^^^ support.type.unknown
 
 let x: boolean;
 //     ^^^^^^^ support.type.primitive.boolean
@@ -285,16 +287,13 @@ let x: undefined;
 //     ^^^^^^^^^ support.type.primitive.undefined
 let x: object;
 //     ^^^^^^ support.type.primitive.object
-
 let x: symbol;
 //     ^^^^^^ support.type.primitive.symbol
-
 let x: unique symbol;
 //     ^^^^^^ storage.modifier.unique
 //            ^^^^^^ support.type.primitive.symbol
-
-let x: unknown;
-//     ^^^^^^^ support.type.primitive.unknown
+let x: bigint;
+//     ^^^^^^^ support.type.primitive.bigint
 
 let x: Foo;
 //     ^^^ support.class

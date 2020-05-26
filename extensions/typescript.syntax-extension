@@ -530,14 +530,14 @@ contexts: !merge
             - ts-type-annotation-optional
 
   ts-type-special: !foreach
-    in: [ any, void, never ]
+    in: [ any, void, never, unknown ]
     value:
       match: !format '{value}{{{{identifier_break}}}}'
       scope: !format 'support.type.{value}.js'
       pop: true
 
   ts-type-primitive: !foreach
-    in: [ boolean, number, string, 'null', undefined, object, symbol, unknown ]
+    in: [ boolean, number, string, 'null', undefined, object, symbol, bigint ]
     value:
       match: !format '{value}{{{{identifier_break}}}}'
       scope: !format 'support.type.primitive.{value}.js'
