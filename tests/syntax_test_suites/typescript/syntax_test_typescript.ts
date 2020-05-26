@@ -591,3 +591,13 @@ let x: T extends infer U ? V : W;
 //                         ^ support.class
 //                           ^ keyword.operator.type
 //                             ^ support.class
+
+let x: import ( "foo" ) . Bar ;
+//     ^^^^^^^^^^^^^^^^^^^^^^^ meta.type
+//     ^^^^^^ keyword.operator.type
+//            ^^^^^^^^^ meta.group
+//            ^ punctuation.section.group.begin
+//              ^^^^^ meta.string string.quoted.double
+//                    ^ punctuation.section.group.end
+//                      ^ punctuation.separator.accessor
+//                        ^^^ support.class
