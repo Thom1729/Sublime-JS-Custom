@@ -537,7 +537,7 @@ contexts: !merge
       pop: true
 
   ts-type-primitive: !foreach
-    in: [ boolean, number, string, 'null', undefined, object, symbol ]
+    in: [ boolean, number, string, 'null', undefined, object, symbol, unknown ]
     value:
       match: !format '{value}{{{{identifier_break}}}}'
       scope: !format 'support.type.primitive.{value}.js'

@@ -293,6 +293,9 @@ let x: unique symbol;
 //     ^^^^^^ storage.modifier.unique
 //            ^^^^^^ support.type.primitive.symbol
 
+let x: unknown;
+//     ^^^^^^^ support.type.primitive.unknown
+
 let x: Foo;
 //     ^^^ support.class
 
