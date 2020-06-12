@@ -155,6 +155,22 @@
 
     }
 
+    class Foo < T > extends Bar implements Baz, Xyzzy { }
+//  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.class
+//  ^^^^^ storage.type.class
+//        ^^^ entity.name.class
+//            ^^^^^ meta.generic
+//            ^ punctuation.definition.generic.begin
+//              ^ variable.parameter.generic
+//                ^ punctuation.definition.generic.end
+//                  ^^^^^^^ storage.modifier.extends
+//                          ^^^ entity.other.inherited-class
+//                              ^^^^^^^^^^ storage.modifier.implements
+//                                         ^^^ entity.other.inherited-class
+//                                            ^ punctuation.separator.comma
+//                                              ^^^^^ entity.other.inherited-class
+//                                                    ^^^ meta.block
+
     namespace Foo {
 //  ^^^^^^^^^^^^^^^^ meta.namespace
 //  ^^^^^^^^^ storage.namespace

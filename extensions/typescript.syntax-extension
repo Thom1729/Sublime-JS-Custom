@@ -108,6 +108,36 @@ contexts: !merge
         - block
         - ts-namespace-name
 
+  class:
+    - match: class{{identifier_break}}
+      scope: storage.type.class.js
+      set:
+        - class-meta
+        - class-body
+        - ts-class-implements
+        - class-extends
+        - class-name
+
+  ts-class-implements:
+    - match: implements{{identifier_break}}
+      scope: storage.modifier.implements.js
+      set:
+        - - match: \,
+            scope: punctuation.separator.comma.js
+            push:
+              - inherited-class-expression-end
+              - inherited-class-expression-begin
+          - include: else-pop
+        - inherited-class-expression-end
+        - inherited-class-expression-begin
+    - include: else-pop
+
+  class-name:
+    - match: '{{non_reserved_identifier}}'
+      scope: entity.name.class.js
+      set: ts-type-parameter-list
+    - include: else-pop
+
   ts-interface-meta:
     - meta_include_prototype: false
     - meta_scope: meta.interface.js
