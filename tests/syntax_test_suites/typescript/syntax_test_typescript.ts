@@ -63,6 +63,11 @@
 //        ^ keyword.operator.assignment
 //          ^ constant.numeric.integer.decimal
 //           ^ punctuation.separator.comma
+
+        'FOO'
+//      ^^^^^ meta.string string.quoted.single
+        "FOO"
+//      ^^^^^ meta.string string.quoted.double
     }
 //  ^ meta.enum meta.block punctuation.section.block.end
 

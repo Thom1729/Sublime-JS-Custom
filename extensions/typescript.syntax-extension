@@ -239,6 +239,8 @@ contexts: !merge
           scope: punctuation.section.block.end.js
           pop: true
         - include: comma-separator
+        - match: (?=['"])
+          push: literal-string
         - match: '{{identifier}}'
           scope: variable.other.readwrite.js
           push: initializer
