@@ -45,6 +45,7 @@ contexts: !merge
 
   export-extended: !prepend
     - include: ts-type-declaration
+    - include: ts-interface-declaration
 
   property-access: !prepend
     - match: \!\.
@@ -68,16 +69,9 @@ contexts: !merge
         - ts-type-alias-name
 
   statement: !prepend
-    - match: interface{{identifier_break}}
-      scope: storage.type.js
-      set:
-        - ts-interface-meta
-        - ts-type-body
-        - ts-type-parameter-list
-        - ts-interface-name
-
     - include: ts-enum
     - include: ts-type-declaration
+    - include: ts-interface-declaration
 
     - match: const{{identifier_break}}
       scope: storage.type.js
@@ -137,6 +131,15 @@ contexts: !merge
       scope: entity.name.class.js
       set: ts-type-parameter-list
     - include: else-pop
+
+  ts-interface-declaration:
+    - match: interface{{identifier_break}}
+      scope: storage.type.js
+      set:
+        - ts-interface-meta
+        - ts-type-body
+        - ts-type-parameter-list
+        - ts-interface-name
 
   ts-interface-meta:
     - meta_include_prototype: false

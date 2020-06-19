@@ -26,7 +26,15 @@
 //  ^^^^^^ keyword.control.import-export
 //         ^^^^^^^^^^^^ meta.type-alias
 //                     ^ punctuation.terminator.statement.empty - meta.export
-“
+
+    export interface Foo {}
+//  ^^^^^^^^^^^^^^^^^^^^^^^ meta.export
+//  ^^^^^^ keyword.control.import-export
+//         ^^^^^^^^^^^^^^^^ meta.interface
+//         ^^^^^^^^^ storage.type
+//                   ^^^ entity.name.interface
+//                       ^^ meta.block
+
 /* Declarations */
 
     interface Foo {
