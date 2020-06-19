@@ -369,6 +369,7 @@ contexts: !merge
         - class-field-rest
         - initializer
         - ts-type-annotation
+        - ts-type-annotation-optional
 
   method-declaration:
     - meta_include_prototype: false

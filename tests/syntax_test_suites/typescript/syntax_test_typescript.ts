@@ -130,6 +130,12 @@
 //           ^^^ meta.type support.type.any
 //               ^ keyword.operator.assignment
 
+        foo?: any;
+//      ^^^ variable.other.readwrite
+//         ^ storage.modifier.optional
+//          ^ punctuation.separator.type
+//            ^^^ meta.type support.type.any
+
         declare foo;
 //      ^^^^^^^ storage.modifier
 //              ^^^ variable.other.readwrite
