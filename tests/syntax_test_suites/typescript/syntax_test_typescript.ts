@@ -35,6 +35,14 @@
 //                   ^^^ entity.name.interface
 //                       ^^ meta.block
 
+    export namespace Foo {}
+//  ^^^^^^^^^^^^^^^^^^^^^^^ meta.export
+//  ^^^^^^ keyword.control.import-export
+//         ^^^^^^^^^^^^^^^^ meta.namespace
+//         ^^^^^^^^^ storage.type
+//                   ^^^ entity.name.namespace
+//                       ^^ meta.block
+
 /* Declarations */
 
     interface Foo {
@@ -186,7 +194,7 @@
 
     namespace Foo {
 //  ^^^^^^^^^^^^^^^^ meta.namespace
-//  ^^^^^^^^^ storage.namespace
+//  ^^^^^^^^^ storage.type
 //            ^^^ entity.name.namespace
 //                ^ meta.block punctuation.section.block.begin
     }

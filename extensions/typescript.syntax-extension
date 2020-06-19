@@ -46,6 +46,7 @@ contexts: !merge
   export-extended: !prepend
     - include: ts-type-declaration
     - include: ts-interface-declaration
+    - include: ts-namespace-declaration
 
   property-access: !prepend
     - match: \!\.
@@ -72,6 +73,7 @@ contexts: !merge
     - include: ts-enum
     - include: ts-type-declaration
     - include: ts-interface-declaration
+    - include: ts-namespace-declaration
 
     - match: const{{identifier_break}}
       scope: storage.type.js
@@ -94,13 +96,6 @@ contexts: !merge
       set:
         - include: class
         - include: else-pop
-
-    - match: namespace{{identifier_break}}
-      scope: storage.namespace.js
-      set:
-        - ts-namespace-meta
-        - block
-        - ts-namespace-name
 
   class:
     - match: class{{identifier_break}}
@@ -264,6 +259,14 @@ contexts: !merge
       scope: keyword.operator.assignment.js
       set: ts-type-expression
     - include: else-pop
+
+  ts-namespace-declaration:
+    - match: namespace{{identifier_break}}
+      scope: storage.type.js
+      set:
+        - ts-namespace-meta
+        - block
+        - ts-namespace-name
 
   ts-namespace-meta:
     - meta_include_prototype: false
