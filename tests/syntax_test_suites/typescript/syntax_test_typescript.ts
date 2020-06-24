@@ -430,11 +430,6 @@ let x: Foo<any, any>;
 //              ^^^ support.type.any
 //                 ^ punctuation.definition.generic.end
 
-let x: Foo
-//     ^^^ meta.type support.class
-    <;
-//  ^ - meta.type
-
 
 function f<T extends Foo>() {}
 //        ^^^^^^^^^^^^^^^ meta.function.declaration meta.generic

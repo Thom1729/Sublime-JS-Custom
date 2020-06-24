@@ -123,7 +123,7 @@ class TestSyntaxes(DeferrableTestCase):
 
     def test_typescript_plain(self):
         yield from self._test_syntaxes(
-            name="typescript",
+            name="typescript_plain",
             configuration={
                 "file_extensions": [],
                 "hidden": True,
@@ -132,4 +132,16 @@ class TestSyntaxes(DeferrableTestCase):
                 },
             },
             tests=["base", "typescript", "typescript_plain"],
+        )
+
+    def test_typescript_jsx(self):
+        yield from self._test_syntaxes(
+            name="typescript_jsx",
+            configuration={
+                "file_extensions": [],
+                "hidden": True,
+                "typescript": True,
+                "jsx": True,
+            },
+            tests=["base", "typescript", "jsx"],
         )
