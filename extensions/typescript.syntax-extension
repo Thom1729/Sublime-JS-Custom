@@ -620,3 +620,19 @@ contexts: !merge
           push:
             - ts-type-annotation
             - ts-type-annotation-optional
+
+  parenthesized-expression: !prepend
+    - !if
+      - !argument [ old_style_cast, false ]
+      - match: \(
+        scope: punctuation.section.group.begin.js
+        set:
+          - - meta_scope: meta.group.js
+            - match: \)
+              scope: punctuation.section.group.end.js
+              pop: true
+            - match: (?=\S)
+              push: expression
+          - - include: ts-generic-type-arguments
+            - include: else-pop
+      - match: (?=\b\B)
