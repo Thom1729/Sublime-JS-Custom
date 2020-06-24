@@ -11,7 +11,20 @@
             "file_extensions": [ "js", "jsx" ],
             "flow_types": true,
             "jsx": true,
-        }
+        },
+        "TypeScript": {
+            "scope": "source.ts",
+            "file_extensions": [ "ts" ],
+            "typescript": {
+                "old_style_assertions": true
+            },
+        },
+        "TypeScript (JSX)": {
+            "scope": "source.tsx",
+            "file_extensions": [ "tsx" ],
+            "typescript": true,
+            "jsx": true
+        },
     },
 
     "embed_configuration": {
