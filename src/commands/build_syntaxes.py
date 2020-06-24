@@ -22,7 +22,7 @@ class BuildJsCustomSyntaxesCommand(sublime_plugin.WindowCommand):
         configurations = get_configurations(get_settings())
 
         to_delete = {
-            syntax_path.stem : syntax_path
+            syntax_path.stem: syntax_path
             for syntax_path in SYNTAXES_BUILD_PATH.glob('*.sublime-syntax')
             if syntax_path.stem not in configurations
         }
@@ -31,8 +31,8 @@ class BuildJsCustomSyntaxesCommand(sublime_plugin.WindowCommand):
         if versions is not None:
             def filter_by_versions(d):
                 return {
-                    k:v
-                    for k,v in d.items()
+                    k: v
+                    for k, v in d.items()
                     if k in versions
                 }
             to_delete = filter_by_versions(to_delete)
