@@ -121,13 +121,15 @@ class TestSyntaxes(DeferrableTestCase):
             tests=["base", "string_object_keys"],
         )
 
-    def test_typescript(self):
+    def test_typescript_plain(self):
         yield from self._test_syntaxes(
             name="typescript",
             configuration={
                 "file_extensions": [],
                 "hidden": True,
-                "typescript": True,
+                "typescript": {
+                    "old_style_assertions": True,
+                },
             },
-            tests=["base", "typescript"],
+            tests=["base", "typescript", "typescript_plain"],
         )

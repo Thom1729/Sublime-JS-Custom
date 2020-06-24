@@ -391,6 +391,20 @@ contexts: !merge
   expression-end: !prepend
     - include: ts-type-assertion
 
+  expression-begin: !prepend
+    - !if
+      - !argument [ old_style_assertions, false ]
+      - match: \<
+        scope: punctuation.definition.assertion.begin.js
+        set:
+          - - meta_scope: meta.assertion.js
+            - match: \>
+              scope: punctuation.definition.assertion.end.js
+              pop: true
+            - include: else-pop
+          - ts-type-expression
+      - match: (?=\b\B)
+
   ts-type-assertion:
     - match: '!(?!\.)'
       scope: keyword.operator.type.js
@@ -620,19 +634,3 @@ contexts: !merge
           push:
             - ts-type-annotation
             - ts-type-annotation-optional
-
-  parenthesized-expression: !prepend
-    - !if
-      - !argument [ old_style_cast, false ]
-      - match: \(
-        scope: punctuation.section.group.begin.js
-        set:
-          - - meta_scope: meta.group.js
-            - match: \)
-              scope: punctuation.section.group.end.js
-              pop: true
-            - match: (?=\S)
-              push: expression
-          - - include: ts-generic-type-arguments
-            - include: else-pop
-      - match: (?=\b\B)
