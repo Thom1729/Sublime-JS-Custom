@@ -34,6 +34,7 @@ class BuildJsCustomSyntaxesCommand(sublime_plugin.WindowCommand):
             configurations = {
                 name: configurations[name]
                 for name in versions
+                if name in configurations
             }
 
         def run():
