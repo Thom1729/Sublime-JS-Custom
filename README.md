@@ -66,6 +66,10 @@ If true, JS Custom will automatically rebuild your syntaxes when you modify your
 
 If true, when you run the `close_tag` command in a JavaScript file, this package's `jsx_close_tag` command will be invoked instead.
 
+### `reassign_when_deleting`: string or `false`
+
+When you remove a custom configuration, JS Custom will automatically find any views using that configuration and assign them to this default syntax so that Sublime won't show an error popup. You can set this setting to the path or scope of any syntax definition, or set it to `false` to disable the feature entirely.
+
 ## Syntax Options
 
 These options, specified in your `defaults` or in a named custom configuration, determine what features your custom syntaxes will have. Omitted options will be treated as `null`.

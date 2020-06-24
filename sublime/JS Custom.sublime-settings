@@ -24,5 +24,6 @@
     },
 
     "auto_build": true,
-    "jsx_close_tag": true
+    "jsx_close_tag": true,
+    "reassign_when_deleting": "scope:source.js",
 }
