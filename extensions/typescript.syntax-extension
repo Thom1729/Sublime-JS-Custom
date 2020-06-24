@@ -121,6 +121,9 @@ contexts: !merge
         - inherited-class-expression-begin
     - include: else-pop
 
+  inherited-class-expression-end: !prepend
+    - include: ts-generic-type-arguments
+
   class-name:
     - match: '{{non_reserved_identifier}}'
       scope: entity.name.class.js
@@ -490,6 +493,11 @@ contexts: !merge
         - match: (?=\S)
           push: ts-type-expression
 
+    - include: ts-generic-type-arguments
+
+    - include: else-pop
+
+  ts-generic-type-arguments:
     - match: \<
       scope: punctuation.definition.generic.begin.js
       set:
@@ -500,8 +508,6 @@ contexts: !merge
         - include: comma-separator
         - match: (?=\S)
           push: ts-type-expression
-
-    - include: else-pop
 
   ts-type-expression-begin:
     - match: keyof{{identifier_break}}

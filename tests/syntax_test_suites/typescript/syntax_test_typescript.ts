@@ -198,6 +198,20 @@
 //                                              ^^^^^ entity.other.inherited-class
 //                                                    ^^^ meta.block
 
+    class Foo extends Bar < T > implements Bar < T > {}
+//  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.class
+//                    ^^^ entity.other.inherited-class
+//                        ^^^^^ meta.generic
+//                        ^ punctuation.definition.generic.begin
+//                          ^ support.class
+//                            ^ punctuation.definition.generic.end
+//                                         ^^^ entity.other.inherited-class
+//                                             ^^^^^ meta.generic
+//                                             ^ punctuation.definition.generic.begin
+//                                               ^ support.class
+//                                                 ^ punctuation.definition.generic.end
+//                                                   ^^ meta.block
+
     namespace Foo {
 //  ^^^^^^^^^^^^^^^^ meta.namespace
 //  ^^^^^^^^^ storage.type
