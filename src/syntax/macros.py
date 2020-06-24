@@ -4,7 +4,7 @@ from yamlmacros import get_loader
 from sublime_lib import ResourcePath
 
 
-__all__ = ['get_extensions']
+__all__ = ['get_extensions', 'do_suffix']
 
 
 def parse_documents(text):
@@ -66,3 +66,43 @@ def get_extensions(path):
                 ret.append(result)
 
     return ret
+
+import re
+
+JS_EXPR = re.compile(r'\.js(?:$|(?=[.\s]))')
+
+def do_suffix(definition):
+    arguments = (yield).context
+
+    suffix = arguments.get('suffix', None)
+    if suffix:
+        def replace_suffix(string):
+            return JS_EXPR.sub('.' + suffix, string)
+
+        def patch_context(context):
+            for rule in context:
+                for key in ('scope', 'meta_scope', 'meta_content_scope'):
+                    if key in rule:
+                        rule[key] = replace_suffix(rule[key])
+
+                if 'captures' in rule:
+                    for index, capture_scope in rule['captures'].items():
+                        rule['captures'][index] = replace_suffix(capture_scope)
+
+                for key in ('push', 'set'):
+                    if key in rule:
+                        if (
+                            isinstance(rule[key], list) and
+                            len(rule[key])
+                        ):
+                            if isinstance(rule[key][0], dict):
+                                patch_context(rule[key])
+                            else:
+                                for child in rule[key]:
+                                    if isinstance(child, list):
+                                        patch_context(child)
+
+        for name, context in definition['contexts'].items():
+            patch_context(context)
+
+    return definition
