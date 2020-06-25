@@ -12,6 +12,7 @@ from .src.configurations import get_configurations
 from .src.commands.build_syntaxes import BuildJsCustomSyntaxCommand, BuildJsCustomSyntaxesCommand
 from .src.commands.build_tests import BuildJsCustomTestsCommand
 from .src.commands.clear_user_data import ClearJsCustomUserDataCommand
+from .src.commands.reassign_syntaxes import ReassignSyntaxesCommand
 from .src.commands.jsx_close_tag import JsxCloseTagCommand
 from .src.listeners.jsx_close_tag import JsxCloseTagListener
 
@@ -22,6 +23,7 @@ __all__ = [
     'BuildJsCustomSyntaxCommand',
     'BuildJsCustomTestsCommand',
     'ClearJsCustomUserDataCommand',
+    'ReassignSyntaxesCommand',
     'JsxCloseTagCommand',
     'JsxCloseTagListener',
 ]

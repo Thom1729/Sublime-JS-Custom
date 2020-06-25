@@ -1,7 +1,8 @@
+import sublime
 import sublime_plugin
 
 from threading import Thread
-from sublime_lib import OutputPanel
+from sublime_lib import OutputPanel, get_syntax_for_scope
 
 from ..settings import get_settings
 from ..paths import USER_DATA_PATH
@@ -19,7 +20,8 @@ class BuildJsCustomSyntaxesCommand(sublime_plugin.WindowCommand):
         output = OutputPanel.create(self.window, 'YAMLMacros')
         output.show()
 
-        configurations = get_configurations(get_settings())
+        settings = get_settings()
+        configurations = get_configurations(settings)
 
         to_delete = {
             syntax_path.stem: syntax_path
@@ -42,6 +44,19 @@ class BuildJsCustomSyntaxesCommand(sublime_plugin.WindowCommand):
             SYNTAXES_BUILD_PATH.file_path().mkdir(parents=True)
         except FileExistsError:
             pass
+
+        if settings.get('reassign_when_deleting', False):
+            replacement = settings['reassign_when_deleting']
+            if replacement.startswith('scope:'):
+                replacement = get_syntax_for_scope(replacement[6:])
+
+            paths_to_delete = [str(path) for path in to_delete.values()]
+
+            print(paths_to_delete, replacement)
+            sublime.run_command('reassign_syntaxes', {
+                'syntaxes': paths_to_delete,
+                'replacement': replacement,
+            })
 
         def run():
             for name, syntax_path in to_delete.items():
