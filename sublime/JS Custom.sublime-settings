@@ -37,6 +37,6 @@
     },
 
     "auto_build": true,
-    "jsx_close_tag": true,
+    "jsx_close_tag": "source.js, source.ts, source.tsx",
     "reassign_when_deleting": "scope:source.js",
 }

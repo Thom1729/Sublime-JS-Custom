@@ -62,9 +62,11 @@ An object specifying a configuration to use when another syntax embeds the `sour
 
 If true, JS Custom will automatically rebuild your syntaxes when you modify your user settings. Only syntaxes whose configurations have changed will be rebuilt. If `auto_build` is disabled, you will have to run the rebuild command manually.
 
-### `jsx_close_tag`: boolean
+### `jsx_close_tag`: string or boolean
 
-If true, when you run the `close_tag` command in a JavaScript file, this package's `jsx_close_tag` command will be invoked instead.
+When you run the `close_tag` command, if the scope of the file matches this selector, then this package's `jsx_close_tag` command will be invoked instead. You may have to modify this setting if you use the `scope` configuration option
+
+If false, `jsx_close_tag` will never be run.
 
 ### `reassign_when_deleting`: string or `false`
 
