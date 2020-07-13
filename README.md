@@ -94,6 +94,30 @@ These extensions go beyond the base JavaScript syntax to support third-party fea
 
 Highlight [JSX](https://reactjs.org/docs/introducing-jsx.html).
 
+#### `typescript`: boolean (**Beta**)
+
+Highlight [TypeScript](http://typescriptlang.org). TypeScript support is currently in beta, meaning that there may be bugs and that the exact behavior is subject to change.
+
+By default, old-style type assertions (e.g. `<T>foo`) are not highlighted. You can enable them via the `typescript.old_style_assertions` option. As an example, these user preferences will provide configurations for both plain TypeScript and TypeScript with JSX:
+
+```json
+{
+    "configurations": {
+        "TypeScript": {
+            "file_extensions": [ "ts" ],
+            "typescript": {
+                "old_style_assertions": true
+            },
+        },
+        "TypeScript (JSX)": {
+            "file_extensions": [ "tsx" ],
+            "typescript": true,
+            "jsx": true
+        }
+    }
+}
+```
+
 #### `flow_types`: boolean
 
 Highlight [Flow type annotations](https://flow.org/en/docs/types/).
