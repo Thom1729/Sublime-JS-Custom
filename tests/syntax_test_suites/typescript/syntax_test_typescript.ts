@@ -688,3 +688,45 @@ let x: import ( "foo" ) . Bar ;
 //                    ^ punctuation.section.group.end
 //                      ^ punctuation.separator.accessor
 //                        ^^^ support.class
+
+
+    foo < T > ();
+//  ^^^ variable
+//      ^^^^^ meta.generic
+//      ^ punctuation.definition.generic.begin
+//        ^ meta.generic support.class
+//          ^ punctuation.definition.generic.end
+//            ^^ meta.group
+
+    foo < T , U < V > > ();
+//  ^^^ variable
+//      ^^^^^^^^^^^^^^^ meta.generic
+//      ^ punctuation.definition.generic.begin
+//        ^ meta.generic support.class
+//          ^ meta.generic punctuation.separator
+//            ^ meta.generic support.class
+//                ^ meta.generic support.class
+//              ^ punctuation.definition.generic.begin
+//                  ^ punctuation.definition.generic.end
+//                    ^ punctuation.definition.generic.end
+//                      ^^ meta.group
+
+    foo < bar;
+//  ^^^ variable.other.readwrite
+//      ^ keyword.operator.relational
+//        ^^^ variable.other.readwrite
+
+    foo < bar >
+//  ^^^ variable.other.readwrite
+//      ^ keyword.operator.relational
+//        ^^^ variable.other.readwrite
+//            ^ keyword.operator.relational
+    baz;
+
+    foo < T > `bar`;
+//  ^^^ variable
+//      ^^^^^ meta.generic
+//      ^ punctuation.definition.generic.begin
+//        ^ support.class
+//          ^ punctuation.definition.generic.end
+//            ^^^^^ meta.string string.quoted.other

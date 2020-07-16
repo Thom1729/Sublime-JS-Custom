@@ -391,6 +391,12 @@ contexts: !merge
   expression-end: !prepend
     - include: ts-type-assertion
 
+    - match: (?=<)
+      branch_point: ts-type-argument-list
+      branch:
+        - ts-type-argument-list
+        - ts-type-argument-list-less-than
+
   expression-begin: !prepend
     - !if
       - !argument [ old_style_assertions, false ]
@@ -404,6 +410,43 @@ contexts: !merge
             - include: else-pop
           - ts-type-expression
       - match: (?=\b\B)
+
+  ts-type-argument-list:
+    - match: \<
+      scope: punctuation.definition.generic.begin.js
+      set:
+        - ts-type-argument-list-decider
+        - ts-type-argument-list-end
+        - ts-type-expression-list-end
+        - ts-type-expression
+
+  ts-type-argument-list-decider:
+    - match: (?=[(`])
+      pop: true
+    - match: (?=\S)
+      fail: ts-type-argument-list
+
+  ts-type-argument-list-end:
+    - meta_scope: meta.generic.js
+    - match: \>
+      scope: punctuation.definition.generic.end.js
+      pop: true
+    - match: (?=\S)
+      fail: ts-type-argument-list
+
+  ts-type-expression-list-end:
+    - match: (?=>)
+      pop: true
+    - match: ','
+      scope: punctuation.separator.comma
+      push: ts-type-expression
+    - match: (?=\S)
+      fail: ts-type-argument-list
+
+  ts-type-argument-list-less-than:
+    - match: <
+      scope: keyword.operator.relational.js
+      set: expression-begin
 
   ts-type-assertion:
     - match: '!(?!\.)'
