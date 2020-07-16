@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
     <key>name</key>
-    <string>JS Custom - JSX Comments</string>
+    <string>Comments</string>
     <key>scope</key>
-    <string>source.js meta.jsx - source.js.embedded.jsx, source.ts meta.jsx - source.ts.embedded.jsx, source.tsx meta.jsx - source.tsx.embedded.jsx</string>
+    <string>source.js, source.ts, source.tsx</string>
     <key>settings</key>
     <dict>
         <key>shellVariables</key>
@@ -14,13 +13,19 @@
                 <key>name</key>
                 <string>TM_COMMENT_START</string>
                 <key>value</key>
-                <string>{/*</string>
+                <string>// </string>
             </dict>
             <dict>
                 <key>name</key>
-                <string>TM_COMMENT_END</string>
+                <string>TM_COMMENT_START_2</string>
                 <key>value</key>
-                <string>*/}</string>
+                <string>/*</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>TM_COMMENT_END_2</string>
+                <key>value</key>
+                <string>*/</string>
             </dict>
         </array>
     </dict>
