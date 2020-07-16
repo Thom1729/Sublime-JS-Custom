@@ -1247,12 +1247,26 @@ class{}/**/
 //   ^^^^^^^^^^ meta.group
 //              ^^^^^ storage.type.class
 
-() => {}
+() => {};
 // <- meta.function.declaration punctuation.section.group.begin
  // <- meta.function.declaration punctuation.section.group.end
 //^^^ meta.function.declaration
 //    ^ meta.block punctuation.section.block.begin
 //     ^ meta.block punctuation.section.block.end
+
+    (foo, bar = 42)
+//  ^^^^^^^^^^^^^^^ meta.function.declaration
+//   ^^^ meta.binding.name
+//        ^^^ meta.binding.name
+    => 42;
+//  ^^^^^ meta.function
+//  ^^ meta.function.declaration storage.type.function.arrow
+
+    foo
+//  ^^^ meta.function.declaration variable.parameter.function
+    => 42;
+//  ^^^^^ meta.function
+//  ^^ meta.function.declaration storage.type.function.arrow
 
 const test = ({a, b, c=()=>({active:false}) }) => {};
 //    ^ entity.name.function
@@ -1289,9 +1303,9 @@ const test = ({a, b, c=()=>({active:false}) }) => {};
     a = {},
 //    ^ keyword.operator.assignment
 //      ^^ punctuation.section.block
-//        ^ punctuation.separator.comma - keyword.operator.comma
+//        ^ punctuation.separator.parameter - keyword.operator.comma
     b,
-//   ^ punctuation.separator.comma - keyword.operator.comma
+//   ^ punctuation.separator.parameter - keyword.operator.comma
 }) => null;
 // ^^ storage.type.function.arrow
 
