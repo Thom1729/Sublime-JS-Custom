@@ -1,3 +1,4 @@
+// SYNTAX TEST "Packages/JavaScript/JSX.sublime-syntax"
 
     <foo />;
 //  ^^^^^^^ meta.jsx meta.tag
@@ -115,7 +116,7 @@
 //       ^^^^^^^^^^^^ source.js.embedded.jsx meta.mapping
 //         ^^^^^ meta.mapping.key
 //              ^ punctuation.separator.key-value
-//               ^^ constant.numeric.integer.decimal
+//               ^^ meta.number.integer.decimal.js constant.numeric.value.js
 //                   ^ punctuation.definition.interpolation.end
 
 
@@ -132,7 +133,7 @@
 //      ^^^^^^^^^^^^ meta.mapping
 //        ^^^^^ meta.mapping.key
 //             ^ punctuation.separator.key-value
-//              ^^ constant.numeric.integer.decimal
+//              ^^ meta.number.integer.decimal.js constant.numeric.value.js
 //                  ^ punctuation.definition.interpolation.end
 
     // baz
@@ -170,7 +171,7 @@
 //   ^^^^^^^^^^^^ meta.mapping
 //     ^^^^^ meta.mapping.key
 //          ^ punctuation.separator.key-value
-//           ^^ constant.numeric.integer.decimal
+//           ^^ meta.number.integer.decimal.js constant.numeric.value.js
 //               ^ punctuation.definition.interpolation.end
 
     {//}
