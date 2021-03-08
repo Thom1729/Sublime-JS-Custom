@@ -1,5 +1,12 @@
 %YAML 1.2
 ---
+version: 2
+name: JSX
+file_extensions:
+  - jsx
+scope: source.jsx
+extends: JavaScript.sublime-syntax
+
 variables:
   jsx_identifier_part: (?:{{identifier_part}}|-)
   jsx_identifier_break: (?!{{jsx_identifier_part}})
@@ -55,7 +62,7 @@ contexts:
         - jsx-tag-name
 
   jsx-tag-attributes:
-    - meta_content_scope: meta.tag.js
+    - meta_scope: meta.tag.js
 
     - match: '>'
       scope: punctuation.definition.tag.end.js

@@ -24,7 +24,7 @@ class TestSyntaxes(DeferrableTestCase):
         shutil.rmtree(str(TESTS_PATH.file_path()), ignore_errors=True)
         TESTS_PATH.file_path().mkdir(parents=True)
 
-    def _test_syntaxes(self, name, configuration, tests):
+    def _test_syntaxes(self, *, name, configuration, tests, exclude=[]):
         test_working_path = TESTS_PATH / name
         test_working_path.file_path().mkdir(parents=True)
 
@@ -36,6 +36,7 @@ class TestSyntaxes(DeferrableTestCase):
         sublime.run_command('build_js_custom_tests', {
             'syntax_path': str(syntax_path),
             'suites': tests,
+            'exclude': exclude,
             'destination_directory': str(test_working_path.file_path()),
         })
 
@@ -56,12 +57,12 @@ class TestSyntaxes(DeferrableTestCase):
 
     def test_base(self):
         yield from self._test_syntaxes(
-            name="base",
+            name="js",
             configuration={
                 "file_extensions": [],
                 "hidden": True,
             },
-            tests=["base"],
+            tests=["js"],
         )
 
     def test_jsx(self):
@@ -74,7 +75,7 @@ class TestSyntaxes(DeferrableTestCase):
                 "es_pipeline": True,
                 "es_slice": True,
             },
-            tests=["base", "jsx", "pipeline", "slice"],
+            tests=["js", "jsx", "pipeline", "slice"],
         )
 
     def test_flow(self):
@@ -85,7 +86,7 @@ class TestSyntaxes(DeferrableTestCase):
                 "hidden": True,
                 "flow_types": True
             },
-            tests=["base", "flow"],
+            tests=["js", "flow"],
         )
 
     def test_templates(self):
@@ -107,7 +108,7 @@ class TestSyntaxes(DeferrableTestCase):
                     'styled_components': True,
                 }
             },
-            tests=["base", "templates"],
+            tests=["js", "templates"],
         )
 
     def test_string_object_keys(self):
@@ -118,7 +119,7 @@ class TestSyntaxes(DeferrableTestCase):
                 "hidden": True,
                 "string_object_keys": True,
             },
-            tests=["base", "string_object_keys"],
+            tests=["js", "string_object_keys"],
         )
 
     def test_typescript_plain(self):
@@ -131,7 +132,7 @@ class TestSyntaxes(DeferrableTestCase):
                     "old_style_assertions": True,
                 },
             },
-            tests=["base", "typescript", "typescript_plain"],
+            tests=["js", "typescript"],
         )
 
     def test_typescript_jsx(self):
@@ -143,5 +144,6 @@ class TestSyntaxes(DeferrableTestCase):
                 "typescript": True,
                 "jsx": True,
             },
-            tests=["base", "typescript", "jsx"],
+            tests=["js", "typescript", "jsx"],
+            exclude=["syntax_test_typescript_not_tsx.ts"]
         )

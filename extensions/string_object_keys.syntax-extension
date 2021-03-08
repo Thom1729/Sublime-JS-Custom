@@ -1,7 +1,7 @@
 %YAML 1.2
 ---
 contexts:
-  bare-property-name:
-    - match: '{{identifier}}'
-      scope: string.unquoted.js
-      pop: true
+  object-literal-meta-key:
+    - meta_scope: meta.mapping.key.js string.unquoted.js
+    - include: else-pop
+

@@ -49,15 +49,15 @@ contexts:
     - include: expression-end
 
   styled-component-begin:
-    - match: '{{identifier}}(?=\s*\()'
+    - match: '{{non_reserved_identifier}}(?=\s*\()'
       scope: variable.function.js
       pop: true
 
-    - match: '{{identifier}}(?=\s*`)'
+    - match: '{{non_reserved_identifier}}(?=\s*`)'
       scope: variable.function.tagged-template.js
       pop: true
 
-    - match: '{{identifier}}'
+    - match: '{{non_reserved_identifier}}'
       scope: variable.other.readwrite.js
       pop: true
 

@@ -42,6 +42,9 @@ def get_extensions(path):
 
     extensions = list(list_extensions(ResourcePath(path)))
 
+    # Hack hacky hack to make sure that JSX is after TypeScript
+    extensions.sort(key=lambda pair: pair[0]['name'] == 'jsx')
+
     for extension in extensions:
         metadata, extension_value = extension
 
@@ -74,6 +77,10 @@ def convert_extension(extension):
 
     if 'extends' in extension:
         del extension['extends']
+        del extension['version']
+        del extension['name']
+        del extension['file_extensions']
+        del extension['scope']
 
     if 'variables' in extension:
         extension['variables'] = merge(extension['variables'])

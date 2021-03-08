@@ -14,6 +14,7 @@ from .src.commands.build_tests import BuildJsCustomTestsCommand
 from .src.commands.clear_user_data import ClearJsCustomUserDataCommand
 from .src.commands.reassign_syntaxes import ReassignSyntaxesCommand
 from .src.commands.jsx_close_tag import JsxCloseTagCommand
+from .src.commands.js_custom_rebase import JsCustomRebaseCommand
 from .src.listeners.jsx_close_tag import JsxCloseTagListener
 
 
@@ -25,6 +26,7 @@ __all__ = [
     'ClearJsCustomUserDataCommand',
     'ReassignSyntaxesCommand',
     'JsxCloseTagCommand',
+    'JsCustomRebaseCommand',
     'JsxCloseTagListener',
 ]
 

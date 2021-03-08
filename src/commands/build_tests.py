@@ -12,13 +12,14 @@ TEST_SUITES_PATH = PACKAGE_PATH / 'tests/syntax_test_suites'
 
 
 class BuildJsCustomTestsCommand(sublime_plugin.ApplicationCommand):
-    def run(self, syntax_path, suites, destination_directory):
+    def run(self, syntax_path, suites, destination_directory, exclude=[]):
         syntax_test_header = '// SYNTAX TEST "{!s}"\n'.format(syntax_path)
 
         test_paths = [
             test_path
             for test_path in TEST_SUITES_PATH.rglob('syntax_test*')
             if test_path.parent.name in suites
+            and test_path.name not in exclude
         ]
 
         for source_path in test_paths:
