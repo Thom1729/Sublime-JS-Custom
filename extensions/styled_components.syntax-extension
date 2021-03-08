@@ -1,9 +1,9 @@
 %YAML 1.2
-%TAG ! tag:yaml-macros:yamlmacros.lib.extend,yamlmacros.lib.arguments:
+%TAG ! tag:yaml-macros:yamlmacros.lib.arguments:
 ---
-!merge
-contexts: !merge
-  expression-begin: !prepend
+contexts:
+  expression-begin:
+    - meta_prepend: true
     - match: (?=(?:styled|css|createGlobalStyle|injectGlobal|keyframes){{identifier_break}})
       set:
         - styled-component-end

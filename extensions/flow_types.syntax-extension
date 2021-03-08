@@ -1,8 +1,7 @@
 %YAML 1.2
-%TAG ! tag:yaml-macros:yamlmacros.lib.syntax,yamlmacros.lib.extend,yamlmacros.lib.arguments:
+%TAG ! tag:yaml-macros:yamlmacros.lib.syntax,yamlmacros.lib.arguments:
 ---
-!merge
-variables: !merge
+variables:
   arrow_func_lookahead: |-
     (?x)(?:
       \s*(async\s*)?
@@ -34,27 +33,32 @@ variables: !merge
       | {{property_name}} \s* (?:\(|<)
     )
 
-contexts: !merge
+contexts:
   class-name:
     - match: '{{non_reserved_identifier}}'
       scope: entity.name.class.js
       set: flow-type-generic-parameters
     - include: else-pop
 
-  comments: !prepend
+  comments:
+    - meta_prepend: true
     - include: flow-type-pragma
 
-  statement: !prepend
+  statement:
+    - meta_prepend: true
     - include: flow-type-declare
     - include: flow-type-alias
 
-  import-item: !prepend
+  import-item:
+    - meta_prepend: true
     - include: flow-type-import-type
 
-  import-brace: !prepend
+  import-brace:
+    - meta_prepend: true
     - include: flow-type-import-type
 
-  export-extended: !prepend
+  export-extended:
+    - meta_prepend: true
     - include: flow-type-export-type
 
   variable-binding-pattern:

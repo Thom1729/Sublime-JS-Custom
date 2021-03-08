@@ -1,14 +1,13 @@
 %YAML 1.2
-%TAG ! tag:yaml-macros:yamlmacros.lib.extend:
 ---
-!merge
-variables: !merge
+variables:
   jsx_identifier_part: (?:{{identifier_part}}|-)
   jsx_identifier_break: (?!{{jsx_identifier_part}})
   jsx_identifier: '{{identifier_start}}{{jsx_identifier_part}}*{{jsx_identifier_break}}'
 
-contexts: !merge
-  expression-begin: !prepend
+contexts:
+  expression-begin:
+    - meta_prepend: true
     - include: jsx-tag
 
   jsx-interpolation:

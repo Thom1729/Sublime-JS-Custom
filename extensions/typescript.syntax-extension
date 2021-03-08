@@ -1,9 +1,7 @@
 %YAML 1.2
-%TAG ! tag:yaml-macros:yamlmacros.lib.syntax,yamlmacros.lib.extend,yamlmacros.lib.arguments:
+%TAG ! tag:yaml-macros:yamlmacros.lib.syntax,yamlmacros.lib.arguments:
 ---
-!merge
-
-variables: !merge
+variables:
   dot_accessor: |-
     (?x: # Also match !.
       !\.
@@ -15,7 +13,7 @@ variables: !merge
       )
     )
 
-contexts: !merge
+contexts:
   ts-import-type:
     - match: type{{identifier_break}}
       scope: keyword.control.import-export.js
@@ -43,12 +41,14 @@ contexts: !merge
         - export-meta
         - export-extended
 
-  export-extended: !prepend
+  export-extended:
+    - meta_prepend: true
     - include: ts-type-declaration
     - include: ts-interface-declaration
     - include: ts-namespace-declaration
 
-  property-access: !prepend
+  property-access:
+    - meta_prepend: true
     - match: \!\.
       scope: punctuation.accessor.js
       push:
@@ -69,7 +69,8 @@ contexts: !merge
         - ts-type-parameter-list
         - ts-type-alias-name
 
-  statement: !prepend
+  statement:
+    - meta_prepend: true
     - include: ts-enum
     - include: ts-type-declaration
     - include: ts-interface-declaration
@@ -121,7 +122,8 @@ contexts: !merge
         - inherited-class-expression-begin
     - include: else-pop
 
-  inherited-class-expression-end: !prepend
+  inherited-class-expression-end:
+    - meta_prepend: true
     - include: ts-generic-type-arguments
 
   class-name:
@@ -346,7 +348,8 @@ contexts: !merge
           - include: function-parameter-binding-object-destructuring
           - include: else-pop
 
-  function-parameter-binding-list: !prepend
+  function-parameter-binding-list:
+    - meta_prepend: true
     - match: (?:private|public|protected|readonly){{identifier_break}}
       scope: storage.modifier.js
 
@@ -354,7 +357,8 @@ contexts: !merge
       scope: variable.language.this.js
       push: ts-type-annotation
 
-  class-body-contents: !prepend
+  class-body-contents:
+    - meta_prepend: true
     - match: (?:private|public|protected|readonly|abstract|declare){{identifier_break}}
       scope: storage.modifier.js
 
@@ -388,7 +392,8 @@ contexts: !merge
         - method-declaration-expect-prefix
         - function-declaration-expect-async
 
-  expression-end: !prepend
+  expression-end:
+    - meta_prepend: true
     - include: ts-type-assertion
 
     - match: (?=<)
@@ -397,7 +402,8 @@ contexts: !merge
         - ts-type-argument-list
         - ts-type-argument-list-less-than
 
-  expression-begin: !prepend
+  expression-begin:
+    - meta_prepend: true
     - !if
       - !argument [ old_style_assertions, false ]
       - match: \<

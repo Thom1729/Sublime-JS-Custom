@@ -63,6 +63,26 @@ def get_extensions(path):
 
             with constructor.set_context(**options):
                 result = constructor.construct_document(extension_value)
+                result = convert_extension(result)
                 ret.append(result)
 
     return ret
+
+
+def convert_extension(extension):
+    from yamlmacros.lib.extend import merge, prepend
+
+    if 'extends' in extension:
+        del extension['extends']
+
+    if 'variables' in extension:
+        extension['variables'] = merge(extension['variables'])
+
+    if 'contexts' in extension:
+        for name, context in list(extension['contexts'].items()):
+            if context[0].get('meta_prepend', False):
+                extension['contexts'][name] = prepend(*context[1:])
+
+        extension['contexts'] = merge(extension['contexts'])
+
+    return merge(extension)

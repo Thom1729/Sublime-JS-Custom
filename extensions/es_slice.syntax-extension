@@ -1,9 +1,8 @@
 %YAML 1.2
-%TAG ! tag:yaml-macros:yamlmacros.lib.extend:
 ---
-!merge
-contexts: !merge
-  property-access: !prepend
+contexts:
+  property-access:
+    - meta_prepend: true
     - match: '\['
       scope: punctuation.section.brackets.begin.js
       push:
