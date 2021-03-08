@@ -2,7 +2,7 @@ import sublime_plugin
 
 from os.path import join
 
-from JSCustom.src.paths import PACKAGE_PATH
+from ..paths import PACKAGE_PATH
 
 
 __all__ = ['BuildJsCustomTestsCommand']

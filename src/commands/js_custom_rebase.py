@@ -3,7 +3,7 @@ from sublime_lib import ResourcePath
 
 import re
 
-from JSCustom.src.paths import PACKAGE_PATH
+from ..paths import PACKAGE_PATH
 
 
 CORE_JAVASCRIPT_PATH = ResourcePath('Packages/JavaScript')
