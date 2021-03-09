@@ -6,6 +6,7 @@ from package_control import events
 from package_control.package_manager import PackageManager
 from package_control.sys_path import add_dependency
 
+from .src.paths import PACKAGE_PATH
 from .src.settings import get_settings
 from .src.configurations import get_configurations
 
@@ -31,14 +32,11 @@ __all__ = [
 ]
 
 
-PACKAGE_NAME = None
+PACKAGE_NAME = PACKAGE_PATH.package
 UNSUBSCRIBE = None
 
 
 def plugin_loaded():
-    global PACKAGE_NAME
-    PACKAGE_NAME = ResourcePath.from_file_path(__file__).package
-
     global UNSUBSCRIBE
     UNSUBSCRIBE = get_settings().subscribe(get_configurations, auto_build)
 
