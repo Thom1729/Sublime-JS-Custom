@@ -17,13 +17,13 @@ class BuildJsCustomTestsCommand(sublime_plugin.ApplicationCommand):
 
         test_paths = [
             test_path
-            for test_path in TEST_SUITES_PATH.rglob('syntax_test*')
+            for test_path in TEST_SUITES_PATH.rglob('*')
             if test_path.parent.name in suites
             and test_path.name not in exclude
         ]
 
         for source_path in test_paths:
-            destination_path = join(destination_directory, source_path.name)
+            destination_path = join(destination_directory, 'syntax_test_' + source_path.name)
             text = source_path.read_text().split('\n', 1)[1]
 
             with open(destination_path, 'w', encoding='utf-8') as file:

@@ -1,15 +1,11 @@
 import sublime_plugin
 from sublime_lib import ResourcePath
 
-import re
-
 from ..paths import PACKAGE_PATH
 
 
 CORE_JAVASCRIPT_PATH = ResourcePath('Packages/JavaScript')
-
-SYNTAX_TEST_FILE_EXPR = re.compile(r"^syntax_test_([a-z]+)")
-
+SYNTAX_TEST_PREFIX = 'syntax_test_'
 
 __all__ = ['JsCustomRebaseCommand']
 
@@ -29,10 +25,10 @@ class JsCustomRebaseCommand(sublime_plugin.ApplicationCommand):
         copy(CORE_JAVASCRIPT_PATH / 'JSX.sublime-syntax', PACKAGE_PATH / 'extensions/jsx.syntax-extension')
 
         for test in (CORE_JAVASCRIPT_PATH / 'tests').children():
-            match = SYNTAX_TEST_FILE_EXPR.match(test.stem)
-            if match is None:
+            if test.stem.startswith(SYNTAX_TEST_PREFIX):
+                suite = test.stem[len(SYNTAX_TEST_PREFIX):].split('_')[0]
+                destination_name = test.name[len(SYNTAX_TEST_PREFIX):]
+            else:
                 print("Warning: could not determine suite for test {}.".format(test))
-                continue
-            suite = match.group(1)
 
-            copy(test, PACKAGE_PATH / 'tests/syntax_test_suites' / suite / test.name)
+            copy(test, PACKAGE_PATH / 'tests/syntax_test_suites' / suite / destination_name)

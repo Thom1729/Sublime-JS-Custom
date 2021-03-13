@@ -145,5 +145,5 @@ class TestSyntaxes(DeferrableTestCase):
                 "jsx": True,
             },
             tests=["js", "typescript", "jsx"],
-            exclude=["syntax_test_typescript_not_tsx.ts"]
+            exclude=["typescript_not_tsx.ts"]
         )
