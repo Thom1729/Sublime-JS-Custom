@@ -1,7 +1,5 @@
 import sublime
 
-from sublime_lib import ResourcePath
-
 from package_control import events
 from package_control.package_manager import PackageManager
 from package_control.sys_path import add_dependency

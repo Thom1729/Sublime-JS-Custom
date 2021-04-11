@@ -20,9 +20,18 @@ def copy(source, dest):
 
 class JsCustomRebaseCommand(sublime_plugin.ApplicationCommand):
     def run(self):
-        copy(CORE_JAVASCRIPT_PATH / 'JavaScript.sublime-syntax', PACKAGE_PATH / 'src/syntax/JavaScript.yaml')
-        copy(CORE_JAVASCRIPT_PATH / 'TypeScript.sublime-syntax', PACKAGE_PATH / 'extensions/typescript.syntax-extension')
-        copy(CORE_JAVASCRIPT_PATH / 'JSX.sublime-syntax', PACKAGE_PATH / 'extensions/jsx.syntax-extension')
+        copy(
+            CORE_JAVASCRIPT_PATH / 'JavaScript.sublime-syntax',
+            PACKAGE_PATH / 'src/syntax/JavaScript.yaml'
+        )
+        copy(
+            CORE_JAVASCRIPT_PATH / 'TypeScript.sublime-syntax',
+            PACKAGE_PATH / 'extensions/typescript.syntax-extension'
+        )
+        copy(
+            CORE_JAVASCRIPT_PATH / 'JSX.sublime-syntax',
+            PACKAGE_PATH / 'extensions/jsx.syntax-extension'
+        )
 
         for test in (CORE_JAVASCRIPT_PATH / 'tests').children():
             if test.stem.startswith(SYNTAX_TEST_PREFIX):
