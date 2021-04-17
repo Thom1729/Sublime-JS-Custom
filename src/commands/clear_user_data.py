@@ -5,5 +5,5 @@ from ..paths import USER_DATA_PATH
 
 
 class ClearJsCustomUserDataCommand(sublime_plugin.ApplicationCommand):
-    def run(self):
+    def run(self) -> None:
         shutil.rmtree(str(USER_DATA_PATH.file_path()), ignore_errors=True)

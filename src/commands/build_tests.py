@@ -4,6 +4,9 @@ from os.path import join
 
 from ..paths import PACKAGE_PATH
 
+if False:  # Mypy
+    from collections.abc import Container
+
 
 __all__ = ['BuildJsCustomTestsCommand']
 
@@ -12,7 +15,13 @@ TEST_SUITES_PATH = PACKAGE_PATH / 'tests/syntax_test_suites'
 
 
 class BuildJsCustomTestsCommand(sublime_plugin.ApplicationCommand):
-    def run(self, syntax_path, suites, destination_directory, exclude=[]):
+    def run(
+        self,
+        syntax_path: str,
+        suites: 'Container[str]',
+        destination_directory: str,
+        exclude: 'Container[str]' = []
+    ) -> None:
         syntax_test_header = '// SYNTAX TEST "{!s}"\n'.format(syntax_path)
 
         test_paths = [
