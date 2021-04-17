@@ -1,3 +1,4 @@
+# from os import replace
 import sublime
 import sublime_plugin
 
@@ -9,14 +10,17 @@ from ..paths import USER_DATA_PATH
 from ..build import build_configuration
 from ..configurations import get_configurations
 
-__all__ = ['BuildJsCustomSyntaxesCommand', 'BuildJsCustomSyntaxCommand']
+if False:  # Mypy
+    from typing import Optional, List
+
+__all__ = ['BuildJsCustomSyntaxesCommand']
 
 
 SYNTAXES_BUILD_PATH = USER_DATA_PATH / 'Syntaxes'
 
 
 class BuildJsCustomSyntaxesCommand(sublime_plugin.WindowCommand):
-    def run(self, versions=None):
+    def run(self, versions: 'Optional[List[str]]' = None) -> None:
         output = OutputPanel.create(self.window, 'YAMLMacros')
         output.show()
 
@@ -31,11 +35,13 @@ class BuildJsCustomSyntaxesCommand(sublime_plugin.WindowCommand):
         to_build = configurations
 
         if versions is not None:
-            def filter_by_versions(d):
+            not_none_versions = versions
+
+            def filter_by_versions(d: dict) -> dict:
                 return {
                     k: v
                     for k, v in d.items()
-                    if k in versions
+                    if k in not_none_versions
                 }
             to_delete = filter_by_versions(to_delete)
             to_build = filter_by_versions(to_build)
@@ -47,6 +53,7 @@ class BuildJsCustomSyntaxesCommand(sublime_plugin.WindowCommand):
 
         if settings.get('reassign_when_deleting', False):
             replacement = settings['reassign_when_deleting']
+            assert isinstance(replacement, str)
             if replacement.startswith('scope:'):
                 replacement = get_syntax_for_scope(replacement[6:])
 
@@ -58,7 +65,7 @@ class BuildJsCustomSyntaxesCommand(sublime_plugin.WindowCommand):
                 'replacement': replacement,
             })
 
-        def run():
+        def run() -> None:
             for name, syntax_path in to_delete.items():
                 print('JS Custom: Deleting configuration {}…'.format(name))
                 syntax_path.file_path().unlink()
@@ -71,9 +78,9 @@ class BuildJsCustomSyntaxesCommand(sublime_plugin.WindowCommand):
         Thread(target=run).start()
 
 
-class BuildJsCustomSyntaxCommand(sublime_plugin.WindowCommand):
-    def run(self, name, configuration, destination_path):
-        output = OutputPanel.create(self.window, 'YAMLMacros')
-        output.show()
+# class BuildJsCustomSyntaxCommand(sublime_plugin.WindowCommand):
+#     def run(self, name: str, configuration: dict, destination_path: str) -> None:
+#         output = OutputPanel.create(self.window, 'YAMLMacros')
+#         output.show()
 
-        build_configuration(name, configuration, destination_path, output)
+#         build_configuration(name, configuration, destination_path, output)

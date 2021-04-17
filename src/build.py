@@ -5,6 +5,10 @@ from .paths import PACKAGE_PATH
 from .util import merge
 from .atomic import atomic_replace
 
+if False:  # Mypy
+    from typing import Any
+    from pathlib import Path
+
 
 __all__ = ['build_configuration']
 
@@ -12,7 +16,12 @@ __all__ = ['build_configuration']
 SOURCE_PATH = PACKAGE_PATH / 'src/syntax/JS Custom.sublime-syntax.yaml-macros'
 
 
-def build_configuration(name, configuration, destination_path, output):
+def build_configuration(
+    name: str,
+    configuration: dict,
+    destination_path: 'Path',
+    output: 'Any'
+) -> None:
     source_text = SOURCE_PATH.read_text()
 
     with atomic_replace(destination_path) as temp:

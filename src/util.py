@@ -1,7 +1,7 @@
 __all__ = ['merge']
 
 
-def merge(*dicts):
+def merge(*dicts: dict) -> dict:
     ret = {}
     for d in dicts:
         ret.update(d)

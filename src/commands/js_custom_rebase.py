@@ -10,7 +10,7 @@ SYNTAX_TEST_PREFIX = 'syntax_test_'
 __all__ = ['JsCustomRebaseCommand']
 
 
-def copy(source, dest):
+def copy(source: ResourcePath, dest: ResourcePath) -> None:
     source_path = source
     dest_path = dest.file_path()
 
@@ -19,7 +19,7 @@ def copy(source, dest):
 
 
 class JsCustomRebaseCommand(sublime_plugin.ApplicationCommand):
-    def run(self):
+    def run(self) -> None:
         copy(
             CORE_JAVASCRIPT_PATH / 'JavaScript.sublime-syntax',
             PACKAGE_PATH / 'src/syntax/JavaScript.yaml'

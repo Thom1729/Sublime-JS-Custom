@@ -9,8 +9,8 @@ __all__ = ['JsxCloseTagCommand']
 
 
 class JsxCloseTagCommand(sublime_plugin.TextCommand):
-    def run(self, edit, insert_slash=False):
-        for region in reversed(self.view.sel()):
+    def run(self, edit: sublime.Edit, insert_slash: bool = False) -> None:
+        for region in reversed(self.view.sel()):  # type: ignore
             pos = region.begin()
             try:
                 open_tag = self.find_open_tag(pos)
@@ -20,7 +20,7 @@ class JsxCloseTagCommand(sublime_plugin.TextCommand):
                 if insert_slash:
                     self.view.insert(edit, pos, '/')
 
-    def find_open_tag(self, end):
+    def find_open_tag(self, end: int) -> str:
         depth = 0
         while True:
             tag_end = self.find_before(TAG_END_SCOPE, end)
@@ -59,7 +59,7 @@ class JsxCloseTagCommand(sublime_plugin.TextCommand):
                 depth -= 1
                 continue
 
-    def find_before(self, selector, pos):
+    def find_before(self, selector: str, pos: int) -> int:
         pos -= 1
         while pos >= 0:
             if self.view.match_selector(pos, selector):
@@ -69,7 +69,7 @@ class JsxCloseTagCommand(sublime_plugin.TextCommand):
 
         raise ValueError("Can't find open tag.")
 
-    def find_after(self, selector, pos):
+    def find_after(self, selector: str, pos: int) -> int:
         pos += 1
         max = self.view.size()
         while pos <= max:
