@@ -15,9 +15,7 @@
         "TypeScript": {
             "scope": "source.ts",
             "file_extensions": [ "ts" ],
-            "typescript": {
-                "old_style_assertions": true
-            },
+            "typescript": true,
         },
         "TypeScript (JSX)": {
             "scope": "source.tsx",

@@ -128,9 +128,7 @@ class TestSyntaxes(DeferrableTestCase):
             configuration={
                 "file_extensions": [],
                 "hidden": True,
-                "typescript": {
-                    "old_style_assertions": True,
-                },
+                "typescript": True,
             },
             tests=["js", "typescript"],
         )
