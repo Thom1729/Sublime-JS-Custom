@@ -1,10 +1,7 @@
 {
-    "defaults": {
-        "custom_template_tags": false,
-        "flow_types": false,
-        "jsx": false,
-    },
-
+    // Each configuration will be compiled into a custom syntax definition.
+    // The keys are the names of the configurations,
+    // and the values are objects specifying syntax options.
     "configurations": {
         "Default": {},
         "React": {
@@ -25,6 +22,15 @@
         },
     },
 
+    // These options will be used for all of your configurations, unless you override them.
+    "defaults": {
+        "custom_template_tags": false,
+        "flow_types": false,
+        "jsx": false,
+    },
+
+    // A special configuration that will be used when other syntaxes embed the `source.js` scope.
+    // This exists to prevent infinite embedding loops in certain situations.
     "embed_configuration": {
         "name": "JS Custom (Embedded)",
         "scope": "source.js",
@@ -34,7 +40,14 @@
         "custom_templates": false,
     },
 
+    // Whenever you change one or more configurations, automatically rebuild those configurations.
     "auto_build": true,
+
+    // Whenever you run the close_tag command in these scopes, run jsx_close_tag instead.
+    // Set to `false` to disable.
     "jsx_close_tag": "source.js, source.ts, source.tsx",
+
+    // When you remove a configuration, reassign all views from that syntax to this one. 
+    // Set to `false` to disable.
     "reassign_when_deleting": "scope:source.js",
 }

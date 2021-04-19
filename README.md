@@ -4,25 +4,29 @@ Customizable JavaScript syntax highlighting for Sublime Text supporting JSX, Flo
 
 ## Installation
 
-JS Custom can be installed via [Package Control](https://packagecontrol.io/installation).
-
-Alternatively, you can install JS Custom manually by cloning it into your Packages directory as “JSCustom”. If you do, you may need to manually install its dependencies.
+JS Custom can be installed via [Package Control](https://packagecontrol.io/installation). If JS Custom is uninstalled, it will remove any compiled syntax definitions.
 
 ## Usage
 
-JS Custom ships with two example configurations: “JS Custom - Default” and “JS Custom - React”. These should automatically be built and available for use upon installation.
+To use JS Custom, you specify one or more syntax configurations in the JS Custom preferences. JS Custom will compile each configuration into a syntax definition. By default, JS Custom provides two example syntax configurations: “JS Custom - Default” and “JS Custom - React”. These should automatically be compiled and available for use upon installation.
 
-All syntaxes built by JS Custom are created inside your User package. They are found in the Syntax menu under “User”, not under “JS Custom”.
+All syntaxes compiled by JS Custom are created inside your User package. They are found in the Syntax menu under “User”, not under “JS Custom”.
 
-To customize your syntaxes, choose Preferences → Package Settings → JS Custom → Settings from the menubar. The package default settings will be shown on the left; your user settings will be on the right. When you change your user settings, your custom syntaxes will automatically be recompiled. (This may take a few seconds, especially if you have a lot of configurations.)
+## Configuration
 
-A number of common example configurations can be found in the [Recipes](./docs/recipes.md). See also the [Configuration Reference](./docs/configuration.md).
+To customize your syntax configurations, choose Preferences → Package Settings → JS Custom → Settings from the menubar. The package default settings will be shown on the left and your user settings on the right. When you change your user settings, your custom syntaxes will automatically be recompiled. (This may take a few seconds, especially if you have a lot of syntax configurations.)
 
-If you modify your user settings outside Sublime Text, this package may not notice your modifications. You can force it to rebuild all of your custom syntaxes by choosing Preferences → Package Settings → JS Custom → Rebuild Syntaxes from the menubar, or by choosing “JS Custom: Rebuild Syntaxes” from the command palette.
+A number of common example syntax configurations can be found in the [Recipes](./docs/recipes.md). See also the [Configuration Reference](./docs/configuration.md).
+
+If you modify your user settings outside Sublime Text, this package may not notice your modifications. To manually rebuild all of your custom syntaxes, choose Preferences → Package Settings → JS Custom → Rebuild Syntaxes from the menubar or choose “JS Custom: Rebuild Syntaxes” from the command palette.
 
 ## Commands
 
 JS Custom provides the following commands. Except for “JSX Close Tag”, they are available in the command palette and under Preferences → Package Settings → JS Custom.
+
+### Preferences: JS Custom
+
+Open the default JS Custom preferences and your own JS Custom user preferences side-by-side in a new window.
 
 ### JS Custom: Rebuild Syntaxes (`build_js_custom_syntaxes`)
 
@@ -33,10 +37,6 @@ This command takes an optional `versions` argument accepting a list of configura
 ### JS Custom: Clear User Data (`clear_js_custom_user_data`)
 
 Remove the `Packages/User/JS Custom` directory, including all compiled syntaxes.
-
-### Preferences: JS Custom
-
-Open the default JS Custom preferences and your own JS Custom user preferences side-by-side in a new window (using the built-in `edit_settings` command).
 
 ### JSX Close Tag (`jsx_close_tag`)
 
@@ -50,16 +50,28 @@ This command is not available in the command palette or the JS Custom menu. By d
 
 They are in the syntax selection menu under "User". It would be nice to have them listed under "JS Custom", but when generating that menu Sublime only looks at the physical location of the syntax definition files, and JS Custom compiles them to `User/JS Custom/Syntaxes`.
 
-### I've switched from Babel-sublime and my code looks different. How do I restore the old appearance?
+### I've switched from the [Babel package](https://github.com/babel/babel-sublime) and my code looks different. How do I restore the old appearance?
 
-If you want unquoted object keys to be highlighted as strings, set the `string_object_keys` configuration option to `true`.
+The current version of babel-sublime is built using JS Custom with the following configuration:
 
-Other than that, the differences occur when Babel-sublime's syntax does not conform to the [scope naming guidelines](https://www.sublimetext.com/docs/3/scope_naming.html) or other best practices. If you liked the old appearance, then rather than modifying the syntax itself I would suggest modifying your theme.
+```json
+{
+    "name": "JavaScript (Babel)",
+    "scope": "source.js",
+    "file_extensions": [ "js", "jsx", "es6", "babel" ],
+    "flow_types": true,
+    "jsx": true,
+    "string_object_keys": true,
+    "custom_templates": {
+        "styled_components": true,
+    }
+}
+```
 
 ## Contributing
 
 To request a feature or report a bug, create a new issue. All suggestions are welcome.
 
-When reporting a bug, please include a code snippet that demonstrates the problem. If the bug exists in Sublime's core JavaScript syntax, it should be reported [here](https://github.com/sublimehq/Packages/issues) — but if you're not sure, then go ahead and post it here.
+When reporting a bug, please include a code snippet that demonstrates the problem. If the bug exists in Sublime's core JavaScript, JSX, or TypeScript syntax, it should be reported [here](https://github.com/sublimehq/Packages/issues) — but if you're not sure, then go ahead and post it here.
 
 When requesting a new feature, please include a link to any relevant documentation. Because of the unique design of JS Custom, we can accommodate a variety of nonstandard features.
