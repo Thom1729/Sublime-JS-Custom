@@ -10,26 +10,23 @@
         scope: punctuation.definition.string.end.js
         pop: true
       - include: immediately-pop
-    - - meta_include_prototype: false
-      - match: ''
-        set:
-          - - clear_scopes: !if [!argument clear_all_scopes, true, 1]
-            - include: immediately-pop
-          - - match: ''
-              set: !argument include
-              with_prototype:
-                - match: (?=`)
-                  pop: true
-                - match: '\$\{'
-                  scope: punctuation.section.interpolation.begin.js
-                  push:
-                    - clear_scopes: !if [!argument clear_all_scopes, true, 1]
-                    - meta_scope: meta.interpolation.js
-                    - meta_content_scope: source.js.embedded.expression
-                    - match: '\}'
-                      scope: punctuation.section.interpolation.end.js
-                      pop: true
-                    - match: (?=\S)
-                      push: expression
-                - include: string-content
+    - - clear_scopes: !if [!argument clear_all_scopes, true, 1]
+      - include: immediately-pop
+    - - match: ''
+        set: !argument include
+        with_prototype:
+          - match: (?=`)
+            pop: true
+          - match: '\$\{'
+            scope: punctuation.section.interpolation.begin.js
+            push:
+              - clear_scopes: !if [!argument clear_all_scopes, true, 1]
+              - meta_scope: meta.interpolation.js
+              - meta_content_scope: source.js.embedded.expression
+              - match: '\}'
+                scope: punctuation.section.interpolation.end.js
+                pop: true
+              - match: (?=\S)
+                push: expression
+          - include: string-content
 - include: else-pop

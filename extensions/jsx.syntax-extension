@@ -56,7 +56,7 @@ contexts: !merge
         - jsx-tag-name
 
   jsx-tag-attributes:
-    - meta_scope: meta.tag.js
+    - meta_content_scope: meta.tag.js
 
     - match: '>'
       scope: punctuation.definition.tag.end.js

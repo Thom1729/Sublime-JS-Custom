@@ -3,7 +3,7 @@
 ---
 !merge
 contexts: !merge
-  object-property-name: !prepend
+  bare-property-name:
     - match: '{{identifier}}'
       scope: string.unquoted.js
       pop: true

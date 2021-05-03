@@ -42,7 +42,7 @@
 //        ^ meta.binding.name variable.other.readwrite
 //         ^^^ meta.flow-type
 //         ^ punctuation.separator.type
-//          ^^ meta.number.integer.decimal constant.numeric.value
+//          ^^ constant.numeric.integer.decimal
 
     const x:"foo";
 //  ^^^^^ storage.type
@@ -99,7 +99,7 @@
     const x: typeof 42;
 //         ^^^^^^^^^^^ meta.flow-type
 //           ^^^^^^ keyword.operator
-//                  ^^ meta.number.integer.decimal constant.numeric.value
+//                  ^^ constant.numeric.integer.decimal
 
     const x: number %checks;
 //         ^^^^^^^^^^^^^^^^ meta.flow-type
@@ -293,7 +293,7 @@ class MyClass {
 //     ^ punctuation.separator.type
 //       ^^^^^^ support.type.primitive.number
 //              ^ keyword.operator.assignment
-//                ^^ meta.number.integer.decimal constant.numeric.value
+//                ^^ constant.numeric.integer.decimal
 }
 
     class MyClass <X, Y> {}
@@ -359,7 +359,7 @@ class MyClass {
     (42 : number);
 //  ^^^^^^^^^^^^^ meta.group
 //  ^ punctuation.section.group
-//   ^^ meta.number.integer.decimal constant.numeric.value
+//   ^^ constant.numeric.integer.decimal
 //      ^^^^^^^^ meta.flow-type
 //      ^ punctuation.separator.type
 //        ^^^^^^ support.type.primitive.number

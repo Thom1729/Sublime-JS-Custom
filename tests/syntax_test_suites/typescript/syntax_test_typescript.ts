@@ -1,4 +1,4 @@
-// SYNTAX TEST "Packages/JavaScript/TypeScript.sublime-syntax"
+// SYNTAX TEST "Packages/User/JS Custom/Syntaxes/TypeScript.sublime-syntax"
 
 /* Import/Export */
 
@@ -77,7 +77,7 @@
         y = 2,
 //      ^ variable.other.readwrite
 //        ^ keyword.operator.assignment
-//          ^ meta.number.integer.decimal.js constant.numeric.value.js
+//          ^ constant.numeric.integer.decimal
 //           ^ punctuation.separator.comma
 
         'FOO'
@@ -170,14 +170,6 @@
 //           ^ punctuation.separator.type
 //             ^^^ meta.type support.type.any
 //                 ^^ meta.function meta.block
-
-        foo<T>(): any {}
-//      ^^^^^^^^^^^^^ meta.function.declaration
-//      ^^^ entity.name.function
-//         ^^^ meta.generic
-//              ^ punctuation.separator.type
-//                ^^^ meta.type support.type.any
-//                    ^^ meta.function meta.block
     }
 
     abstract class Foo {
@@ -412,7 +404,7 @@ let x: any [ "foo" | 'bar' ];
 let x: any [ 0 ];
 //         ^^^^^ meta.type meta.brackets
 //         ^ punctuation.section.brackets.begin
-//           ^ meta.number.integer.decimal.js constant.numeric.value.js
+//           ^ constant.numeric.integer.decimal
 //             ^ punctuation.section.brackets.end
 
 let x: any [
@@ -477,7 +469,7 @@ let x: 'a string';
 //     ^ meta.type meta.string string.quoted.single
 
 let x: 42;
-//     ^^ meta.number.integer.decimal.js constant.numeric.value.js
+//     ^^ meta.type constant.numeric.integer.decimal
 
 let x: typeof Foo;
 //     ^^^^^^^^^^ meta.type
