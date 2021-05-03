@@ -4,23 +4,29 @@ Customizable JavaScript syntax highlighting for Sublime Text supporting JSX, Flo
 
 ## Installation
 
-JS Custom can be installed via [Package Control](https://packagecontrol.io/installation).
-
-Alternatively, you can install JS Custom manually by cloning it into your Packages directory as “JSCustom”. If you do, you may need to manually install its dependencies.
+JS Custom can be installed via [Package Control](https://packagecontrol.io/installation). If JS Custom is uninstalled, it will remove any compiled syntax definitions.
 
 ## Usage
 
-JS Custom ships with two example configurations: “JS Custom - Default” and “JS Custom - React”. These should automatically be built and available for use upon installation.
+To use JS Custom, you specify one or more syntax configurations in the JS Custom preferences. JS Custom will compile each configuration into a syntax definition. By default, JS Custom provides two example syntax configurations: “JS Custom - Default” and “JS Custom - React”. These should automatically be compiled and available for use upon installation.
 
-All syntaxes built by JS Custom are created inside your User package. They are found in the Syntax menu under “User”, not under “JS Custom”.
+All syntaxes compiled by JS Custom are created inside your User package. They are found in the Syntax menu under “User”, not under “JS Custom”.
 
-To customize your syntaxes, choose Preferences → Package Settings → JS Custom → Settings from the menubar. The package default settings will be shown on the left; your user settings will be on the right. When you change your user settings, your custom syntaxes will automatically be recompiled. (This may take a few seconds, especially if you have a lot of configurations.)
+## Configuration
 
-If you modify your user settings outside Sublime Text, this package may not notice your modifications. You can force it to rebuild all of your custom syntaxes by choosing Preferences → Package Settings → JS Custom → Rebuild Syntaxes from the menubar, or by choosing “JS Custom: Rebuild Syntaxes” from the command palette.
+To customize your syntax configurations, choose Preferences → Package Settings → JS Custom → Settings from the menubar. The package default settings will be shown on the left and your user settings on the right. When you change your user settings, your custom syntaxes will automatically be recompiled. (This may take a few seconds, especially if you have a lot of syntax configurations.)
+
+A number of common example syntax configurations can be found in the [Recipes](./docs/recipes.md). See also the [Configuration Reference](./docs/configuration.md).
+
+If you modify your user settings outside Sublime Text, this package may not notice your modifications. To manually rebuild all of your custom syntaxes, choose Preferences → Package Settings → JS Custom → Rebuild Syntaxes from the menubar or choose “JS Custom: Rebuild Syntaxes” from the command palette.
 
 ## Commands
 
 JS Custom provides the following commands. Except for “JSX Close Tag”, they are available in the command palette and under Preferences → Package Settings → JS Custom.
+
+### Preferences: JS Custom
+
+Open the default JS Custom preferences and your own JS Custom user preferences side-by-side in a new window.
 
 ### JS Custom: Rebuild Syntaxes (`build_js_custom_syntaxes`)
 
@@ -32,230 +38,11 @@ This command takes an optional `versions` argument accepting a list of configura
 
 Remove the `Packages/User/JS Custom` directory, including all compiled syntaxes.
 
-### Preferences: JS Custom
-
-Open the default JS Custom preferences and your own JS Custom user preferences side-by-side in a new window (using the built-in `edit_settings` command).
-
 ### JSX Close Tag (`jsx_close_tag`)
 
 As the built-in `close_tag` command, but should work for JSX tags.
 
 This command is not available in the command palette or the JS Custom menu. By default, whenever you run the `close_tag` command in a JavaScript file, then the `jsx_close_tag` command will be run instead. You can disable this with the `jsx_close_tag` setting.
-
-## Configuration
-
-The following options are available at the top level of your user settings:
-
-### `configurations`: object
-
-An object containing one or more named configurations. The keys should be the names you would like your custom configurations to have. The values are objects specifying [syntax options](#syntax-options).
-
-### `defaults`: object
-
-An object specifying default [syntax options](#syntax-options) that will apply to all of your syntaxes. Your named configurations will override these defaults.
-
-### `embed_configuration`: object
-
-An object specifying a configuration to use when another syntax embeds the `source.js` scope.
-
-### `auto_build`: boolean
-
-If true, JS Custom will automatically rebuild your syntaxes when you modify your user settings. Only syntaxes whose configurations have changed will be rebuilt. If `auto_build` is disabled, you will have to run the rebuild command manually.
-
-### `jsx_close_tag`: string or boolean
-
-When you run the `close_tag` command, if the scope of the file matches this selector, then this package's `jsx_close_tag` command will be invoked instead. You may have to modify this setting if you use the `scope` configuration option
-
-If false, `jsx_close_tag` will never be run.
-
-### `reassign_when_deleting`: string or `false`
-
-When you remove a custom configuration, JS Custom will automatically find any views using that configuration and assign them to this default syntax so that Sublime won't show an error popup. You can set this setting to the path or scope of any syntax definition, or set it to `false` to disable the feature entirely.
-
-## Syntax Options
-
-These options, specified in your `defaults` or in a named custom configuration, determine what features your custom syntaxes will have. Omitted options will be treated as `null`.
-
-### ECMAScript Proposals
-
-These options enable support for various [proposed language features](https://github.com/tc39/proposals). These proposals may change unexpectedly. If they stabilize, they will eventually be incorporated into the core JavaScript syntax and these extensions will be removed.
-
-#### `es_pipeline`: boolean
-
-Support the proposed [pipeline operator](https://github.com/tc39/proposal-pipeline-operator).
-
-#### `es_slice`: boolean
-
-Support the proposed [slice notation](https://github.com/gsathya/proposal-slice-notation).
-
-### Third-party features
-
-These extensions go beyond the base JavaScript syntax to support third-party features.
-
-#### `jsx`: boolean
-
-Highlight [JSX](https://reactjs.org/docs/introducing-jsx.html).
-
-#### `typescript`: boolean (**Beta**)
-
-Highlight [TypeScript](http://typescriptlang.org). TypeScript support is currently in beta, meaning that there may be bugs and that the exact behavior is subject to change.
-
-By default, old-style type assertions (e.g. `<T>foo`) are not highlighted. You can enable them via the `typescript.old_style_assertions` option. As an example, these user preferences will provide configurations for both plain TypeScript and TypeScript with JSX:
-
-```json
-{
-    "configurations": {
-        "TypeScript": {
-            "file_extensions": [ "ts" ],
-            "typescript": {
-                "old_style_assertions": true
-            },
-        },
-        "TypeScript (JSX)": {
-            "file_extensions": [ "tsx" ],
-            "typescript": true,
-            "jsx": true
-        }
-    }
-}
-```
-
-#### `flow_types`: boolean
-
-Highlight [Flow type annotations](https://flow.org/en/docs/types/).
-
-#### `eslint_directives`: boolean
-
-Highlight [eslint configuration directives](https://eslint.org/docs/user-guide/configuring) in comments.
-
-### Personalization
-
-These extensions allow you to personalize your highlighting in various ways.
-
-#### `string_object_keys`: boolean
-
-Highlight unquoted object keys as strings, matching [babel-sublime](https://github.com/babel/babel-sublime)'s behavior.
-
-#### `custom_templates`: object
-
-Use custom syntax highlighting inside [template literals](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals). Several sub-options are available:
-
-By default, the special `embed_configuration` disables this to avoid syntax recursion errors.
-
-##### `tags`: object
-
-Highlight tagged template literals based on the tag. Each key in `tag` should be a JavaScript identifier representing a template literal tag. The associated value should be a string specifying a context to include.
-
-For example, to highlight template strings with the `style` tag as CSS, use the following configuration:
-
-```json
-{
-    "configurations": {
-        "My Config": {
-            "custom_templates": {
-                "tags": {
-                    "style": "scope:source.css"
-                }
-            }
-        }
-    }
-}
-```
-
-Then, if you use “JS Custom - My Config” to highlight the following code, the contents of this template literal will be highlighted as CSS:
-
-```js
-const myStyle = style`div { color: red }`;
-```
-
-##### `comments`: object
-
-Highlight untagged template literals based on a preceding block comment. Example configuration:
-
-```json
-{
-    "configurations": {
-        "My Config": {
-            "custom_templates": {
-                "comments": {
-                    "style": "scope:source.css"
-                }
-            }
-        }
-    }
-}
-```
-
-Example JavaScript:
-
-```js
-const myStyle = /*style*/`div { color: red }`;
-const myStyle = /* style */`div { color: red }`;
-```
-
-##### `lookaheads`: object
-
-Highlight untagged template literals based on the contents. Example configuration:
-
-```json
-{
-    "configurations": {
-        "My Config": {
-            "custom_templates": {
-                "lookaheads": {
-                    "select\b": "scope:source.sql"
-                }
-            }
-        }
-    }
-}
-```
-
-Example JavaScript:
-
-```js
-const myQuery = `select 1 from dual`;
-```
-
-##### `styled_components`: boolean
-
-Highlight template string literals for [Styled Components](https://www.styled-components.com/).
-
-##### `clear_all_scopes`: boolean
-
-Inside custom template literals, clear all of the enclosing JavaScript scopes. Ordinarily, only the `string` scope will be cleared. Enable this option if you're using a third-party tool that requires it.
-
-### Metadata
-
-These options don't affect the syntax highlighting itself, but rather the way that Sublime uses the syntax.
-
-#### `name`: string
-
-The name of the syntax as it will appear in the syntax selector. (If this is omitted, the syntax will be named “JS Custom - <var>name</var>”, where <var>name</var> is the key in the `configurations` object.)
-
-#### `scope`: string
-
-The top-level scope that will be used for the syntax. (If this is omitted, the scope will be “source.js.<var>name</var>”, where <var>name</var> is based on the key in the `configurations` object.)
-
-#### `file_extensions`: array
-
-An array of file extensions. Files with the given extensions will be use this syntax.
-
-#### `hidden`: boolean
-
-If this is `true`, the compiled syntax will not appear in the syntax menu or the command palette. It can still be referenced or included by other syntaxes.
-
-### Deprecated
-
-These options have been superseded by newer, more flexible options.
-
-#### custom_template_tags
-
-Superseded by `custom_templates.tags`.
-
-#### styled_components
-
-Superseded by `custom_templates.styled_components`.
 
 ## Frequently Asked Questions
 
@@ -263,16 +50,28 @@ Superseded by `custom_templates.styled_components`.
 
 They are in the syntax selection menu under "User". It would be nice to have them listed under "JS Custom", but when generating that menu Sublime only looks at the physical location of the syntax definition files, and JS Custom compiles them to `User/JS Custom/Syntaxes`.
 
-### I've switched from Babel-sublime and my code looks different. How do I restore the old appearance?
+### I've switched from the [Babel package](https://github.com/babel/babel-sublime) and my code looks different. How do I restore the old appearance?
 
-If you want unquoted object keys to be highlighted as strings, set the `string_object_keys` configuration option to `true`.
+The current version of babel-sublime is built using JS Custom with the following configuration:
 
-Other than that, the differences occur when Babel-sublime's syntax does not conform to the [scope naming guidelines](https://www.sublimetext.com/docs/3/scope_naming.html) or other best practices. If you liked the old appearance, then rather than modifying the syntax itself I would suggest modifying your theme. You can find further discussion [here](https://github.com/Thom1729/Sublime-JS-Custom/issues/22).
+```json
+{
+    "name": "JavaScript (Babel)",
+    "scope": "source.js",
+    "file_extensions": [ "js", "jsx", "es6", "babel" ],
+    "flow_types": true,
+    "jsx": true,
+    "string_object_keys": true,
+    "custom_templates": {
+        "styled_components": true,
+    }
+}
+```
 
 ## Contributing
 
 To request a feature or report a bug, create a new issue. All suggestions are welcome.
 
-When reporting a bug, please include a code snippet that demonstrates the problem. If the bug exists in Sublime's core JavaScript syntax, it should be reported [here](https://github.com/sublimehq/Packages/issues) — but if you're not sure, then go ahead and post it here.
+When reporting a bug, please include a code snippet that demonstrates the problem. If the bug exists in Sublime's core JavaScript, JSX, or TypeScript syntax, it should be reported [here](https://github.com/sublimehq/Packages/issues) — but if you're not sure, then go ahead and post it here.
 
 When requesting a new feature, please include a link to any relevant documentation. Because of the unique design of JS Custom, we can accommodate a variety of nonstandard features.

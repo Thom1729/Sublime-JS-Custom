@@ -1,42 +1,39 @@
 import sublime
 
-from sublime_lib import ResourcePath
-
 from package_control import events
 from package_control.package_manager import PackageManager
 from package_control.sys_path import add_dependency
 
+from .src.paths import PACKAGE_PATH
 from .src.settings import get_settings
 from .src.configurations import get_configurations
 
-from .src.commands.build_syntaxes import BuildJsCustomSyntaxCommand, BuildJsCustomSyntaxesCommand
+from .src.commands.build_syntaxes import BuildJsCustomSyntaxesCommand
 from .src.commands.build_tests import BuildJsCustomTestsCommand
 from .src.commands.clear_user_data import ClearJsCustomUserDataCommand
 from .src.commands.reassign_syntaxes import ReassignSyntaxesCommand
 from .src.commands.jsx_close_tag import JsxCloseTagCommand
+from .src.commands.js_custom_rebase import JsCustomRebaseCommand
 from .src.listeners.jsx_close_tag import JsxCloseTagListener
 
 
 __all__ = [
     'plugin_loaded', 'plugin_unloaded',
     'BuildJsCustomSyntaxesCommand',
-    'BuildJsCustomSyntaxCommand',
     'BuildJsCustomTestsCommand',
     'ClearJsCustomUserDataCommand',
     'ReassignSyntaxesCommand',
     'JsxCloseTagCommand',
+    'JsCustomRebaseCommand',
     'JsxCloseTagListener',
 ]
 
 
-PACKAGE_NAME = None
+PACKAGE_NAME = PACKAGE_PATH.package
 UNSUBSCRIBE = None
 
 
-def plugin_loaded():
-    global PACKAGE_NAME
-    PACKAGE_NAME = ResourcePath.from_file_path(__file__).package
-
+def plugin_loaded() -> None:
     global UNSUBSCRIBE
     UNSUBSCRIBE = get_settings().subscribe(get_configurations, auto_build)
 
@@ -51,7 +48,7 @@ def plugin_loaded():
         sublime.active_window().run_command('build_js_custom_syntaxes')
 
 
-def plugin_unloaded():
+def plugin_unloaded() -> None:
     if UNSUBSCRIBE:
         UNSUBSCRIBE()
 
@@ -60,12 +57,12 @@ def plugin_unloaded():
         sublime.run_command('clear_js_custom_user_data')
 
 
-def ensure_dependencies_loaded():
+def ensure_dependencies_loaded() -> None:
     for dependency in PackageManager().get_dependencies(PACKAGE_NAME):
         add_dependency(dependency)
 
 
-def auto_build(new_configurations, old_configurations):
+def auto_build(new_configurations: dict, old_configurations: dict) -> None:
     if not get_settings().get('auto_build', False):
         return
 

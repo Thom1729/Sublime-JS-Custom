@@ -1,9 +1,8 @@
 %YAML 1.2
-%TAG ! tag:yaml-macros:yamlmacros.lib.extend:
 ---
-!merge
-contexts: !merge
-  binary-operators: !prepend
+contexts:
+  binary-operators:
+    - meta_prepend: true
     - match: '\|>'
       scope: keyword.operator.pipeline.js
       push: expression-begin

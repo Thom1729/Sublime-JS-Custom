@@ -7,7 +7,7 @@ __all__ = ['get_settings']
 SETTINGS = None
 
 
-def get_settings():
+def get_settings() -> NamedSettingsDict:
     global SETTINGS
     if SETTINGS is None:
         SETTINGS = NamedSettingsDict('JS Custom')

@@ -1,12 +1,11 @@
 %YAML 1.2
-%TAG ! tag:yaml-macros:yamlmacros.lib.extend:
 ---
-!merge
-variables: !merge
+variables:
   eslint_directive: (?:global|eslint[\w-]*)
 
-contexts: !merge
-  comments: !prepend
+contexts:
+  comments:
+    - meta_prepend: true
     - match: (/\*)(?=\s*{{eslint_directive}})
       scope: punctuation.definition.comment.js
       push:

@@ -1,18 +1,17 @@
 %YAML 1.2
-%TAG ! tag:yaml-macros:yamlmacros.lib.syntax,yamlmacros.lib.extend,yamlmacros.lib.arguments:
+%TAG ! tag:yaml-macros:yamlmacros.lib.syntax,yamlmacros.lib.arguments:
 ---
-!merge
-variables: !merge
+variables:
   arrow_func_lookahead: |-
     (?x)(?:
       \s*(async\s*)?
       (?:
-        {{identifier}}
+        {{non_reserved_identifier}}
         |\( (?: [^()]|\([^()]*\) )* \)
       )
       (?:
         \s*:
-        \s*{{identifier}}
+        \s*{{non_reserved_identifier}}
       )?
       \s*=>
     )
@@ -23,7 +22,7 @@ variables: !merge
       (?:
         \*?
         {{property_name}}
-        | \#{{identifier}}
+        | \#{{non_reserved_identifier}}
       )
     )
 
@@ -34,27 +33,32 @@ variables: !merge
       | {{property_name}} \s* (?:\(|<)
     )
 
-contexts: !merge
+contexts:
   class-name:
     - match: '{{non_reserved_identifier}}'
       scope: entity.name.class.js
       set: flow-type-generic-parameters
     - include: else-pop
 
-  comments: !prepend
+  comments:
+    - meta_prepend: true
     - include: flow-type-pragma
 
-  statement: !prepend
+  statement:
+    - meta_prepend: true
     - include: flow-type-declare
     - include: flow-type-alias
 
-  import-item: !prepend
+  import-item:
+    - meta_prepend: true
     - include: flow-type-import-type
 
-  import-brace: !prepend
+  import-brace:
+    - meta_prepend: true
     - include: flow-type-import-type
 
-  export-extended: !prepend
+  export-extended:
+    - meta_prepend: true
     - include: flow-type-export-type
 
   variable-binding-pattern:
@@ -80,7 +84,6 @@ contexts: !merge
       set:
         - function-meta
         - function-declaration-expect-body
-        - function-declaration-meta
         - flow-type-annotation
         - function-declaration-expect-parameters
         - flow-type-generic-parameters
@@ -94,13 +97,11 @@ contexts: !merge
       set:
         - function-meta
         - function-declaration-expect-body
-        - function-declaration-meta
         - flow-type-annotation
         - function-declaration-expect-parameters
         - flow-type-generic-parameters
         - method-name
         - method-declaration-expect-prefix
-        - function-declaration-expect-async
 
   parenthesized-expression:
     - match: \(
@@ -116,38 +117,12 @@ contexts: !merge
           push: expression
 
   class-field:
-    - match: \+
-      scope: storage.modifier.variance.js
-
-    - match: '{{method_lookahead}}'
-      set: method-declaration
-
-    - match: |-
-        (?x)(?=
-          \#? {{identifier}}
-          \s* = \s*
-          {{either_func_lookahead}}
-        )
+    - match: ''
       set:
-        - function-initializer
-        - flow-type-annotation-optional
-        - function-name-meta
-        - field-name
-
-    - match: (?={{property_name}})
-      set:
-        - field-initializer-or-method-declaration
-        - flow-type-annotation-optional
-        - field-name
-
-    - match: (?=#{{identifier}})
-      set:
-        - class-field-rest
         - initializer
         - flow-type-annotation-optional
+        - class-field-check
         - field-name
-
-    - include: else-pop
 
   class-extends:
     - match: extends{{identifier_break}}
@@ -160,32 +135,32 @@ contexts: !merge
 
   flow-type-import-type:
     - match: type{{identifier_break}}
-      scope: storage.type.js
+      scope: keyword.declaration.js
 
     - match: typeof{{identifier_break}}
       scope: keyword.operator.js
 
   flow-type-export-type:
     - match: type{{identifier_break}}(?=\s*\{)
-      scope: storage.type.js
+      scope: keyword.declaration.js
       set: export-item
     - include: flow-type-alias
 
   flow-type-declare:
     - match: declare{{identifier_break}}(?=\s*(?:type|class|function|var|let|const|opaque|export|module){{identifier_break}})
-      scope: storage.type.js
+      scope: keyword.declaration.js
       set:
         - match: opaque{{identifier_break}}
           scope: storage.modifier.js
           pop: true
         - match: module{{identifier_break}}
-          scope: storage.type.js
+          scope: keyword.declaration.js
           set:
             - flow-type-module-meta
             - flow-type-module-body
             - flow-type-module-name
         - match: export{{identifier_break}}
-          scope: storage.type.js
+          scope: keyword.declaration.js
           set: flow-type-declare-export
         - include: else-pop
 
@@ -195,7 +170,7 @@ contexts: !merge
 
   flow-type-module-name:
     - include: literal-string
-    - match: '{{identifier}}'
+    - match: '{{non_reserved_identifier}}'
       scope: entity.name.module.js
       pop: true
     - include: else-pop
@@ -330,7 +305,7 @@ contexts: !merge
       pop: true
 
   flow-type-class:
-    - match: '{{identifier}}'
+    - match: '{{non_reserved_identifier}}'
       scope: variable.other.class.js
       pop: true
 
@@ -388,7 +363,7 @@ contexts: !merge
       push: method-declaration
     - match: \+
       scope: storage.modifier.variance.js
-    - match: '{{identifier}}'
+    - match: '{{non_reserved_identifier}}'
       scope: meta.object-literal.key.js
       push: flow-type-object-value
     - match: \[
@@ -405,7 +380,7 @@ contexts: !merge
     - include: flow-type-list
 
   flow-type-object-indexer-label:
-    - match: '({{identifier}})\s*(:)'
+    - match: '({{non_reserved_identifier}})\s*(:)'
       captures:
         1: meta.object-literal.key.js
         2: punctuation.separator.key-value.js
@@ -428,7 +403,7 @@ contexts: !merge
       scope: keyword.operator.type.intersection.js
       push: flow-type-begin
     - match: '=>'
-      scope: storage.type.function.arrow.js
+      scope: keyword.declaration.function.arrow.js
       push: flow-type-begin
     - match: \?
       scope: storage.modifier.maybe.js
@@ -464,7 +439,7 @@ contexts: !merge
         - include: comma-separator
         - match: \+
           scope: storage.modifier.variance.js
-        - match: '{{identifier}}'
+        - match: '{{non_reserved_identifier}}'
           scope: variable.parameter.type.js
           push:
             - - match: '='
@@ -477,12 +452,12 @@ contexts: !merge
   flow-type-alias:
     - match: (?=type{{identifier_break}})
       set:
-        - - match: (?={{identifier}})
+        - - match: (?={{non_reserved_identifier}})
             set:
               - !meta meta.declaration.type.js
               - flow-type-alias-initializer
               - flow-type-generic-parameters
-              - - match: '{{identifier}}'
+              - - match: '{{non_reserved_identifier}}'
                   scope: entity.name.type.js
                   pop: True
               - - include: else-pop
@@ -490,8 +465,8 @@ contexts: !merge
           - match: (?=\S)
             set: [ expression-statement, expression-end ]
 
-        - - match: type{{identifier_break}}(?=\s*(?:$|{{identifier}}))
-            scope: storage.type.js
+        - - match: type{{identifier_break}}(?=\s*(?:$|{{non_reserved_identifier}}))
+            scope: keyword.declaration.js
             set:
               - meta_scope: meta.declaration.type.js
               - include: else-pop

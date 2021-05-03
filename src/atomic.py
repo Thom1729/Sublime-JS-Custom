@@ -2,9 +2,13 @@ import os
 from contextlib import contextmanager
 from tempfile import NamedTemporaryFile
 
+if False:  # Mypy
+    from typing import Iterator, IO
+    from pathlib import Path
+
 
 @contextmanager
-def atomic_replace(dest):
+def atomic_replace(dest: 'Path') -> 'Iterator[IO]':
     """Atomically replace the file at `dest` with a new file.
 
     If atomic replacement fails, remove `dest` and replace non-atomically.

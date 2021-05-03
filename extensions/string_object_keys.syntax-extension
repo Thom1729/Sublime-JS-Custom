@@ -1,9 +1,7 @@
 %YAML 1.2
-%TAG ! tag:yaml-macros:yamlmacros.lib.extend:
 ---
-!merge
-contexts: !merge
-  bare-property-name:
-    - match: '{{identifier}}'
-      scope: string.unquoted.js
-      pop: true
+contexts:
+  object-literal-meta-key:
+    - meta_scope: meta.mapping.key.js string.unquoted.js
+    - include: else-pop
+

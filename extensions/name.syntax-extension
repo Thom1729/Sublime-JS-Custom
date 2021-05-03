@@ -2,7 +2,6 @@
 default_argument: name
 ...
 %YAML 1.2
-%TAG ! tag:yaml-macros:yamlmacros.lib.extend,yamlmacros.lib.arguments:
+%TAG ! tag:yaml-macros:yamlmacros.lib.arguments:
 ---
-!merge
 name: !argument name

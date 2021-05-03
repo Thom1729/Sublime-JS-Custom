@@ -1,3 +1,4 @@
+// SYNTAX TEST "Packages/JavaScript/JSX.sublime-syntax"
 
     <foo />;
 //  ^^^^^^^ meta.jsx meta.tag
@@ -42,9 +43,9 @@
     <foo></foo><bar>
 //  ^^^^^^^^^^^ meta.jsx
 //             ^^^^^ - meta.jsx
-//             ^ keyword.operator.relational
+//             ^ keyword.operator.comparison
 //              ^^^ variable
-//                 ^ keyword.operator.relational
+//                 ^ keyword.operator.comparison
 0;
 
     <>Hello!</>;
@@ -60,9 +61,9 @@
     <foo></foo>
     <bar>
 //  ^^^^^ - meta.jsx
-//  ^ keyword.operator.relational
+//  ^ keyword.operator.comparison
 //   ^^^ variable
-//      ^ keyword.operator.relational
+//      ^ keyword.operator.comparison
 0;
 
     </foo>;
@@ -115,7 +116,7 @@
 //       ^^^^^^^^^^^^ source.js.embedded.jsx meta.mapping
 //         ^^^^^ meta.mapping.key
 //              ^ punctuation.separator.key-value
-//               ^^ constant.numeric.integer.decimal
+//               ^^ meta.number.integer.decimal.js constant.numeric.value.js
 //                   ^ punctuation.definition.interpolation.end
 
 
@@ -132,7 +133,7 @@
 //      ^^^^^^^^^^^^ meta.mapping
 //        ^^^^^ meta.mapping.key
 //             ^ punctuation.separator.key-value
-//              ^^ constant.numeric.integer.decimal
+//              ^^ meta.number.integer.decimal.js constant.numeric.value.js
 //                  ^ punctuation.definition.interpolation.end
 
     // baz
@@ -170,7 +171,7 @@
 //   ^^^^^^^^^^^^ meta.mapping
 //     ^^^^^ meta.mapping.key
 //          ^ punctuation.separator.key-value
-//           ^^ constant.numeric.integer.decimal
+//           ^^ meta.number.integer.decimal.js constant.numeric.value.js
 //               ^ punctuation.definition.interpolation.end
 
     {//}
@@ -180,4 +181,7 @@
 //     ^ - punctuation
     }
 //  ^ punctuation.definition.interpolation.end
-</foo>
+</foo>;
+
+    <class />;
+//   ^^^^^ entity.name.tag

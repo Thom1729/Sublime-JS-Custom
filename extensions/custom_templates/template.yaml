@@ -2,7 +2,7 @@
 %TAG ! tag:yaml-macros:yamlmacros.lib.arguments:
 ---
 - match: '`'
-  scope: punctuation.definition.string.begin.js
+  scope: string.quoted.other.js punctuation.definition.string.begin.js
   push:
     - - meta_include_prototype: false
       - meta_scope: meta.string.js string.quoted.other.js

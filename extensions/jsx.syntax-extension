@@ -1,14 +1,20 @@
 %YAML 1.2
-%TAG ! tag:yaml-macros:yamlmacros.lib.extend:
 ---
-!merge
-variables: !merge
+version: 2
+name: JSX
+file_extensions:
+  - jsx
+scope: source.jsx
+extends: JavaScript.sublime-syntax
+
+variables:
   jsx_identifier_part: (?:{{identifier_part}}|-)
   jsx_identifier_break: (?!{{jsx_identifier_part}})
   jsx_identifier: '{{identifier_start}}{{jsx_identifier_part}}*{{jsx_identifier_break}}'
 
-contexts: !merge
-  expression-begin: !prepend
+contexts:
+  expression-begin:
+    - meta_prepend: true
     - include: jsx-tag
 
   jsx-interpolation:
@@ -56,7 +62,7 @@ contexts: !merge
         - jsx-tag-name
 
   jsx-tag-attributes:
-    - meta_content_scope: meta.tag.js
+    - meta_scope: meta.tag.js
 
     - match: '>'
       scope: punctuation.definition.tag.end.js
