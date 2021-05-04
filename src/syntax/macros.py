@@ -87,7 +87,7 @@ def convert_extension(extension):
 
     if 'contexts' in extension:
         for name, context in list(extension['contexts'].items()):
-            if context[0].get('meta_prepend', False):
+            if len(context) and context[0].get('meta_prepend', False):
                 extension['contexts'][name] = prepend(*context[1:])
 
         extension['contexts'] = merge(extension['contexts'])
