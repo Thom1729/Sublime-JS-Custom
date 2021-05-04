@@ -101,7 +101,7 @@ contexts:
         - function-declaration-expect-parameters
         - flow-type-generic-parameters
         - method-name
-        - method-declaration-expect-prefix
+        - method-declaration-expect-asterisk
 
   parenthesized-expression:
     - match: \(
