@@ -1,8 +1,8 @@
-# from os import replace
 import sublime
 import sublime_plugin
 
 from threading import Thread
+import logging
 from sublime_lib import OutputPanel, get_syntax_for_scope
 
 from ..settings import get_settings
@@ -13,7 +13,11 @@ from ..configurations import get_configurations
 if False:  # Mypy
     from typing import Optional, List
 
+
 __all__ = ['BuildJsCustomSyntaxesCommand']
+
+
+logger = logging.getLogger(__name__)
 
 
 SYNTAXES_BUILD_PATH = USER_DATA_PATH / 'Syntaxes'
@@ -59,7 +63,6 @@ class BuildJsCustomSyntaxesCommand(sublime_plugin.WindowCommand):
 
             paths_to_delete = [str(path) for path in to_delete.values()]
 
-            print(paths_to_delete, replacement)
             sublime.run_command('reassign_syntaxes', {
                 'syntaxes': paths_to_delete,
                 'replacement': replacement,
@@ -67,11 +70,11 @@ class BuildJsCustomSyntaxesCommand(sublime_plugin.WindowCommand):
 
         def run() -> None:
             for name, syntax_path in to_delete.items():
-                print('JS Custom: Deleting configuration {}…'.format(name))
+                logger.info('Deleting configuration {}…'.format(name))
                 syntax_path.file_path().unlink()
 
             for name, configuration in to_build.items():
-                print('JS Custom: Building configuration {}…'.format(name))
+                logger.info('Building configuration {}…'.format(name))
                 destination_path = (SYNTAXES_BUILD_PATH / (name + '.sublime-syntax')).file_path()
                 build_configuration(name, configuration, destination_path, output)
 

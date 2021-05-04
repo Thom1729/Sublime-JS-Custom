@@ -1,10 +1,14 @@
 import os
 from contextlib import contextmanager
 from tempfile import NamedTemporaryFile
+import logging
 
 if False:  # Mypy
     from typing import Iterator, IO
     from pathlib import Path
+
+
+logger = logging.getLogger(__name__)
 
 
 @contextmanager
@@ -34,7 +38,7 @@ def atomic_replace(dest: 'Path') -> 'Iterator[IO]':
             try:
                 os.replace(temp_path, dest_path)
             except PermissionError:
-                print('Could not atomically replace {}.'.format(dest_path))
+                logger.warn('Could not atomically replace {}.'.format(dest_path))
                 os.unlink(dest_path)
                 os.replace(temp_path, dest_path)
         finally:
