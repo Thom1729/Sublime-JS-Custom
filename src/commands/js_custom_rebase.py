@@ -3,6 +3,8 @@ from sublime_lib import ResourcePath
 
 from ..paths import PACKAGE_PATH
 
+import logging
+
 
 CORE_JAVASCRIPT_PATH = ResourcePath('Packages/JavaScript')
 SYNTAX_TEST_PREFIX = 'syntax_test_'
@@ -10,11 +12,14 @@ SYNTAX_TEST_PREFIX = 'syntax_test_'
 __all__ = ['JsCustomRebaseCommand']
 
 
+logger = logging.getLogger(__name__)
+
+
 def copy(source: ResourcePath, dest: ResourcePath) -> None:
     source_path = source
     dest_path = dest.file_path()
 
-    print("JS Custom: Copying {} to {}…".format(source_path, dest_path))
+    logger.info("Copying {} to {}…".format(source_path, dest_path))
     source_path.copy(dest_path)
 
 
@@ -38,6 +43,6 @@ class JsCustomRebaseCommand(sublime_plugin.ApplicationCommand):
                 suite = test.stem[len(SYNTAX_TEST_PREFIX):].split('_')[0]
                 destination_name = test.name[len(SYNTAX_TEST_PREFIX):]
             else:
-                print("Warning: could not determine suite for test {}.".format(test))
+                logger.warn("Could not determine suite for test {}.".format(test))
 
             copy(test, PACKAGE_PATH / 'tests/syntax_test_suites' / suite / destination_name)
