@@ -3,7 +3,7 @@
 version: 2
 extends: Packages/CSS/CSS.sublime-syntax
 hidden: true
-scope: source.css.styled-components
+scope: source.js.css
 file_extensions: []
 first_line_match:
 contexts:
