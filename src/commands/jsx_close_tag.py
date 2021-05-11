@@ -1,8 +1,8 @@
 import sublime
 import sublime_plugin
 
-TAG_BEGIN_SCOPE = 'punctuation.definition.tag.begin.js'
-TAG_END_SCOPE = 'punctuation.definition.tag.end.js'
+TAG_BEGIN_SCOPE = 'meta.tag.js punctuation.definition.tag.begin.js'
+TAG_END_SCOPE = 'meta.tag.attributes.js punctuation.definition.tag.end.js'
 
 
 __all__ = ['JsxCloseTagCommand']
