@@ -45,7 +45,7 @@
 
     // Whenever you run the close_tag command in these scopes, run jsx_close_tag instead.
     // Set to `false` to disable.
-    "jsx_close_tag": "source.js, source.ts, source.tsx",
+    "jsx_close_tag": "source.js, source.jsx, source.ts, source.tsx",
 
     // When you remove a configuration, reassign all views from that syntax to this one. 
     // Set to `false` to disable.
