@@ -2,7 +2,7 @@
     // JSX close tag (inside JSX)
     { "keys": ["/"], "command": "jsx_close_tag", "args": { "insert_slash": true }, "context":
         [
-            { "key": "selector", "operator": "equal", "operand": "source.js meta.tag.js - meta.embedded.expression - string - comment", "match_all": true },
+            { "key": "selector", "operator": "equal", "operand": "source.js meta.tag.js - meta.embedded.expression - string - comment, source.jsx meta.tag.js - meta.embedded.expression - string - comment", "match_all": true },
             { "key": "preceding_text", "operator": "regex_match", "operand": ".*<$", "match_all": true },
             { "key": "setting.auto_close_tags" }
         ]
