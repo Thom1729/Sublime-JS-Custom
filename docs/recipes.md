@@ -84,7 +84,7 @@ you need to also install Sublime Text package for GraphQL syntax definition.
 ```json
 {
     "configurations": {
-        "Emotion.js Recipe": {
+        "GraphQL Recipe": {
             "custom_templates": {
                 // if you use something like:
                 // const fragment = gql`
