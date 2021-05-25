@@ -2,6 +2,14 @@
 
 These example configurations are designed to support common use cases. You can customize these configurations or combine options from several, or you can create multiple configurations for different projects or use cases.
 
+- [JSX](#jsx)
+- [TypeScript](#typescript)
+- [TSX](#tsx)
+- [Styled Components](#styled-components)
+- [Emotion.js](#emotionjs)
+- [Apollo / Prisma / GraphQL gql Tag](#apollo-prisma-graphql-gql-tag)
+- [Highlight HTML in template strings](#highlight-html-in-template-strings)
+
 ## JSX
 
 ```json
