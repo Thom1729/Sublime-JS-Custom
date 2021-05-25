@@ -77,6 +77,37 @@ For Styled Components version 5.
 }
 ```
 
+## Apollo / Prisma / GraphQL gql Tag
+
+you need to also install Sublime Text package for GraphQL syntax definition.
+
+```json
+{
+    "configurations": {
+        "Emotion.js Recipe": {
+            "custom_templates": {
+                // if you use something like:
+                // const fragment = gql`
+                //     fragment User on User {
+                //     ...
+                // `;
+                "tags": {
+                    "gql": "scope:source.graphql",
+                },
+                // if you use something like:
+                // const fragment = /* GraphQL */`
+                //     fragment User on User {
+                //     ...
+                // `;
+                "comments": {
+                    "GraphQL": "scope:source.graphql",
+                }
+            }
+        }
+    }
+}
+```
+
 ## Highlight HTML in template strings
 
 Highlight template strings as HTML if they begin with a `<`:
