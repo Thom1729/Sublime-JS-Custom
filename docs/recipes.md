@@ -7,7 +7,7 @@ These example configurations are designed to support common use cases. You can c
 - [TSX](#tsx)
 - [Styled Components](#styled-components)
 - [Emotion.js](#emotionjs)
-- [Apollo / Prisma / GraphQL gql Tag](#apollo-prisma-graphql-gql-tag)
+- [Apollo / Prisma / GraphQL gql Tag](#apollo--prisma--graphql-gql-tag)
 - [Highlight HTML in template strings](#highlight-html-in-template-strings)
 
 ## JSX
