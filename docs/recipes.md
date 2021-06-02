@@ -7,7 +7,7 @@ These example configurations are designed to support common use cases. You can c
 - [TSX](#tsx)
 - [Styled Components](#styled-components)
 - [Emotion.js](#emotionjs)
-- [Apollo / Prisma / GraphQL gql Tag](#apollo--prisma--graphql-gql-tag)
+- [GraphQL](#graphql)
 - [Highlight HTML in template strings](#highlight-html-in-template-strings)
 
 ## JSX
@@ -85,29 +85,28 @@ For Styled Components version 5.
 }
 ```
 
-## Apollo / Prisma / GraphQL gql Tag
+## GraphQL
 
-you need to also install Sublime Text package for GraphQL syntax definition.
+Requires the [GraphQL](https://github.com/dncrews/GraphQL-SublimeText3) package.
 
 ```js
 {
     "configurations": {
         "GraphQL Recipe": {
             "custom_templates": {
-                // if you use something like:
-                // const fragment = gql`
-                //     fragment User on User {
-                //     ...
-                // `;
                 "tags": {
+                    // If you use GraphQL tags:
+                    // const fragment = gql`
+                    //     fragment User on User {
+                    //     …
+                    // `;
                     "gql": "scope:source.graphql",
                 },
-                // if you use something like:
-                // const fragment = /* GraphQL */`
-                //     fragment User on User {
-                //     ...
-                // `;
                 "comments": {
+                    // const fragment = /* GraphQL */`
+                    //     fragment User on User {
+                    //     ...
+                    // `;
                     "GraphQL": "scope:source.graphql",
                 }
             }
