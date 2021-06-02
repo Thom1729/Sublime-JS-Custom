@@ -129,11 +129,11 @@ Highlight template strings as HTML if they begin with a `<`:
                     "<": "scope:text.html.basic",
                 },
                 "comments": {
-                    // To highlight `/*html*/<div>Hello, World!</div>`
+                    // To highlight /*html*/`<div>Hello, World!</div>`
                     "html": "scope:text.html.basic",
                 },
                 "tags": {
-                    // To highlight `html<div>Hello, World!</div>`
+                    // To highlight html`<div>Hello, World!</div>`
                     "html": "scope:text.html.basic",
                 }
             }
