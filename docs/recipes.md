@@ -12,7 +12,7 @@ These example configurations are designed to support common use cases. You can c
 
 ## JSX
 
-```json
+```js
 {
     "configurations": {
         "JSX Recipe": {
@@ -24,7 +24,7 @@ These example configurations are designed to support common use cases. You can c
 
 ## TypeScript
 
-```json
+```js
 {
     "configurations": {
         "TypeScript Recipe": {
@@ -36,7 +36,7 @@ These example configurations are designed to support common use cases. You can c
 
 ## TSX
 
-```json
+```js
 {
     "configurations": {
         "TSX Recipe": {
@@ -51,7 +51,7 @@ These example configurations are designed to support common use cases. You can c
 
 For Styled Components version 5.
 
-```json
+```js
 {
     "configurations": {
         "Styled Components Recipe": {
@@ -70,7 +70,7 @@ For Styled Components version 5.
 
 ## Emotion.js
 
-```json
+```js
 {
     "configurations": {
         "Emotion.js Recipe": {
@@ -89,7 +89,7 @@ For Styled Components version 5.
 
 you need to also install Sublime Text package for GraphQL syntax definition.
 
-```json
+```js
 {
     "configurations": {
         "GraphQL Recipe": {
@@ -120,7 +120,7 @@ you need to also install Sublime Text package for GraphQL syntax definition.
 
 Highlight template strings as HTML if they begin with a `<`:
 
-```json
+```js
 {
     "configurations": {
         "HTML Lookahead Recipe": {
