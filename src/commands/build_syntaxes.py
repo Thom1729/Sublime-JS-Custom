@@ -86,6 +86,6 @@ class BuildJsCustomSyntaxCommand(sublime_plugin.WindowCommand):
         logger.info('Directly building to {}…'.format(destination_path))
 
         output = OutputPanel.create(self.window, 'YAMLMacros')
-        output.show()
+        # output.show()
 
         build_configuration(name, configuration, destination_path, output)

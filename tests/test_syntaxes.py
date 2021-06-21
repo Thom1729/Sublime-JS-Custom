@@ -4,15 +4,11 @@ import shutil
 
 from unittesting import DeferrableTestCase
 
-from sublime_lib import OutputPanel
-
 from JSCustom.src.paths import PACKAGE_PATH, USER_DATA_PATH
 
 
 TESTS_PATH = USER_DATA_PATH / 'Tests'
 TEST_SUITES_PATH = PACKAGE_PATH / 'tests/syntax_test_suites'
-
-SYNTAX_DELAY = 500
 
 
 class TestSyntaxes(DeferrableTestCase):
@@ -26,8 +22,6 @@ class TestSyntaxes(DeferrableTestCase):
     def _test_syntaxes(self, *, name, configuration, tests, exclude=[]):
         test_working_path = TESTS_PATH / name
         test_working_path.file_path().mkdir(parents=True)
-
-        output = OutputPanel.create(sublime.active_window(), 'YAMLMacros')
 
         syntax_path = test_working_path / (name + '.sublime-syntax')
         sublime.active_window().run_command('build_js_custom_syntax', {
@@ -43,13 +37,16 @@ class TestSyntaxes(DeferrableTestCase):
             'destination_directory': str(test_working_path.file_path()),
         })
 
-        yield syntax_path.exists
-        yield SYNTAX_DELAY  # Hope this gives Sublime long enough to compile it.
+        def syntax_exists():
+            syntax = sublime.syntax_from_path(str(syntax_path))
+            return syntax is not None
+
+        yield syntax_exists
 
         all_failures = []
 
         for test_dest in test_working_path.glob('syntax_test*'):
-            assertion_count, failures = sublime_api.run_syntax_test(str(test_dest))
+            _, failures = sublime_api.run_syntax_test(str(test_dest))
 
             if failures and failures[0].endswith('does not match scope [text.plain]'):
                 raise RuntimeError('Sublime did not compile {!s} in time.'.format(test_dest))
