@@ -30,7 +30,7 @@
 //         ^^^^^^^^^^ source.js.css - string
 //         ^^^^^ meta.property-name support.type.property-name
 //              ^ punctuation.separator.key-value
-//                ^^^ meta.property-value support.constant.color.w3c-standard-color-name
+//                ^^^ meta.property-value support.constant.color
 //                   ^ string.quoted.other punctuation.definition.string.end
     `color: blue`;
 //  ^^^^^^^^^^^^^ meta.string
