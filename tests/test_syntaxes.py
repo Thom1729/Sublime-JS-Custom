@@ -6,7 +6,6 @@ from unittesting import DeferrableTestCase
 
 from sublime_lib import OutputPanel
 
-from JSCustom.src.build import build_configuration
 from JSCustom.src.paths import PACKAGE_PATH, USER_DATA_PATH
 
 
@@ -31,7 +30,11 @@ class TestSyntaxes(DeferrableTestCase):
         output = OutputPanel.create(sublime.active_window(), 'YAMLMacros')
 
         syntax_path = test_working_path / (name + '.sublime-syntax')
-        build_configuration(name, configuration, syntax_path.file_path(), output)
+        sublime.active_window().run_command('build_js_custom_syntax', {
+            'name': name,
+            'configuration': configuration,
+            'destination_path': str(syntax_path.file_path()),
+        })
 
         sublime.run_command('build_js_custom_tests', {
             'syntax_path': str(syntax_path),

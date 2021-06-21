@@ -14,7 +14,7 @@ if False:  # Mypy
     from typing import Optional, List
 
 
-__all__ = ['BuildJsCustomSyntaxesCommand']
+__all__ = ['BuildJsCustomSyntaxesCommand', 'BuildJsCustomSyntaxCommand']
 
 
 logger = logging.getLogger(__name__)
@@ -76,14 +76,16 @@ class BuildJsCustomSyntaxesCommand(sublime_plugin.WindowCommand):
             for name, configuration in to_build.items():
                 logger.info('Building configuration {}…'.format(name))
                 destination_path = (SYNTAXES_BUILD_PATH / (name + '.sublime-syntax')).file_path()
-                build_configuration(name, configuration, destination_path, output)
+                build_configuration(name, configuration, str(destination_path), output)
 
         Thread(target=run).start()
 
 
-# class BuildJsCustomSyntaxCommand(sublime_plugin.WindowCommand):
-#     def run(self, name: str, configuration: dict, destination_path: str) -> None:
-#         output = OutputPanel.create(self.window, 'YAMLMacros')
-#         output.show()
+class BuildJsCustomSyntaxCommand(sublime_plugin.WindowCommand):
+    def run(self, name: str, configuration: dict, destination_path: str) -> None:
+        logger.info('Directly building to {}…'.format(destination_path))
 
-#         build_configuration(name, configuration, destination_path, output)
+        output = OutputPanel.create(self.window, 'YAMLMacros')
+        output.show()
+
+        build_configuration(name, configuration, destination_path, output)

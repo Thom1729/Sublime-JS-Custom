@@ -7,7 +7,6 @@ from .atomic import atomic_replace
 
 if False:  # Mypy
     from typing import Any
-    from pathlib import Path
 
 
 __all__ = ['build_configuration']
@@ -19,7 +18,7 @@ SOURCE_PATH = PACKAGE_PATH / 'src/syntax/JS Custom.sublime-syntax.yaml-macros'
 def build_configuration(
     name: str,
     configuration: dict,
-    destination_path: 'Path',
+    destination_path: str,
     output: 'Any'
 ) -> None:
     source_text = SOURCE_PATH.read_text()

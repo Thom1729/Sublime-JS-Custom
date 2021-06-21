@@ -9,7 +9,7 @@ from .src.paths import PACKAGE_PATH
 from .src.settings import get_settings
 from .src.configurations import get_configurations
 
-from .src.commands.build_syntaxes import BuildJsCustomSyntaxesCommand
+from .src.commands.build_syntaxes import BuildJsCustomSyntaxesCommand, BuildJsCustomSyntaxCommand
 from .src.commands.build_tests import BuildJsCustomTestsCommand
 from .src.commands.clear_user_data import ClearJsCustomUserDataCommand
 from .src.commands.reassign_syntaxes import ReassignSyntaxesCommand
@@ -26,6 +26,7 @@ logger = logging.getLogger(__name__)
 __all__ = [
     'plugin_loaded', 'plugin_unloaded',
     'BuildJsCustomSyntaxesCommand',
+    'BuildJsCustomSyntaxCommand',
     'BuildJsCustomTestsCommand',
     'ClearJsCustomUserDataCommand',
     'ReassignSyntaxesCommand',
