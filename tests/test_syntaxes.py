@@ -46,6 +46,7 @@ class TestSyntaxes(DeferrableTestCase):
         all_failures = []
 
         for test_dest in test_working_path.glob('syntax_test*'):
+            yield 1
             _, failures = sublime_api.run_syntax_test(str(test_dest))
 
             if failures and failures[0].endswith('does not match scope [text.plain]'):
