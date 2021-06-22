@@ -413,3 +413,6 @@ class MyClass {
 //         ^^^^^^ keyword.operator
 //                 ^^^^^^^^ variable.other.readwrite
 //                          ^^ keyword.control.import-export
+
+    const C = (props: any): React.Node => {};
+//                                     ^^ keyword.declaration.function

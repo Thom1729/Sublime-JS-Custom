@@ -40,6 +40,23 @@ contexts:
       set: flow-type-generic-parameters
     - include: else-pop
 
+  class-field:
+    - match: ''
+      set:
+        - initializer
+        - flow-type-annotation
+        - class-field-check
+        - field-name
+
+  class-field-check:
+    - match: (?=[(<])
+      fail: class-field
+    - include: else-pop
+
+  inherited-class-expression-end:
+    - meta_prepend: true
+    - include: flow-type-generic-arguments
+
   comments:
     - meta_prepend: true
     - include: flow-type-pragma
@@ -60,6 +77,19 @@ contexts:
   export-extended:
     - meta_prepend: true
     - include: flow-type-export-type
+
+  parenthesized-expression:
+    - match: \(
+      scope: punctuation.section.group.begin.js
+      set:
+        - meta_scope: meta.group.js
+        - match: \)
+          scope: punctuation.section.group.end.js
+          pop: true
+        - match: (?=:)
+          push: flow-type-annotation
+        - match: (?=\S)
+          push: expression
 
   variable-binding-pattern:
     - match: ''
@@ -92,7 +122,15 @@ contexts:
         - function-declaration-expect-function-keyword
         - function-declaration-expect-async
 
+    - match: extends{{identifier_break}}
+      scope: storage.modifier.extends.js
+      set:
+        - inherited-class-expression-end
+        - inherited-class-expression-begin
+    - include: else-pop
+
   method-declaration:
+    - meta_include_prototype: false
     - match: ''
       set:
         - function-meta
@@ -103,35 +141,51 @@ contexts:
         - method-name
         - method-declaration-expect-asterisk
 
-  parenthesized-expression:
-    - match: \(
-      scope: punctuation.section.group.begin.js
-      set:
-        - meta_scope: meta.group.js
-        - match: \)
-          scope: punctuation.section.group.end.js
-          pop: true
-        - match: (?=:)
-          push: flow-type-annotation
-        - match: (?=\S)
-          push: expression
-
-  class-field:
+  arrow-function-declaration:
+    - meta_include_prototype: false
     - match: ''
       set:
-        - initializer
-        - flow-type-annotation-optional
-        - class-field-check
-        - field-name
+        - function-meta
+        - arrow-function-expect-body
+        - arrow-function-expect-arrow
+        - flow-arrow-function-return-type-annotation
+        - arrow-function-expect-parameters
 
-  class-extends:
-    - match: extends{{identifier_break}}
-      scope: storage.modifier.extends.js
+  detect-parenthesized-arrow:
+    - meta_prepend: true
+    - match: (?=:)
+      pop: true
+      branch_point: flow-arrow-function-return-type
+      branch:
+        - flow-detect-arrow-function-return-type
+        - immediately-pop-2
+
+  flow-detect-arrow-function-return-type:
+    - match: ''
+      push:
+        - flow-detect-arrow-after-return-type
+        - flow-arrow-function-return-type-annotation
+
+  flow-arrow-function-return-type-annotation:
+    - match: ':'
+      scope: punctuation.separator.type.js
       set:
-        - flow-type-generic-arguments
-        - inherited-class-expression-end
-        - inherited-class-expression-begin
-    - include: else-pop
+        - flow-type-meta
+        - flow-type-end-no-arrow
+        - flow-type-begin
+    - match: (?!\s*(?:$|:|//|/\*))
+      pop: true
+
+  flow-type-end-no-arrow:
+    - match: (?==>)
+      pop: true
+    - include: flow-type-end
+
+  flow-detect-arrow-after-return-type:
+    - match: (?==>)
+      fail: parenthesized-arrow-function
+    - match: (?=\S)
+      fail: flow-arrow-function-return-type
 
   flow-type-import-type:
     - match: type{{identifier_break}}
@@ -234,8 +288,7 @@ contexts:
 
   flow-type-end:
     - include: flow-type-operators
-    - match: (?=<)
-      push: flow-type-generic-arguments
+    - include: flow-type-generic-arguments
     - include: else-pop
 
   flow-type-begin:
@@ -426,7 +479,6 @@ contexts:
           scope: punctuation.section.generic.end.js
           pop: true
         - include: flow-type-list
-    - include: else-pop
 
   flow-type-generic-parameters:
     - match: '<'
