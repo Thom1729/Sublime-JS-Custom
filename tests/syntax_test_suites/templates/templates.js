@@ -23,21 +23,6 @@
 //   ^^^^^^^^^^^^^^^^^^ source.sql - string
 //                     ^ string.quoted.other punctuation.definition.string.end
 
-    styled`color: red`
-//  ^^^^^^ variable.function.tagged-template
-//        ^ string.quoted.other punctuation.definition.string.begin
-//        ^^^^^^^^^^^^ meta.string
-//         ^^^^^^^^^^ source.js.css - string
-//         ^^^^^ meta.property-name support.type.property-name
-//              ^ punctuation.separator.key-value
-//                ^^^ meta.property-value support.constant.color
-//                   ^ string.quoted.other punctuation.definition.string.end
-    `color: blue`;
-//  ^^^^^^^^^^^^^ meta.string
-//  ^ string.quoted.other punctuation.definition.string.begin
-//   ^^^^^^^^^^^ source.js.css - string
-//              ^ string.quoted.other punctuation.definition.string.end
-
     /*css*/`a { color: red; }`
 //  ^^^^^^^ comment.block
 //         ^^^^^^^^^^^^^^^^^^^ meta.string
