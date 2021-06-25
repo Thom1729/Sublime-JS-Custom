@@ -1,0 +1,47 @@
+// SYNTAX TEST "Packages/JSCustom/styled_components/Styled Components.sublime-syntax"
+
+    /* all declarations will be prefixed */
+//  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ comment.block
+
+    padding: 2em 1em;
+//  ^^^^^^^ meta.property-name support.type.property-name
+//         ^ punctuation.separator.key-value
+//           ^^^^^^^ meta.property-value
+//                  ^ punctuation.terminator.rule
+
+    background: papayawhip;
+
+    /* pseudo selectors work as well */
+    &:hover {
+//  ^ meta.selector variable.language.css
+//   ^ meta.selector punctuation.definition.pseudo-class
+//    ^^^^^ meta.selector entity.other.pseudo-class
+//          ^ meta.property-list meta.block punctuation.section.block.begin
+      background: palevioletred;
+//    ^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.property-list meta.block
+//    ^^^^^^^^^^ meta.property-name support.type.property-name
+//              ^ punctuation.separator.key-value
+//                ^^^^^^^^^^^^^ meta.property-value support.constant.color.w3c.extended
+//                             ^ punctuation.terminator.rule
+    }
+//  ^ meta.property-list meta.block punctuation.section.block.end
+
+    /* media queries are no problem */
+    @media (max-width: 600px) {
+      background: tomato;
+
+      /* nested rules work as expected */
+      &:hover {
+        background: yellow;
+      }
+    }
+
+    > p {
+      /* descendant-selectors work as well, but are more of an escape hatch */
+      text-decoration: underline;
+    }
+
+    /* Contextual selectors work as well */
+    html.test & {
+      display: none;
+    }
