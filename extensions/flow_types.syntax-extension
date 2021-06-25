@@ -57,10 +57,6 @@ contexts:
     - meta_prepend: true
     - include: flow-type-generic-arguments
 
-  comments:
-    - meta_prepend: true
-    - include: flow-type-pragma
-
   statement:
     - meta_prepend: true
     - include: flow-type-declare
@@ -247,20 +243,6 @@ contexts:
       set: flow-type
     - match: (?=\S)
       pop: true
-
-  flow-type-pragma:
-    - match: '(//)\s*(?=@)'
-      scope: comment.line.double-slash.pragma.js
-      captures:
-        1: punctuation.definition.comment.js
-      push:
-        - meta_include_prototype: false
-        - match: '(@)(flow)'
-          captures:
-            1: punctuation.definition.pragma.js
-            2: support.function.pragma.js
-          pop: true
-        - include: else-pop
 
   flow-type-annotation:
     - match: ':'
