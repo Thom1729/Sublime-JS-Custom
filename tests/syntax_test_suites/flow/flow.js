@@ -414,5 +414,35 @@ class MyClass {
 //                 ^^^^^^^^ variable.other.readwrite
 //                          ^^ keyword.control.import-export
 
+/* Generics */
+
+    foo<T>();
+//  ^^^ variable.function
+//     ^^^ meta.generic
+//     ^ punctuation.definition.generic.begin
+//      ^ variable.other.class
+//       ^ punctuation.definition.generic.end
+//        ^^ meta.group
+//        ^ punctuation.section.group.begin
+//         ^ punctuation.section.group.end
+//          ^ punctuation.terminator.statement
+
+    foo<T, U<V>>();
+//  ^^^ variable.function
+//     ^^^^^^^^^ meta.generic
+//     ^ punctuation.definition.generic.begin
+//      ^ variable.other.class
+//       ^ punctuation.separator.comma
+//         ^ variable.other.class
+//          ^^^ meta.generic
+//          ^ punctuation.definition.generic.begin
+//           ^ variable.other.class
+//            ^ punctuation.definition.generic.end
+//             ^ punctuation.definition.generic.end
+//              ^^ meta.group
+//              ^ punctuation.section.group.begin
+//               ^ punctuation.section.group.end
+//                ^ punctuation.terminator.statement
+
     const C = (props: any): React.Node => {};
 //                                     ^^ keyword.declaration.function

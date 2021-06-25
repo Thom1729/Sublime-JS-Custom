@@ -33,6 +33,20 @@ variables:
       | {{property_name}} \s* (?:\(|<)
     )
 
+  function_call_lookahead: >-
+    (?x:(?=
+      {{identifier_name}}
+      \s*
+      (?:
+        <
+        .*
+        >
+        \s*
+      )?
+      (?:{{dot_accessor}})?
+      \(
+    ))
+
 contexts:
   class-name:
     - match: '{{non_reserved_identifier}}'
@@ -182,6 +196,41 @@ contexts:
       fail: parenthesized-arrow-function
     - match: (?=\S)
       fail: flow-arrow-function-return-type
+
+  expression-end:
+    - meta_prepend: true
+    - include: flow-function-type-arguments-or-less-than
+
+  flow-function-type-arguments-or-less-than:
+    - match: (?=<(?![<=]))
+      branch_point: flow-function-type-arguments
+      branch:
+        - flow-function-type-arguments
+        - flow-less-than
+
+  flow-function-type-arguments:
+    - match: \<(?!<)
+      scope: punctuation.definition.generic.begin.js
+      set:
+        - - match: (?=[\]()};,`])
+            pop: true
+          - match: (?=\S)
+            fail: flow-function-type-arguments
+        - - meta_scope: meta.generic.js
+          - match: \>
+            scope: punctuation.definition.generic.end.js
+            pop: true
+          - match: ','
+            scope: punctuation.separator.comma.js
+            push: flow-type
+          - match: (?=\S)
+            fail: flow-function-type-arguments
+        - flow-type
+
+  flow-less-than:
+    - match: '<'
+      scope: keyword.operator.comparison.js
+      set: expression-begin
 
   flow-type-import-type:
     - match: type{{identifier_break}}
@@ -454,21 +503,21 @@ contexts:
 
   flow-type-generic-arguments:
     - match: '<'
-      scope: punctuation.section.generic.begin.js
+      scope: punctuation.definition.generic.begin.js
       set:
         - meta_scope: meta.generic.js
         - match: '>'
-          scope: punctuation.section.generic.end.js
+          scope: punctuation.definition.generic.end.js
           pop: true
         - include: flow-type-list
 
   flow-type-generic-parameters:
     - match: '<'
-      scope: punctuation.section.generic.begin.js
+      scope: punctuation.definition.generic.begin.js
       set:
         - meta_scope: meta.generic.declaration.js
         - match: '>'
-          scope: punctuation.section.generic.end.js
+          scope: punctuation.definition.generic.end.js
           pop: true
         - include: comma-separator
         - match: \+
