@@ -2,7 +2,9 @@ import sublime
 import sublime_plugin
 
 TAG_BEGIN_SCOPE = 'meta.tag.js punctuation.definition.tag.begin.js'
-TAG_END_SCOPE = 'meta.tag.attributes.js punctuation.definition.tag.end.js'
+TAG_OPEN_END_SCOPE = 'meta.tag.attributes.js punctuation.definition.tag.end.js'
+TAG_CLOSE_END_SCOPE = 'meta.tag.js punctuation.definition.tag.end.js'
+TAG_EITHER_END_SCOPE = '{}, {}'.format(TAG_OPEN_END_SCOPE, TAG_CLOSE_END_SCOPE)
 
 
 __all__ = ['JsxCloseTagCommand']
@@ -23,10 +25,10 @@ class JsxCloseTagCommand(sublime_plugin.TextCommand):
     def find_open_tag(self, end: int) -> str:
         depth = 0
         while True:
-            tag_end = self.find_before(TAG_END_SCOPE, end)
+            tag_end = self.find_before(TAG_EITHER_END_SCOPE, end)
 
             scope = self.view.scope_name(tag_end)
-            target_scope = scope.replace(TAG_END_SCOPE, TAG_BEGIN_SCOPE)
+            target_scope = scope.replace(TAG_OPEN_END_SCOPE, TAG_BEGIN_SCOPE).replace(TAG_CLOSE_END_SCOPE, TAG_BEGIN_SCOPE)
 
             tag_begin = self.find_before(target_scope, tag_end)
             if self.view.substr(tag_begin) == '/':
