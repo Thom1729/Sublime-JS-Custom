@@ -117,13 +117,15 @@ Requires the [GraphQL](https://github.com/dncrews/GraphQL-SublimeText3) package.
 
 ## Highlight HTML in template strings
 
-Highlight template strings as HTML if they begin with a `<`:
+Highlight template strings as HTML:
 
 ```js
 {
     "configurations": {
-        "HTML Lookahead Recipe": {
+        "HTML Recipe": {
             "custom_templates": {
+                // To highlight any untagged template as HTML
+                "default": "scope:text.html.basic",
                 "lookaheads": {
                     // To highlight `<div>Hello, World!</div>`
                     "<": "scope:text.html.basic",

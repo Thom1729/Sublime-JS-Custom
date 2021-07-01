@@ -50,6 +50,24 @@ Use custom syntax highlighting inside [template literals](https://developer.mozi
 
 By default, the special `embed_configuration` disables this to avoid syntax recursion errors.
 
+##### `default`: string
+
+Highlight untagged template literals using a specified syntax. Example configuration:
+
+```json
+{
+    "configurations": {
+        "My Config": {
+            "custom_templates": {
+                "default": "scope:text.html.basic"
+            }
+        }
+    }
+}
+```
+
+This will highlight all untagged template literals as HTML. (The `comments` option below will override this when it applies.)
+
 ##### `tags`: object
 
 Highlight tagged template literals based on the tag. Each key in `tag` should be a JavaScript identifier representing a template literal tag. The associated value should be a string specifying a context to include.
