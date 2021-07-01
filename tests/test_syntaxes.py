@@ -107,6 +107,7 @@ class TestSyntaxes(DeferrableTestCase):
                         r'select\b': 'scope:source.sql',
                     },
                     'styled_components': True,
+                    'default': 'scope:text.html.basic',
                 }
             },
             tests=["js", "templates"],

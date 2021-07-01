@@ -35,3 +35,7 @@
     `div { color: blue; }`;
 //  ^^^^^^^^^^^^^^^^^^^^^^ meta.string
 //   ^^^^^^^^^^^^^^^^^^^^ source.css - string
+
+    `<foo></foo>`;
+//  ^^^^^^^^^^^^^ meta.string
+//   ^^^^^^^^^^^ text.html.basic - string

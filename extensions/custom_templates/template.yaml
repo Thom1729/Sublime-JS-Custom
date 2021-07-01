@@ -10,9 +10,11 @@
         scope: punctuation.definition.string.end.js
         pop: true
       - include: immediately-pop
-    - - clear_scopes: !if [!argument clear_all_scopes, true, 1]
+    - - meta_include_prototype: false
+      - clear_scopes: !if [!argument clear_all_scopes, true, 1]
       - include: immediately-pop
-    - - match: ''
+    - - meta_include_prototype: false
+      - match: ''
         set: !argument include
         with_prototype:
           - match: (?=`)

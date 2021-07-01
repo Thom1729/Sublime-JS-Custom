@@ -15,7 +15,14 @@ contexts:
       set:
         - include: literal-string-template-custom-comments
         - include: literal-string-template-custom-lookahead
-        - include: literal-string-template
+        - include: custom-templates-default
+
+  custom-templates-default: !if
+    - !argument default
+    - !with
+        - include: !argument default
+        - !include_resource Packages/JSCustom/extensions/custom_templates/template.yaml
+    - - include: literal-string-template
 
   literal-string-template-custom-tags: !foreach
     in: !argument [tags, {}]
