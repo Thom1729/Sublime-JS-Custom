@@ -44,3 +44,25 @@
 //                   ^ punctuation.separator.key-value
 //                     ^^^ meta.property-value support.constant.color
 //                        ^ punctuation.definition.string.end
+
+styled`
+    // Comment
+//  ^^^^^^^^^^^ comment.line.double-slash
+//  ^^ punctuation.definition.comment.begin
+
+    div {}
+//  ^^^ meta.selector entity.name.tag.html
+//      ^^ meta.property-list meta.block
+
+    align-items: center;
+//  ^^^^^^^^^^^ meta.property-name support.type.property-name
+//             ^ punctuation.separator.key-value
+//               ^^^^^^ meta.property-value support.constant.property-value
+`;
+
+keyframes`
+    from {
+//  ^^^^ meta.selector keyword.other.selector
+        color: red;
+    }
+`;

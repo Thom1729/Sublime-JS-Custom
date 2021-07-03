@@ -50,9 +50,13 @@ contexts:
 
   styled-components: !if
     - !argument styled_components
-    - - match: (?=(?:styled|css|createGlobalStyle|injectGlobal|keyframes){{identifier_break}})
+    - - match: (?=(?:styled|css|createGlobalStyle|injectGlobal){{identifier_break}})
         set:
           - styled-component-end
+          - styled-component-begin
+      - match: (?=keyframes{{identifier_break}})
+        set:
+          - styled-component-keyframes-end
           - styled-component-begin
     - []
 
@@ -67,6 +71,13 @@ contexts:
         - !include_resource Packages/JSCustom/extensions/custom_templates/template.yaml
 
     - include: expression-end
+
+  styled-component-keyframes-end:
+    - match: (?=`)
+      push: !with
+        - include: scope:source.js.css#at-keyframe-block-content
+        - !include_resource Packages/JSCustom/extensions/custom_templates/template.yaml
+    - include: else-pop
 
   styled-component-begin:
     - match: '{{non_reserved_identifier}}(?=\s*\()'

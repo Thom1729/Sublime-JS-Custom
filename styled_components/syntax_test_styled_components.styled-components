@@ -1,5 +1,10 @@
 // SYNTAX TEST "Packages/JSCustom/styled_components/Styled Components.sublime-syntax"
 
+    // Comment
+//  ^^^^^^^^^^^ comment.line.double-slash
+//  ^^ punctuation.definition.comment.begin
+
+
     /* all declarations will be prefixed */
 //  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ comment.block
 

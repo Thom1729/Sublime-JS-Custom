@@ -9,8 +9,13 @@ first_line_match:
 contexts:
   main:
     - meta_prepend: true
+    - match: (?={{html_tags}}|{{svg_tags}})
+      push: selector-content
     - include: property-identifiers
     - include: property-values
+
+  rule-list-body:
+    - include: main
 
   comments:
     - meta_prepend: true
@@ -22,7 +27,8 @@ contexts:
           pop: true
 
   selectors:
-    - match: (?=[&:.*#[:alpha:]\[]|{{combinators}})
+    - meta_prepend: true
+    - match: (?=&)
       push: selector-content
 
   selector-content:
