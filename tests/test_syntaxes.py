@@ -111,6 +111,7 @@ class TestSyntaxes(DeferrableTestCase):
                 }
             },
             tests=["js", "templates"],
+            exclude=["js.js"]
         )
 
     def test_string_object_keys(self):
