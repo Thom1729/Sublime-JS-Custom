@@ -161,14 +161,14 @@ contexts:
         - flow-arrow-function-return-type-annotation
         - arrow-function-expect-parameters
 
-  detect-parenthesized-arrow:
+  branch-possible-arrow-function:
     - meta_prepend: true
-    - match: (?=:)
-      pop: true
-      branch_point: flow-arrow-function-return-type
-      branch:
+    - match: (?=\()
+      set:
+        - detect-arrow
         - flow-detect-arrow-function-return-type
-        - immediately-pop-2
+        - parenthesized-expression
+
 
   flow-detect-arrow-function-return-type:
     - match: ''

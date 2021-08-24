@@ -21,14 +21,14 @@ def get_extensions(base, configuration):
         and options is not False
     ]
 
-    # Hack hacky hack to make sure that JSX is after TypeScript
+    # Hack hacky hack to make sure that TSX works correctly
     if 'jsx' in names and 'typescript' in names:
         names.remove('jsx')
         names.remove('typescript')
-        names.extend(['typescript', 'jsx'])
+        names.extend(['typescript', 'jsx', 'tsx'])
 
     return [
-        eval_extension(load_extension(ResourcePath(base), name), configuration[name])
+        eval_extension(load_extension(ResourcePath(base), name), configuration.get(name))
         for name in names
     ]
 
@@ -101,6 +101,7 @@ def convert_extension(extension):
         for name, context in list(extension['contexts'].items()):
             if len(context) and context[0].get('meta_prepend', False):
                 extension['contexts'][name] = prepend(*context[1:])
+                pass
 
         extension['contexts'] = merge(extension['contexts'])
 

@@ -37,6 +37,10 @@ class JsCustomRebaseCommand(sublime_plugin.ApplicationCommand):
             CORE_JAVASCRIPT_PATH / 'JSX.sublime-syntax',
             PACKAGE_PATH / 'extensions/jsx.syntax-extension'
         )
+        copy(
+            CORE_JAVASCRIPT_PATH / 'TSX.sublime-syntax',
+            PACKAGE_PATH / 'extensions/tsx.syntax-extension'
+        )
 
         for test in (CORE_JAVASCRIPT_PATH / 'tests').children():
             if test.stem.startswith(SYNTAX_TEST_PREFIX):
