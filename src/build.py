@@ -34,10 +34,5 @@ def build_configuration(
                     'scope': 'source.js.{}'.format(re.sub(r'[^\w-]', '', name.lower())),
                 }, configuration)
             },
-            # arguments=merge({
-            #     'name': 'JS Custom - {}'.format(name),
-            #     'scope': 'source.js.{}'.format(re.sub(r'[^\w-]', '', name.lower())),
-            #     'file_path': str(SOURCE_PATH.file_path()),
-            # }, configuration),
             error_stream=output,
         )

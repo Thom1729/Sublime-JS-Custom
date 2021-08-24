@@ -15,7 +15,6 @@ def parse_documents(text):
 
 
 def get_extensions(base, configuration):
-    print(base, configuration)
     names = [
         name for name, options in configuration.items()
         if options is not None
