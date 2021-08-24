@@ -14,62 +14,75 @@ def parse_documents(text):
         yield composer.get_node()
 
 
-def list_extensions(path):
-    for path in path.rglob('*.syntax-extension'):
-        parsed_documents = list(parse_documents(path.read_text()))
-
-        metadata = {
-            'name': path.stem,
-            'macros_root': str(path.parent)
-        }
-
-        if len(parsed_documents) == 1:
-            value_document = parsed_documents[0]
-        else:
-            metadata_document, value_document = parsed_documents
-
-            constructor = get_loader(macros_root=str(path.parent)).constructor
-            given_metadata = constructor.construct_document(parsed_documents[0])
-            if given_metadata:
-                metadata.update(**given_metadata)
-
-        yield (metadata, value_document)
-
-
-def get_extensions(path):
-    arguments = (yield).context
-    ret = []
-
-    extensions = list(list_extensions(ResourcePath(path)))
+def get_extensions(base, configuration):
+    print(base, configuration)
+    names = [
+        name for name, options in configuration.items()
+        if options is not None
+        and options is not False
+    ]
 
     # Hack hacky hack to make sure that JSX is after TypeScript
-    extensions.sort(key=lambda pair: pair[0]['name'] == 'jsx')
+    if 'jsx' in names and 'typescript' in names:
+        names.remove('jsx')
+        names.remove('typescript')
+        names.extend(['typescript', 'jsx'])
 
-    for extension in extensions:
-        metadata, extension_value = extension
+    return [
+        eval_extension(load_extension(ResourcePath(base), name), configuration[name])
+        for name in names
+    ]
 
-        options = arguments.get(metadata['name'])
 
-        if options is not None and options is not False:
-            constructor = get_loader(macros_root=metadata['macros_root']).constructor
+def load_extension(base, name):
+    resources = base.rglob("{}.syntax-extension".format(name))
+    if len(resources) == 0:
+        raise ValueError("Could not find syntax extension named {!r}.".format(name))
+    elif len(resources) > 1:
+        raise ValueError("Found more than one syntax extension named {!r}.".format(name))
+    
+    path = resources[0]
 
-            if 'legacy_argument' in metadata:
-                options = {
-                    metadata['legacy_argument']: options
-                }
-            elif not isinstance(options, dict):
-                default_argument = metadata.get('default_argument')
-                if default_argument:
-                    options = {default_argument: options}
-                else:
-                    options = {}
+    parsed_documents = list(parse_documents(path.read_text()))
 
-            with constructor.set_context(**options):
-                result = constructor.construct_document(extension_value)
-                result = convert_extension(result)
-                ret.append(result)
+    metadata = {
+        'name': path.stem,
+        'macros_root': str(path.parent)
+    }
 
-    return ret
+    if len(parsed_documents) == 1:
+        value_document = parsed_documents[0]
+    else:
+        metadata_document, value_document = parsed_documents
+
+        constructor = get_loader(macros_root=str(path.parent)).constructor
+        given_metadata = constructor.construct_document(parsed_documents[0])
+        if given_metadata:
+            metadata.update(**given_metadata)
+
+    return (metadata, value_document)
+
+
+def eval_extension(extension, options):
+    metadata, extension_value = extension
+
+    constructor = get_loader(macros_root=metadata['macros_root']).constructor
+
+    if 'legacy_argument' in metadata:
+        options = {
+            metadata['legacy_argument']: options
+        }
+    elif not isinstance(options, dict):
+        default_argument = metadata.get('default_argument')
+        if default_argument:
+            options = {default_argument: options}
+        else:
+            options = {}
+
+    with constructor.set_context(**options):
+        result = constructor.construct_document(extension_value)
+        result = convert_extension(result)
+        return result
 
 
 def convert_extension(extension):

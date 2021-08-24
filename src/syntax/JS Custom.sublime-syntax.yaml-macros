@@ -1,6 +1,8 @@
 %YAML 1.2
-%TAG ! tag:yaml-macros:yamlmacros.lib.extend,yamlmacros.lib.include,JSCustom.src.syntax.macros:
+%TAG ! tag:yaml-macros:yamlmacros.lib.extend,yamlmacros.lib.include,JSCustom.src.syntax.macros,yamlmacros.lib.arguments:
 ---
 !apply
   - !include_resource Packages/JSCustom/src/syntax/JavaScript.yaml
-  - !get_extensions Packages/JSCustom/extensions
+  - !get_extensions
+    base: Packages/JSCustom/extensions
+    configuration: !argument configuration

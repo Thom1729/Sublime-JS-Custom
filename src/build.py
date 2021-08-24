@@ -27,10 +27,17 @@ def build_configuration(
         build(
             source_text=source_text,
             destination_path=temp.name,
-            arguments=merge({
-                'name': 'JS Custom - {}'.format(name),
-                'scope': 'source.js.{}'.format(re.sub(r'[^\w-]', '', name.lower())),
+            arguments={
                 'file_path': str(SOURCE_PATH.file_path()),
-            }, configuration),
+                'configuration': merge({
+                    'name': 'JS Custom - {}'.format(name),
+                    'scope': 'source.js.{}'.format(re.sub(r'[^\w-]', '', name.lower())),
+                }, configuration)
+            },
+            # arguments=merge({
+            #     'name': 'JS Custom - {}'.format(name),
+            #     'scope': 'source.js.{}'.format(re.sub(r'[^\w-]', '', name.lower())),
+            #     'file_path': str(SOURCE_PATH.file_path()),
+            # }, configuration),
             error_stream=output,
         )
