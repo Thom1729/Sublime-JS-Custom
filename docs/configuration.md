@@ -165,11 +165,15 @@ The top-level scope that will be used for the syntax. (If this is omitted, the s
 
 #### `file_extensions`: array
 
-An array of file extensions. Files with the given extensions will be use this syntax.
+An array of file extensions. Files with the given extensions will use this syntax.
 
 #### `hidden`: boolean
 
 If this is `true`, the compiled syntax will not appear in the syntax menu or the command palette. It can still be referenced or included by other syntaxes.
+
+#### `first_line_match`: string
+
+Files whose first line matches the given regular expression will use this syntax.
 
 ### Deprecated
 

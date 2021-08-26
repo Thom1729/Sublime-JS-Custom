@@ -1,0 +1,7 @@
+---
+default_argument: first_line_match
+...
+%YAML 1.2
+%TAG ! tag:yaml-macros:yamlmacros.lib.arguments:
+---
+first_line_match: !argument first_line_match
