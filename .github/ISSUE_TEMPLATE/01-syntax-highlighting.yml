@@ -1,6 +1,11 @@
 name: Syntax highlighting bug
 description: JS Custom is highlighting your code wrong.
 body:
+  - type: markdown
+    attributes:
+      value: |
+        In JS Custom 4.2.0 or later, you can pre-fill this form by opening the file that demonstrates the bug 
+        and choosing “JS Custom: Report Syntax Issue With Current File” from the command palette.
   - type: input
     id: sublime-version
     attributes:
