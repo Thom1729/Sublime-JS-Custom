@@ -3,18 +3,23 @@ description: JS Custom is highlighting your code wrong.
 body:
   - type: textarea
     id: code
-    label: Example Code
-    description: Code that triggers the bug. This could be an entire file or a short snippet as long as it triggers the bug by itself.
-    render: TSX
-    required: true
+    attributes:
+      label: Example Code
+      description: Code that triggers the bug. This could be an entire file or a short snippet as long as it triggers the bug by itself.
+      render: TSX
+    validations:
+      required: true
   - type: textarea
     id: settings
-    label: JS Custom Preferences
-    description: |
-      The contents of your JS Custom preferences file. To open your preferences, open the command palette and choose “Preferences: JS Custom”.
-    render: JSON with Comments
-    required: true
+    attributes:
+      label: JS Custom Preferences
+      description: |
+        The contents of your JS Custom preferences file. To open your preferences, open the command palette and choose “Preferences: JS Custom”.
+      render: JSON with Comments
+    validations:
+      required: true
   - type: textarea
     id: description
-    label: Description
-    description: What is JS Custom doing wrong, and what should it do instead?
+    attributes:
+      label: Description
+      description: What is JS Custom doing wrong, and what should it do instead?
