@@ -15,6 +15,7 @@ from .src.commands.clear_user_data import ClearJsCustomUserDataCommand
 from .src.commands.reassign_syntaxes import ReassignSyntaxesCommand
 from .src.commands.jsx_close_tag import JsxCloseTagCommand
 from .src.commands.js_custom_rebase import JsCustomRebaseCommand
+from .src.commands.report_syntax_issue import JsCustomReportSyntaxIssue
 from .src.listeners.jsx_close_tag import JsxCloseTagListener
 
 import logging

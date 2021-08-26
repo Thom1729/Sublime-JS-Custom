@@ -8,6 +8,10 @@
         "command": "clear_js_custom_user_data"
     },
     {
+        "caption": "JS Custom: Report Syntax Issue With Current File",
+        "command": "js_custom_report_syntax_issue"
+    },
+    {
         "caption": "Preferences: JS Custom",
         "command": "edit_settings",
         "args": {

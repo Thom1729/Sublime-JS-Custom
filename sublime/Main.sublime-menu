@@ -30,7 +30,11 @@
                             {
                                 "caption": "Clear User Data",
                                 "command": "clear_js_custom_user_data"
-                            }
+                            },
+                            {
+                                "caption": "Report Syntax Issue With Current File",
+                                "command": "js_custom_report_syntax_issue"
+                            },
                         ]
                     }
                 ]

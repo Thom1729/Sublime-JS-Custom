@@ -38,6 +38,10 @@ This command takes an optional `versions` argument accepting a list of configura
 
 Remove the `Packages/User/JS Custom` directory, including all compiled syntaxes.
 
+### JS Custom: Report Syntax Issue With Current File (`js_custom_report_syntax_issue`)
+
+Open the syntax issue reporting form in your browser with most information pre-filled.
+
 ### JSX Close Tag (`jsx_close_tag`)
 
 As the built-in `close_tag` command, but should work for JSX tags.
