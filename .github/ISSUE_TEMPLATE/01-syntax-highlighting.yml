@@ -5,7 +5,8 @@ body:
     id: sublime-version
     attributes:
       label: Sublime Text build number
-      description: To find the build number, open the command palette and choose “Help: About”. The build number will be on the last line.
+      description: |
+        To find the build number, open the command palette and choose “Help: About”. The build number will be on the last line.
   - type: textarea
     id: code
     attributes:
