@@ -27,6 +27,12 @@ def get_extensions(base, configuration):
         names.remove('typescript')
         names.extend(['typescript', 'jsx', 'tsx'])
 
+    # Likewise, for Flow
+    if 'jsx' in names and 'flow_types' in names:
+        names.remove('jsx')
+        names.remove('flow_types')
+        names.extend(['flow_types', 'jsx', 'flow_jsx'])
+
     return [
         eval_extension(load_extension(ResourcePath(base), name), configuration.get(name))
         for name in names

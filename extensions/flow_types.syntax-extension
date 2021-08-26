@@ -2,6 +2,8 @@
 %TAG ! tag:yaml-macros:yamlmacros.lib.syntax,yamlmacros.lib.arguments:
 ---
 variables:
+  possible_arrow_function_begin: (?:\(|{{identifier_start}}|<)
+
   arrow_func_lookahead: |-
     (?x)(?:
       \s*(async\s*)?
@@ -160,6 +162,7 @@ contexts:
         - arrow-function-expect-arrow
         - flow-arrow-function-return-type-annotation
         - arrow-function-expect-parameters
+        - flow-type-generic-parameters
 
   branch-possible-arrow-function:
     - meta_prepend: true
@@ -169,8 +172,16 @@ contexts:
         - flow-detect-arrow-function-return-type
         - parenthesized-expression
 
-
   flow-detect-arrow-function-return-type:
+    - match: (?=:)
+      pop: true
+      branch_point: flow-arrow-function-return-type
+      branch:
+        - flow-arrow-return-type
+        - immediately-pop
+    - include: else-pop
+
+  flow-arrow-return-type:
     - match: ''
       push:
         - flow-detect-arrow-after-return-type
@@ -193,13 +204,21 @@ contexts:
 
   flow-detect-arrow-after-return-type:
     - match: (?==>)
-      fail: parenthesized-arrow-function
+      fail: arrow-function
     - match: (?=\S)
       fail: flow-arrow-function-return-type
 
   expression-end:
     - meta_prepend: true
     - include: flow-function-type-arguments-or-less-than
+
+  expression-begin:
+    - meta_prepend: true
+    - include: flow-arrow-function-declaration-with-type-parameters
+
+  flow-arrow-function-declaration-with-type-parameters:
+    - match: (?=<)
+      set: arrow-function-declaration
 
   flow-function-type-arguments-or-less-than:
     - match: (?=<(?![<=]))
