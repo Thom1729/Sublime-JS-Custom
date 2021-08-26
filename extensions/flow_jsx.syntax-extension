@@ -1,0 +1,37 @@
+%YAML 1.2
+---
+contexts:
+  branch-possible-arrow-function:
+    - meta_prepend: true
+
+    - match: (?=<)
+      set: jsx-tag
+
+  jsx-tag-hack: []
+  flow-arrow-function-declaration-with-type-parameters: []
+
+  jsx-tag-attributes-top:
+    - meta_scope: meta.tag.js
+    - match: '/'
+      scope: punctuation.definition.tag.begin.js
+      set:
+        - jsx-meta-unmatched-tag
+        - jsx-expect-tag-end
+        - jsx-tag-name
+
+    - match: (?=\S)
+      set:
+        - jsx-tag-attributes
+        - flow-jsx-tag-check
+        - jsx-tag-name
+        - flow-jsx-tag-check-name
+
+  flow-jsx-tag-check-name:
+    - match: (?=(?:(?:{{jsx_identifier_part}})|\.):)
+      fail: arrow-function
+    - include: else-pop
+
+  flow-jsx-tag-check:
+    - match: (?=[:,])
+      fail: arrow-function
+    - include: else-pop
