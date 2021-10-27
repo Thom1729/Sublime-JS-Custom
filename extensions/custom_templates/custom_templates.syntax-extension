@@ -2,7 +2,7 @@
 %TAG ! tag:yaml-macros:yamlmacros.lib.arguments,yamlmacros.lib.include:
 ---
 contexts:
-  tagged-template:
+  literal-string-template:
     - meta_prepend: true
     - include: literal-string-template-custom-comments
     - include: literal-string-template-custom-tags

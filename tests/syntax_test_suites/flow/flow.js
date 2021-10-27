@@ -454,4 +454,4 @@ class MyClass {
 //   ^ variable.parameter.type
 //    ^ punctuation.separator.comma
 //     ^ punctuation.definition.generic.end
-//         ^^ keyword.declaration.arrow
+//         ^^ keyword.declaration.function
