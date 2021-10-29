@@ -134,6 +134,7 @@ class TestSyntaxes(DeferrableTestCase):
                 "typescript": True,
             },
             tests=["js", "typescript"],
+            exclude=["js_not_typescript.js"],
         )
 
     def test_typescript_jsx(self):
@@ -146,5 +147,5 @@ class TestSyntaxes(DeferrableTestCase):
                 "jsx": True,
             },
             tests=["js", "typescript", "jsx"],
-            exclude=["typescript_not_tsx.ts"]
+            exclude=["js_not_typescript.js", "typescript_not_tsx.ts"],
         )
