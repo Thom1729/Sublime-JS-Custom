@@ -84,7 +84,9 @@ contexts:
       scope: variable.function.js
       pop: true
 
-    - match: '{{non_reserved_identifier}}(?=\s*`)'
+      # If we see <, assume it's a template.
+      # Not perfect, but should be correct most of the time.
+    - match: '{{non_reserved_identifier}}(?=\s*[`<])'
       scope: variable.function.tagged-template.js
       pop: true
 

@@ -66,3 +66,6 @@ keyframes`
         color: red;
     }
 `;
+
+styled.span<{}>`color: red`;
+//     ^^^^ variable.function.tagged-template
