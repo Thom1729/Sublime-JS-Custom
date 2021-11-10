@@ -337,6 +337,8 @@ contexts:
         - flow-type-begin
 
   flow-type-end:
+    - match: (?=\|\||&&)
+      fail: flow-function-type-arguments
     - include: flow-type-operators
     - include: flow-type-generic-arguments
     - include: else-pop
