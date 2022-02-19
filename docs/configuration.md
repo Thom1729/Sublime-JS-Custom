@@ -129,7 +129,7 @@ Highlight untagged template literals based on the contents. Example configuratio
         "My Config": {
             "custom_templates": {
                 "lookaheads": {
-                    "select\b": "scope:source.sql"
+                    "select\\b": "scope:source.sql"
                 }
             }
         }
