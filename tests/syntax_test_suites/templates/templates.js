@@ -23,6 +23,12 @@
 //   ^^^^^^^^^^^^^^^^^^ source.sql - string
 //                     ^ string.quoted.other punctuation.definition.string.end
 
+    `
+     select * from dual`;
+//^^^^^^^^^^^^^^^^^^^^^^ meta.string
+//^^^^^^^^^^^^^^^^^^^^^ source.sql - string
+//                     ^ string.quoted.other punctuation.definition.string.end
+
     /*css*/`a { color: red; }`
 //  ^^^^^^^ comment.block
 //         ^^^^^^^^^^^^^^^^^^^ meta.string
@@ -36,6 +42,3 @@
 //  ^^^^^^^^^^^^^^^^^^^^^^ meta.string
 //   ^^^^^^^^^^^^^^^^^^^^ source.css - string
 
-    `<foo></foo>`;
-//  ^^^^^^^^^^^^^ meta.string
-//   ^^^^^^^^^^^ text.html.basic - string

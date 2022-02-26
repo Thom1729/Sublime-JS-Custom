@@ -1,34 +1,14 @@
 %YAML 1.2
 %TAG ! tag:yaml-macros:yamlmacros.lib.arguments:
 ---
-- match: '`'
-  scope: string.quoted.other.js punctuation.definition.string.begin.js
-  push:
-    - - meta_include_prototype: false
-      - meta_scope: meta.string.js string.quoted.other.js
-      - match: "`"
-        scope: punctuation.definition.string.end.js
-        pop: true
-      - include: immediately-pop
-    - - meta_include_prototype: false
-      - clear_scopes: !if [!argument clear_all_scopes, true, 1]
-      - include: immediately-pop
-    - - meta_include_prototype: false
-      - match: ''
-        set: !argument include
-        with_prototype:
-          - match: (?=`)
-            pop: true
-          - match: '\$\{'
-            scope: punctuation.section.interpolation.begin.js
-            push:
-              - clear_scopes: !if [!argument clear_all_scopes, true, 1]
-              - meta_scope: meta.interpolation.js
-              - meta_content_scope: source.js.embedded.expression
-              - match: '\}'
-                scope: punctuation.section.interpolation.end.js
-                pop: true
-              - match: (?=\S)
-                push: expression
-          - include: string-content
-- include: else-pop
+match: '`'
+scope: string.quoted.other.js punctuation.definition.string.begin.js
+push:
+  - - include: immediately-pop
+  - custom-templates-closing-quote
+  - custom-templates-clear-scopes
+  - - meta_include_prototype: false
+    - match: ''
+      set: !argument include
+      with_prototype:
+        - include: custom-templates-prototype

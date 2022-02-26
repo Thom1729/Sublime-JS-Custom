@@ -2,27 +2,47 @@
 %TAG ! tag:yaml-macros:yamlmacros.lib.arguments,yamlmacros.lib.include:
 ---
 contexts:
-  literal-string-template:
+  expression-begin:
     - meta_prepend: true
-    - include: literal-string-template-custom-comments
     - include: literal-string-template-custom-tags
     - include: styled-components
 
-  expression-begin:
-    - meta_prepend: true
-    # Keep the slow backreferences out of this frequently-used context.
     - match: (?=`)
       set:
+        # Keep the slow lookbehinds out of this frequently-used context.
         - include: literal-string-template-custom-comments
-        - include: literal-string-template-custom-lookahead
         - include: custom-templates-default
+        - include: else-pop
 
-  custom-templates-default: !if
-    - !argument default
-    - !with
-        - include: !argument default
-        - !include_resource Packages/JSCustom/extensions/custom_templates/template.yaml
-    - - include: literal-string-template
+  custom-templates-default:
+    - match: '`'
+      scope: string.quoted.other.js punctuation.definition.string.begin.js
+      push:
+        - - include: immediately-pop
+        - custom-templates-closing-quote
+        - custom-templates-clear-scopes
+        - - meta_include_prototype: false
+          - include: literal-string-template-custom-lookahead
+          - !if
+            - !argument default
+            - match: (?=\s*\S)
+              set: !argument default
+              with_prototype:
+                - include: custom-templates-prototype
+            - match: (?=\s*\S)
+              set:
+                - meta_scope: string.quoted.other.js
+                - meta_include_prototype: false
+                - include: custom-templates-prototype
+
+  literal-string-template-custom-lookahead: !foreach
+    in: !argument [lookaheads, {}]
+    as: [lookahead, include]
+    value:
+      match: !format '(?=\s*(?:{lookahead}))'
+      set: !argument include
+      with_prototype:
+        - include: custom-templates-prototype
 
   literal-string-template-custom-tags: !foreach
     in: !argument [tags, {}]
@@ -30,23 +50,18 @@ contexts:
     value:
       match: !format '(?:{tag})(?=\s*`)'
       scope: variable.function.tagged-template.js
-      set: !include_resource Packages/JSCustom/extensions/custom_templates/template.yaml
+      set:
+        - !include_resource Packages/JSCustom/extensions/custom_templates/template.yaml
+        - include: else-pop
 
   literal-string-template-custom-comments: !foreach
     in: !argument [comments, {}]
     as: [tag, include]
     value:
       match: !format '(?<=/\*(?:{tag})\*/|/\* (?:{tag}) \*/)'
-      scope: variable.function.tagged-template.js
-      set: !include_resource Packages/JSCustom/extensions/custom_templates/template.yaml
-
-  literal-string-template-custom-lookahead: !foreach
-    in: !argument [lookaheads, {}]
-    as: [lookahead, include]
-    value:
-      match: !format '(?=`(?:{lookahead}))'
-      scope: variable.function.tagged-template.js
-      set: !include_resource Packages/JSCustom/extensions/custom_templates/template.yaml
+      set:
+        - !include_resource Packages/JSCustom/extensions/custom_templates/template.yaml
+        - include: else-pop
 
   styled-components: !if
     - !argument styled_components
@@ -65,18 +80,16 @@ contexts:
       scope: punctuation.accessor.dot.js
       push: styled-component-begin
 
-    - match: (?=`)
-      set: !with
-        - include: scope:source.js.css
-        - !include_resource Packages/JSCustom/extensions/custom_templates/template.yaml
+    - !with
+      - include: scope:source.js.css
+      - !include_resource Packages/JSCustom/extensions/custom_templates/template.yaml
 
     - include: expression-end
 
   styled-component-keyframes-end:
-    - match: (?=`)
-      push: !with
-        - include: scope:source.js.css#at-keyframe-block-content
-        - !include_resource Packages/JSCustom/extensions/custom_templates/template.yaml
+    - !with
+      - include: scope:source.js.css#at-keyframe-block-content
+      - !include_resource Packages/JSCustom/extensions/custom_templates/template.yaml
     - include: else-pop
 
   styled-component-begin:
@@ -95,3 +108,32 @@ contexts:
       pop: true
 
     - include: else-pop
+
+  custom-templates-closing-quote:
+    - meta_include_prototype: false
+    - meta_scope: meta.string.js string.quoted.other.js
+    - match: "`"
+      scope: punctuation.definition.string.end.js
+      pop: true
+    - include: immediately-pop
+
+  custom-templates-clear-scopes:
+    - meta_include_prototype: false
+    - clear_scopes: !if [!argument clear_all_scopes, true, 1]
+    - include: immediately-pop
+
+  custom-templates-prototype:
+    - match: (?=`)
+      pop: true
+    - match: '\$\{'
+      scope: punctuation.section.interpolation.begin.js
+      push:
+        - clear_scopes: !if [!argument clear_all_scopes, true, 1]
+        - meta_scope: meta.interpolation.js
+        - meta_content_scope: source.js.embedded.expression
+        - match: '\}'
+          scope: punctuation.section.interpolation.end.js
+          pop: true
+        - match: (?=\S)
+          push: expression
+    - include: string-content

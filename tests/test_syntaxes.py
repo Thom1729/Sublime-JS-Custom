@@ -90,7 +90,7 @@ class TestSyntaxes(DeferrableTestCase):
             tests=["js", "flow"],
         )
 
-    def test_templates(self):
+    def test_templates_default(self):
         yield from self._test_syntaxes(
             name="templates",
             configuration={
@@ -111,7 +111,30 @@ class TestSyntaxes(DeferrableTestCase):
                 }
             },
             tests=["js", "templates"],
-            exclude=["js.js"]
+            exclude=["js.js"],
+        )
+
+    def test_templates_no_default(self):
+        yield from self._test_syntaxes(
+            name="templates_no_default",
+            configuration={
+                "file_extensions": [],
+                "hidden": True,
+                "custom_templates": {
+                    'tags': {
+                        'css': 'scope:source.css',
+                    },
+                    'comments': {
+                        'css': 'scope:source.css',
+                    },
+                    'lookaheads': {
+                        r'select\b': 'scope:source.sql',
+                    },
+                    'styled_components': True,
+                }
+            },
+            tests=["js", "templates"],
+            exclude=["template_default.js"],
         )
 
     def test_string_object_keys(self):
