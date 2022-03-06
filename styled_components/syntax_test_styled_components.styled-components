@@ -50,3 +50,13 @@
     html.test & {
       display: none;
     }
+
+    filter {}
+//  ^^^^^^ meta.selector.css entity.name.tag.svg.css
+//         ^^ meta.property-list.css meta.block.css
+//         ^ punctuation.section.block.begin.css
+//          ^ punctuation.section.block.end.css
+
+    filter: none;
+//  ^^^^^^ meta.property-name.css support.type.property-name.css
+//        ^ punctuation.separator.key-value.css

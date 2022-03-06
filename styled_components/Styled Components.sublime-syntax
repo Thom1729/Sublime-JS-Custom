@@ -9,7 +9,7 @@ first_line_match:
 contexts:
   main:
     - meta_prepend: true
-    - match: (?={{html_tags}}|{{svg_tags}})
+    - match: (?=(?:{{html_tags}}|{{svg_tags}})(?!:))
       push: selector-content
     - include: property-identifiers
     - include: property-values
