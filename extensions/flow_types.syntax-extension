@@ -229,7 +229,7 @@ contexts:
 
   flow-function-type-arguments:
     - match: \<(?!<)
-      scope: punctuation.definition.generic.begin.js
+      scope: punctuation.definition.generic.begin.js region.redish
       set:
         - - match: (?=[\]()};,`])
             pop: true
@@ -524,13 +524,18 @@ contexts:
 
   flow-type-generic-arguments:
     - match: '<'
-      scope: punctuation.definition.generic.begin.js
+      scope: punctuation.definition.generic.begin.js region.greenish
       set:
-        - meta_scope: meta.generic.js
-        - match: '>'
-          scope: punctuation.definition.generic.end.js
-          pop: true
-        - include: flow-type-list
+        - - meta_scope: meta.generic.js
+          - match: '>'
+            scope: punctuation.definition.generic.end.js
+            pop: true
+          - match: ','
+            scope: punctuation.separator.comma.js
+            push: flow-type
+          - match: (?=\S)
+            fail: flow-arrow-function-return-type
+        - flow-type
 
   flow-type-generic-parameters:
     - match: '<'
