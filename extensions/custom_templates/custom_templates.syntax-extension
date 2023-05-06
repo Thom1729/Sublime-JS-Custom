@@ -88,7 +88,7 @@ contexts:
 
   styled-component-keyframes-end:
     - !with
-      - include: scope:source.js.css#at-keyframe-block-content
+      - include: scope:source.js.css#styled-components-keyframe-body
       - !include_resource Packages/JSCustom/extensions/custom_templates/template.yaml
     - include: else-pop
 
