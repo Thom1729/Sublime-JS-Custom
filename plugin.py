@@ -1,8 +1,6 @@
 import sublime
 
 from package_control import events
-from package_control.package_manager import PackageManager
-from package_control.sys_path import add_dependency
 
 from .src.logging import initialize_logger
 from .src.paths import PACKAGE_PATH
@@ -50,12 +48,10 @@ def plugin_loaded() -> None:
     UNSUBSCRIBE = get_settings().subscribe(get_configurations, auto_build)
 
     if events.install(PACKAGE_NAME):
-        ensure_dependencies_loaded()
         logger.info('New installation. Building all syntaxes.')
         sublime.active_window().run_command('build_js_custom_syntaxes')
 
     elif events.post_upgrade(PACKAGE_NAME):
-        ensure_dependencies_loaded()
         logger.info('Installation upgraded. Building all syntaxes.')
         sublime.active_window().run_command('build_js_custom_syntaxes')
 
@@ -67,11 +63,6 @@ def plugin_unloaded() -> None:
     if events.remove(PACKAGE_NAME):
         logger.info('Uninstalling. Removing all syntaxes.')
         sublime.run_command('clear_js_custom_user_data')
-
-
-def ensure_dependencies_loaded() -> None:
-    for dependency in PackageManager().get_dependencies(PACKAGE_NAME):
-        add_dependency(dependency)
 
 
 def auto_build(new_configurations: dict, old_configurations: dict) -> None:
