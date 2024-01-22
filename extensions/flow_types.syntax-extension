@@ -78,15 +78,15 @@ contexts:
     - include: flow-type-declare
     - include: flow-type-alias
 
-  import-item:
+  import-export-item:
     - meta_prepend: true
     - include: flow-type-import-type
 
-  import-brace:
+  import-export-brace:
     - meta_prepend: true
     - include: flow-type-import-type
 
-  export-extended:
+  export-body:
     - meta_prepend: true
     - include: flow-type-export-type
 
@@ -261,7 +261,7 @@ contexts:
   flow-type-export-type:
     - match: type{{identifier_break}}(?=\s*\{)
       scope: keyword.declaration.js
-      set: export-item
+      set: import-export-item
     - include: flow-type-alias
 
   flow-type-declare:

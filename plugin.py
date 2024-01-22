@@ -31,6 +31,7 @@ __all__ = [
     'ReassignSyntaxesCommand',
     'JsxCloseTagCommand',
     'JsCustomRebaseCommand',
+    'JsCustomReportSyntaxIssue',
     'JsxCloseTagListener',
 ]
 

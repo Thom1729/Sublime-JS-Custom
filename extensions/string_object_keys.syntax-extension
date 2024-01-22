@@ -3,6 +3,15 @@
 contexts:
   object-property-name:
     - meta_prepend: true
+
+    - match: (?:get|set|async){{identifier_break}}
+      scope: string.unquoted.js
+      pop: 2
+      set:
+        - match: (?=\*|{{class_element_name}})
+          fail: object-literal-property
+        - include: else-pop
+
     - match: '{{identifier_name}}'
       scope: string.unquoted.js
       pop: true
